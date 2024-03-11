@@ -1,8 +1,8 @@
 import jwt_decode from 'jwt-decode'
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import axiosInstance from 'src/utils/services'
-import auth from 'src/utils/services/auth'
+import axiosInstance from 'src/@core/services'
+import auth from 'src/@core/services/auth'
 
 type jwt = {
   sub: string
