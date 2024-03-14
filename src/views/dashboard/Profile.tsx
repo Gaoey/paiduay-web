@@ -29,9 +29,13 @@ const ProfileImg = styled('img')({
 const Profile = () => {
   // ** Hook
   const theme = useTheme()
-  const { profilerAPI } = useApi()
+  const { profilerAPI, userAPI } = useApi()
 
+  const { getUser } = userAPI
   const { findProfiler } = profilerAPI
+
+  const currentUser = getUser
+
   const { data, isLoading } = findProfiler
 
   useEffect(() => {
@@ -49,17 +53,17 @@ const Profile = () => {
           <CircularProgress color='secondary' />
         ) : (
           <>
-            <Typography variant='h6'>Congratulations John! 🥳</Typography>
+            <Typography variant='h6'>Hello {currentUser?.name}! 🥳</Typography>
             <Typography variant='body2' sx={{ letterSpacing: '0.25px' }}>
-              Best seller of the month
+              Update your trip profile here
             </Typography>
             <Typography variant='h5' sx={{ my: 4, color: 'primary.main' }}>
-              $42.8k
+              {profiler?.data.name}
             </Typography>
             <Button size='small' variant='contained'>
-              View Sales
+              UPDATE
             </Button>
-            <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />!
+            <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />
             {!R.isNil(profiler) && <ProfileImg alt='Profile' src={profiler.data.logo_image?.signed_url} />}
           </>
         )}

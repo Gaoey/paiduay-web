@@ -14,16 +14,14 @@ import CardStatisticsVerticalComponent from 'src/@core/components/card-statistic
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
+import { getSession } from 'next-auth/react'
 import { ReactNode } from 'react'
 import AdminLayout from 'src/layouts/AdminLayout'
-import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
-import SalesByCountries from 'src/views/dashboard/SalesByCountries'
+import Profile from 'src/views/dashboard/Profile'
 import StatisticsCard from 'src/views/dashboard/StatisticsCard'
 import Table from 'src/views/dashboard/Table'
 import TotalEarning from 'src/views/dashboard/TotalEarning'
-import Profile from 'src/views/dashboard/Profile'
 import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
-import { getSession } from 'next-auth/react'
 
 const Dashboard = () => {
   return (
@@ -86,12 +84,6 @@ const Dashboard = () => {
               />
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <SalesByCountries />
-        </Grid>
-        <Grid item xs={12} md={12} lg={8}>
-          <DepositWithdraw />
         </Grid>
         <Grid item xs={12}>
           <Table />

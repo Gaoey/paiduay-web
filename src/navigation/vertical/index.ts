@@ -16,6 +16,32 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Account Settings',
       icon: AccountCogOutline,
       path: '/admin/account-settings'
+    },
+    {
+      sectionTitle: 'Trips'
+    },
+    {
+      title: 'Trip Lists',
+      icon: AccountCogOutline,
+      path: '/admin/trip-list'
+    },
+    {
+      title: 'Create a Trip',
+      icon: AccountCogOutline,
+      path: '/admin/create-trip'
+    },
+    {
+      sectionTitle: 'Membership'
+    },
+    {
+      title: 'Payment Status',
+      icon: AccountCogOutline,
+      path: '/admin/payment-status'
+    },
+    {
+      title: 'Member details',
+      icon: AccountCogOutline,
+      path: '/admin/member-details'
     }
   ]
 }
