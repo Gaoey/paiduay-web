@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios'
+import * as R from 'ramda'
 import { useMutation } from 'react-query'
 import { useAPI } from '../hooks/useAPI'
-import { Media, ResponseFormat } from '../types'
-import * as R from 'ramda'
+import { Media } from '../types'
 
 const createFormData = (data: Media[]): FormData => {
   const formData = new FormData()
@@ -22,11 +22,9 @@ const mediaAPI = (authIntance: AxiosInstance) => ({
 
     return authIntance.post(`/v1/medias/upload?bucket_name=${bucketName}`, formData)
   },
-  getUploadSignURL: (media: Media[]): Promise<ResponseFormat<Media[]>> =>
-    authIntance.post(`/v1/medias/upload_signed_url`, media),
-  getDownloadSignURL: (media: Media[]): Promise<ResponseFormat<Media[]>> =>
-    authIntance.post(`/v1/medias/get_signed_url`, media),
-  uploadToGCSFromSignedURL: ({ media, b }: { media: Media; b: Blob }): Promise<ResponseFormat<any>> =>
+  getUploadSignURL: (media: Media[]): Promise<Media[]> => authIntance.post(`/v1/medias/upload_signed_url`, media),
+  getDownloadSignURL: (media: Media[]): Promise<Media[]> => authIntance.post(`/v1/medias/get_signed_url`, media),
+  uploadToGCSFromSignedURL: ({ media, b }: { media: Media; b: Blob }): Promise<any> =>
     authIntance.put(`${media.signed_url}`, b)
 })
 

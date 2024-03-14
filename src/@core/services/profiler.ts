@@ -5,13 +5,13 @@ import { ResponseFormat } from '../types'
 import { Profiler, ProfilerData } from '../types/profiler'
 
 const profilerAPI = (authIntance: AxiosInstance) => ({
-  createProfiler: (params: ProfilerData): Promise<ResponseFormat<Profiler>> => {
+  createProfiler: (params: ProfilerData): Promise<Profiler> => {
     return authIntance.post(`/v1/profilers`, params)
   },
-  findProfilerByProfilerID: (profilerID: string): Promise<ResponseFormat<Profiler | null>> => {
+  findProfilerByProfilerID: (profilerID: string): Promise<Profiler | null> => {
     return authIntance.get(`/v1/profilers/${profilerID}`)
   },
-  findProfiler: (): Promise<ResponseFormat<Profiler[]>> => {
+  findProfiler: (): Promise<Profiler[]> => {
     return authIntance.get(`/v1/profilers}`)
   },
   updateProfiler: ({
