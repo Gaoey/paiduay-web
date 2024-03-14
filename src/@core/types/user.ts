@@ -7,7 +7,7 @@ export enum UserRole {
 
 export enum TripMakerRole {
   Admin = 'Admin',
-  Staff = 'STAFF'
+  Staff = 'Staff'
 }
 
 export enum Gender {

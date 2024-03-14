@@ -6,7 +6,6 @@ const axiosInstance = (accessToken = '', baseURL = process.env.NEXT_PUBLIC_CORE_
   })
   instance.interceptors.request.use(
     function (config: any) {
-      config.headers['Content-Type'] = 'application/json'
       if (accessToken) {
         config.headers.Authorization = accessToken
       }

@@ -9,8 +9,8 @@ export interface ProfilerData {
   name: string
   description: string
   bank_accounts: BankAccount[]
-  logo_image?: Media
-  cover_image?: Media
+  logo_image?: Media | null
+  cover_image?: Media | null
 }
 
 export interface Profiler {

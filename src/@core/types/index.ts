@@ -21,10 +21,12 @@ export class ErrorFormat {
   }
 }
 
+export const BUCKET_NAME = 'thortrip'
 export interface Media {
   bucket_name: string
   name: string
   uri: string
   signed_url: string
   type: string
+  file?: File
 }

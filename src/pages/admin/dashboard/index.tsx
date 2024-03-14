@@ -2,10 +2,10 @@
 import Grid from '@mui/material/Grid'
 
 // ** Icons Imports
-import Poll from 'mdi-material-ui/Poll'
+import BriefcaseVariantOutline from 'mdi-material-ui/BriefcaseVariantOutline'
 import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import BriefcaseVariantOutline from 'mdi-material-ui/BriefcaseVariantOutline'
+import Poll from 'mdi-material-ui/Poll'
 
 // ** Custom Components Imports
 import CardStatisticsVerticalComponent from 'src/@core/components/card-statistics/card-stats-vertical'
@@ -14,15 +14,16 @@ import CardStatisticsVerticalComponent from 'src/@core/components/card-statistic
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
-import Table from 'src/views/dashboard/Table'
-import Trophy from 'src/views/dashboard/Trophy'
-import TotalEarning from 'src/views/dashboard/TotalEarning'
-import StatisticsCard from 'src/views/dashboard/StatisticsCard'
-import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
+import { ReactNode } from 'react'
+import AdminLayout from 'src/layouts/AdminLayout'
 import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
-import AdminLayout from 'src/layouts/AdminLayout'
-import { ReactNode } from 'react'
+import StatisticsCard from 'src/views/dashboard/StatisticsCard'
+import Table from 'src/views/dashboard/Table'
+import TotalEarning from 'src/views/dashboard/TotalEarning'
+import Trophy from 'src/views/dashboard/Trophy'
+import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
+import { getSession } from 'next-auth/react'
 
 const Dashboard = () => {
   return (
@@ -101,5 +102,15 @@ const Dashboard = () => {
 }
 
 Dashboard.getLayout = (page: ReactNode) => <AdminLayout>{page}</AdminLayout>
+
+export async function getServerSideProps(ctx: any) {
+  const session = await getSession(ctx)
+
+  return {
+    props: {
+      session
+    }
+  }
+}
 
 export default Dashboard

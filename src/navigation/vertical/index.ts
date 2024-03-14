@@ -18,7 +18,7 @@ const navigation = (): VerticalNavItemsType => {
     {
       title: 'Dashboard',
       icon: HomeOutline,
-      path: '/'
+      path: '/admin/dashboard'
     },
     {
       title: 'Account Settings',

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, SyntheticEvent, Fragment } from 'react'
+import { useState, SyntheticEvent, Fragment, useEffect } from 'react'
 
 // ** Next Import
 import { useRouter } from 'next/router'
@@ -23,6 +23,10 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 
+import useUserAPI from 'src/@core/services/user'
+import * as R from 'ramda'
+import { useAPI } from 'src/@core/hooks/useAPI'
+
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
   width: 8,
@@ -32,12 +36,41 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
   boxShadow: `0 0 0 2px ${theme.palette.background.paper}`
 }))
 
+export function useAdminAccount() {
+  const { user } = useUserAPI()
+  const { accessToken } = useAPI()
+  const { data: currentUser, ...props } = user
+
+  useEffect(() => {
+    if (!R.isEmpty(accessToken)) {
+      user.mutate()
+    }
+  }, [accessToken])
+
+  const isAdmin = R.pathOr(false, ['profile', 'trip_maker_role'], currentUser)
+
+  return {
+    ...props,
+    isAdmin,
+    user: currentUser
+  }
+}
+
 const UserDropdown = () => {
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   // ** Hooks
   const router = useRouter()
+
+  const { isSuccess, isAdmin } = useAdminAccount()
+
+  // ** Effects
+  useEffect(() => {
+    if (isSuccess && !isAdmin) {
+      router.push('/admin/create-profiler')
+    }
+  }, [isAdmin, isSuccess, router])
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget)
