@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios'
 import * as R from 'ramda'
 import { useMutation } from 'react-query'
-import { useAPI } from '../hooks/useAPI'
+import { InstanceProps } from '../context/apiContext'
 import { Media } from '../types'
 
 const createFormData = (data: Media[]): FormData => {
@@ -28,8 +28,7 @@ const mediaAPI = (authIntance: AxiosInstance) => ({
     authIntance.put(`${media.signed_url}`, b)
 })
 
-function useMediaAPI() {
-  const { authInstance } = useAPI()
+function useMediaAPI({ authInstance }: InstanceProps) {
   const api = mediaAPI(authInstance)
 
   const getUploadSignURL = useMutation(api.getUploadSignURL)

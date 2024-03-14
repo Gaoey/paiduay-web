@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios'
-import { useAPI } from '../hooks/useAPI'
 import { useMutation } from 'react-query'
+import { InstanceProps } from '../context/apiContext'
 import { ResponseFormat } from '../types'
 import { Profiler, ProfilerData } from '../types/profiler'
 
@@ -12,7 +12,7 @@ const profilerAPI = (authIntance: AxiosInstance) => ({
     return authIntance.get(`/v1/profilers/${profilerID}`)
   },
   findProfiler: (): Promise<Profiler[]> => {
-    return authIntance.get(`/v1/profilers}`)
+    return authIntance.get(`/v1/profilers`)
   },
   updateProfiler: ({
     profilerID,
@@ -25,8 +25,7 @@ const profilerAPI = (authIntance: AxiosInstance) => ({
   }
 })
 
-function useProfilerAPI() {
-  const { authInstance } = useAPI()
+function useProfilerAPI({ authInstance }: InstanceProps) {
   const api = profilerAPI(authInstance)
 
   const createProfiler = useMutation(api.createProfiler)

@@ -19,16 +19,15 @@ import { styled } from '@mui/material/styles'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
+import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useAdminAccount } from 'src/@core/layouts/components/shared-components/UserDropdown'
-import useMediaAPI from 'src/@core/services/media'
-import useProfilerAPI from 'src/@core/services/profiler'
+import { useApi } from 'src/@core/services'
 import { BUCKET_NAME, Media } from 'src/@core/types'
 import { Profiler, ProfilerData } from 'src/@core/types/profiler'
 import FooterIllustrations from 'src/views/pages/misc/FooterIllustrations'
-import { getSession } from 'next-auth/react'
 
 const TreeIllustration = styled('img')(({ theme }) => ({
   left: 0,
@@ -42,8 +41,11 @@ const TreeIllustration = styled('img')(({ theme }) => ({
 const CreateProfiler = () => {
   // ** Hooks
   const router = useRouter()
-  const { uploadMedias } = useMediaAPI()
-  const { createProfiler } = useProfilerAPI()
+
+  const { mediaAPI, profilerAPI } = useApi()
+  const { createProfiler } = profilerAPI
+  const { uploadMedias } = mediaAPI
+
   const { isSuccess, isAdmin } = useAdminAccount()
 
   const { isSuccess: isCreateProfilerSuccess } = createProfiler

@@ -1,15 +1,14 @@
 // ** Next Imports
+import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Router } from 'next/router'
-import type { NextPage } from 'next'
-import type { AppProps } from 'next/app'
 
 // ** Loader Import
 import NProgress from 'nprogress'
 
 // ** Emotion Imports
-import { CacheProvider } from '@emotion/react'
 import type { EmotionCache } from '@emotion/cache'
+import { CacheProvider } from '@emotion/react'
 
 // ** Config Imports
 import themeConfig from 'src/configs/themeConfig'
@@ -27,11 +26,14 @@ import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
-import '../../styles/globals.css'
-import BlankLayout from 'src/@core/layouts/BlankLayout'
-import APIProvider from 'src/@core/context/apiContext'
 import { SessionProvider } from 'next-auth/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import APIProvider from 'src/@core/context/apiContext'
+import BlankLayout from 'src/@core/layouts/BlankLayout'
+import '../../styles/globals.css'
+import type { AppProps } from 'next/app'
+import * as R from 'ramda'
+import { Session } from 'next-auth'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -61,9 +63,11 @@ const App = (props: ExtendedAppProps) => {
   // Variables
   const getLayout = Component.getLayout ?? (page => <BlankLayout>{page}</BlankLayout>)
 
+  const session = R.pathOr<Session | null>(null, ['session'], pageProps)
+
   return (
     <CacheProvider value={emotionCache}>
-      <SessionProvider>
+      <SessionProvider session={session}>
         <QueryClientProvider client={new QueryClient()}>
           <APIProvider>
             <Head>

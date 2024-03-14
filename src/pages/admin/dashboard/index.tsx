@@ -21,7 +21,7 @@ import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 import StatisticsCard from 'src/views/dashboard/StatisticsCard'
 import Table from 'src/views/dashboard/Table'
 import TotalEarning from 'src/views/dashboard/TotalEarning'
-import Trophy from 'src/views/dashboard/Trophy'
+import Profile from 'src/views/dashboard/Profile'
 import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
 import { getSession } from 'next-auth/react'
 
@@ -30,7 +30,7 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12} md={4}>
-          <Trophy />
+          <Profile />
         </Grid>
         <Grid item xs={12} md={8}>
           <StatisticsCard />

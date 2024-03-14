@@ -1,4 +1,8 @@
 import axios from 'axios'
+import { useAPICtx } from '../hooks/useAPICtx'
+import useProfilerAPI from './profiler'
+import useMediaAPI from './media'
+import useUserAPI from './user'
 
 const axiosInstance = (accessToken = '', baseURL = process.env.NEXT_PUBLIC_CORE_API) => {
   const instance = axios.create({
@@ -26,6 +30,19 @@ const axiosInstance = (accessToken = '', baseURL = process.env.NEXT_PUBLIC_CORE_
   )
 
   return instance
+}
+
+export const useApi = () => {
+  const ctx = useAPICtx()
+  if (!ctx) {
+    throw new Error('useApi must be used within an CTXAxios.Provider')
+  }
+
+  return {
+    profilerAPI: useProfilerAPI(ctx),
+    mediaAPI: useMediaAPI(ctx),
+    userAPI: useUserAPI(ctx)
+  }
 }
 
 export default axiosInstance

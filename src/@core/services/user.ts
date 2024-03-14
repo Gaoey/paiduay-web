@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios'
-import { useAPI } from '../hooks/useAPI'
-import { useMutation, useQueryClient } from 'react-query'
-import { User, UserProfile } from '../types/user'
 import * as R from 'ramda'
+import { useMutation, useQueryClient } from 'react-query'
+import { InstanceProps } from '../context/apiContext'
+import { User, UserProfile } from '../types/user'
 
 const userAPI = (authIntance: AxiosInstance) => ({
   getUser: (): Promise<User> => {
@@ -13,9 +13,8 @@ const userAPI = (authIntance: AxiosInstance) => ({
   }
 })
 
-function useUserAPI() {
+function useUserAPI({ authInstance }: InstanceProps) {
   const queryClient = useQueryClient()
-  const { authInstance } = useAPI()
   const api = userAPI(authInstance)
 
   const userCache: User | undefined = queryClient.getQueryData<User | undefined>('user') as User

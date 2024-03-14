@@ -18,7 +18,12 @@ const APIProvider = ({ children }: { children: React.ReactNode }) => {
   const instanceAuth: AxiosInstance = axiosInstance(accessToken)
   const instance: AxiosInstance = axiosInstance()
 
-  const props: InstanceProps = { authInstance: instanceAuth, instance, uid: session?.id, accessToken }
+  const props: InstanceProps = {
+    authInstance: instanceAuth,
+    instance,
+    uid: session?.id,
+    accessToken
+  }
 
   return <CTXAxios.Provider value={props}>{children}</CTXAxios.Provider>
 }

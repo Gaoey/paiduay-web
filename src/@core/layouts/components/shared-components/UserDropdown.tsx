@@ -23,9 +23,9 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 
-import useUserAPI from 'src/@core/services/user'
 import * as R from 'ramda'
-import { useAPI } from 'src/@core/hooks/useAPI'
+import { useAPICtx } from 'src/@core/hooks/useAPICtx'
+import { useApi } from 'src/@core/services'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -37,8 +37,10 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 }))
 
 export function useAdminAccount() {
-  const { user } = useUserAPI()
-  const { accessToken } = useAPI()
+  const { userAPI } = useApi()
+  const { user } = userAPI
+
+  const { accessToken } = useAPICtx()
   const { data: currentUser, ...props } = user
 
   useEffect(() => {
