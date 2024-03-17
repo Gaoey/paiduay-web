@@ -3,6 +3,7 @@ import { useAPICtx } from '../hooks/useAPICtx'
 import useProfilerAPI from './profiler'
 import useMediaAPI from './media'
 import useUserAPI from './user'
+import useTripAPI from './trip'
 
 const axiosInstance = (accessToken = '', baseURL = process.env.NEXT_PUBLIC_CORE_API) => {
   const instance = axios.create({
@@ -41,7 +42,8 @@ export const useApi = () => {
   return {
     profilerAPI: useProfilerAPI(ctx),
     mediaAPI: useMediaAPI(ctx),
-    userAPI: useUserAPI(ctx)
+    userAPI: useUserAPI(ctx),
+    tripAPI: useTripAPI(ctx)
   }
 }
 
