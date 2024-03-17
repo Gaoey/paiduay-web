@@ -21,9 +21,6 @@ const TripListPage = () => {
         <Grid item xs={12}>
           <TripList />
         </Grid>
-        <Grid item xs={12}>
-          <TripList />
-        </Grid>
       </Grid>
     </ApexChartWrapper>
   )

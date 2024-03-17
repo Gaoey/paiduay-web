@@ -1,13 +1,12 @@
+import { Close } from '@mui/icons-material'
 import { Box, Button, Card, CardContent, CardHeader, Grid, IconButton, TextField, Typography } from '@mui/material'
 import * as R from 'ramda'
 import React from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import DatePicker from 'react-datepicker'
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import { BUCKET_NAME, Media } from 'src/@core/types'
 import { Trip, TripStatus } from 'src/@core/types/trip'
-import DatePicker from 'react-datepicker'
-import Image from 'next/image'
-import { Close } from '@mui/icons-material'
 
 interface TripFormProps {
   trip_data?: Trip
@@ -28,7 +27,7 @@ function TripForm(props: TripFormProps) {
     payment: trip_data?.data.payment || null,
     total_people: trip_data?.data.total_people || 10,
     members: trip_data?.data.members || [],
-    locations: trip_data?.data.members || [],
+    locations: trip_data?.data.locations || [],
     contacts: trip_data?.data.contacts || [],
     status: trip_data?.data.status || TripStatus.NotFull
   }
@@ -56,8 +55,7 @@ function TripForm(props: TripFormProps) {
     if (index > -1) {
       const newSelectedImage = selectedImages
       newSelectedImage.splice(index, 1)
-      console.log({ newSelectedImage })
-      setSelectedImages(newSelectedImage)
+      setSelectedImages([...newSelectedImage])
     }
   }
 
@@ -66,15 +64,40 @@ function TripForm(props: TripFormProps) {
     handleSubmit,
     setValue,
     watch,
+    control,
     formState: { errors }
   } = useForm({ defaultValues })
 
+  const {
+    fields: locationFields,
+    append: appendLocation,
+    remove: removeLocation
+  } = useFieldArray({
+    control,
+    name: 'locations'
+  })
+
+  const {
+    fields: contactsField,
+    append: appendContact,
+    remove: removeContact
+  } = useFieldArray({
+    control,
+    name: 'contacts'
+  })
+
   return (
     <Card>
-      <CardHeader title='Multi Column with Form Separator' titleTypographyProps={{ variant: 'h6' }} />
+      <CardHeader title='Create a Trip' titleTypographyProps={{ variant: 'h6' }} />
       <CardContent>
         <form onSubmit={handleSubmit(props.onSubmit)}>
           <Grid container spacing={7}>
+            <Grid item xs={12}>
+              <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                1. Trip Details
+              </Typography>
+            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 {...register('title', { required: true })}
@@ -100,6 +123,66 @@ function TripForm(props: TripFormProps) {
             </Grid>
 
             <Grid item xs={12}>
+              <TextField
+                {...register('total_people', { required: true })}
+                label='Total member'
+                variant='outlined'
+                type='number'
+                fullWidth
+                error={!R.isNil(errors.total_people)}
+                helperText={errors.total_people && errors.total_people.message}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              {contactsField.map((item, index) => (
+                <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
+                  <TextField
+                    {...register(`contacts.${index}.contact_type`)}
+                    label='Contact Platform'
+                    defaultValue={item.contact_type}
+                  />
+                  <TextField
+                    {...register(`contacts.${index}.link`)}
+                    label='Link'
+                    defaultValue={item.link}
+                    style={{ marginLeft: 10 }}
+                  />
+                  <Button type='button' onClick={() => removeContact(index)}>
+                    Remove
+                  </Button>
+                </Box>
+              ))}
+              <Button type='button' onClick={() => appendContact({ contact_type: '', link: '' })}>
+                Add Contact
+              </Button>
+            </Grid>
+
+            <Grid item xs={12}>
+              {locationFields.map((item, index) => (
+                <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
+                  <TextField
+                    {...register(`locations.${index}.title`)}
+                    label='Location Title'
+                    defaultValue={item.title}
+                  />
+                  <TextField
+                    {...register(`locations.${index}.description`)}
+                    label='Detail (optional)'
+                    defaultValue={item.description}
+                    style={{ marginLeft: 10 }}
+                  />
+                  <Button type='button' onClick={() => removeLocation(index)}>
+                    Remove
+                  </Button>
+                </Box>
+              ))}
+              <Button type='button' onClick={() => appendLocation({ title: '', description: '' })}>
+                Add Location
+              </Button>
+            </Grid>
+
+            <Grid item xs={12}>
               <Box mt={2} display='flex'>
                 {selectedImages.map((image, index) => (
                   <Box key={index} style={{ position: 'relative', display: 'inline-block', marginRight: 10 }}>
@@ -117,7 +200,7 @@ function TripForm(props: TripFormProps) {
               <Button variant='contained' component='label'>
                 Upload Trip Images
                 <input
-                  {...register('cover_images', { required: true })}
+                  {...register('cover_images')}
                   type='file'
                   accept='image/*'
                   multiple
@@ -128,74 +211,113 @@ function TripForm(props: TripFormProps) {
               {errors.cover_images && <Typography color='error'>Please select at least one image</Typography>}
             </Grid>
 
-            {/* <Grid item xs={12} sm={6}>
-            <DatePickerWrapper>
+            <Grid item xs={12} sm={6}>
               <DatePicker
                 selected={watch('date_to_reserve', new Date())}
                 showYearDropdown
                 showMonthDropdown
                 id='date_to_reserve_picker'
                 placeholderText='MM-DD-YYYY'
-                customInput={(props: any) => (
-                  <TextField
-                    label='Date to reserve'
-                    {...register('date_to_reserve', { required: true })}
-                    fullWidth
-                    {...props}
-                  />
-                )}
+                customInput={
+                  <TextField label='Date to reserve' {...register('date_to_reserve', { required: true })} fullWidth />
+                }
                 onChange={(date: Date) => setValue('date_to_reserve', date)}
               />
-            </DatePickerWrapper>
-          </Grid> */}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <DatePickerWrapper>
+                <DatePicker
+                  selected={watch('going_date', new Date())}
+                  showYearDropdown
+                  showMonthDropdown
+                  id='going_date_picker'
+                  placeholderText='MM-DD-YYYY'
+                  customInput={
+                    <TextField label='Going Date' {...register('going_date', { required: true })} fullWidth />
+                  }
+                  onChange={(date: Date) => setValue('going_date', date)}
+                />
+              </DatePickerWrapper>
+            </Grid>
 
-            {/* <Grid item xs={12} sm={6}>
-            <DatePickerWrapper>
-              <DatePicker
-                selected={watch('from_date', new Date())}
-                showYearDropdown
-                showMonthDropdown
-                id='from_date_picker'
-                placeholderText='MM-DD-YYYY'
-                customInput={(props: any) => (
-                  <TextField label='From Date' {...register('from_date', { required: true })} fullWidth {...props} />
-                )}
-                onChange={(date: Date) => setValue('from_date', date)}
-              />
-            </DatePickerWrapper>
-          </Grid>
+            <Grid item xs={12} sm={6}>
+              <DatePickerWrapper>
+                <DatePicker
+                  selected={watch('from_date', new Date())}
+                  showYearDropdown
+                  showMonthDropdown
+                  id='from_date_picker'
+                  placeholderText='MM-DD-YYYY'
+                  customInput={<TextField label='From Date' {...register('from_date', { required: true })} fullWidth />}
+                  onChange={(date: Date) => setValue('from_date', date)}
+                />
+              </DatePickerWrapper>
+            </Grid>
 
-          <Grid item xs={12} sm={6}>
-            <DatePickerWrapper>
-              <DatePicker
-                selected={watch('to_date', new Date())}
-                showYearDropdown
-                showMonthDropdown
-                id='to_date_picker'
-                placeholderText='MM-DD-YYYY'
-                customInput={(props: any) => (
-                  <TextField label='To Date' {...register('to_date', { required: true })} fullWidth {...props} />
-                )}
-                onChange={(date: Date) => setValue('to_date', date)}
-              />
-            </DatePickerWrapper>
-          </Grid>
+            <Grid item xs={12} sm={6}>
+              <DatePickerWrapper>
+                <DatePicker
+                  selected={watch('to_date', new Date())}
+                  showYearDropdown
+                  showMonthDropdown
+                  id='to_date_picker'
+                  placeholderText='MM-DD-YYYY'
+                  customInput={<TextField label='To Date' {...register('to_date', { required: true })} fullWidth />}
+                  onChange={(date: Date) => setValue('to_date', date)}
+                />
+              </DatePickerWrapper>
+            </Grid>
 
-          <Grid item xs={12} sm={6}>
-            <DatePickerWrapper>
-              <DatePicker
-                selected={watch('going_date', new Date())}
-                showYearDropdown
-                showMonthDropdown
-                id='going_date_picker'
-                placeholderText='MM-DD-YYYY'
-                customInput={(props: any) => (
-                  <TextField label='Going Date' {...register('going_date', { required: true })} fullWidth {...props} />
-                )}
-                onChange={(date: Date) => setValue('going_date', date)}
+            <Grid item xs={12}>
+              <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                2. Payment
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...register('payment.full_price', { required: true })}
+                label='Full price'
+                variant='outlined'
+                fullWidth
+                type='number'
+                error={!R.isNil(errors.payment?.full_price)}
+                helperText={errors.payment?.full_price && errors.payment?.full_price.message}
               />
-            </DatePickerWrapper>
-          </Grid> */}
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...register('payment.deposit_price')}
+                label='Reserve price (optional)'
+                variant='outlined'
+                fullWidth
+                type='number'
+                error={!R.isNil(errors.payment?.deposit_price)}
+                helperText={errors.payment?.deposit_price && errors.payment.deposit_price.message}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <DatePickerWrapper>
+                <DatePicker
+                  selected={watch('payment.payment_date', new Date())}
+                  showYearDropdown
+                  showMonthDropdown
+                  id='payment_date'
+                  placeholderText='MM-DD-YYYY'
+                  customInput={
+                    <TextField
+                      label='Payment date'
+                      {...register('payment.payment_date', { required: true })}
+                      fullWidth
+                    />
+                  }
+                  onChange={(date: Date) => setValue('payment.payment_date', date)}
+                />
+              </DatePickerWrapper>
+            </Grid>
+
             <Grid item xs={12}>
               <Button type='submit' variant='contained' color='primary'>
                 Submit

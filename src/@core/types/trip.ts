@@ -32,7 +32,7 @@ export interface TripData {
   members: TripMember[]
   locations: Location[]
   contacts: Contact[]
-  status: TripStatus
+  status: TripStatus | string
 }
 
 export enum MemberStatus {
@@ -56,7 +56,7 @@ export interface TripFilter {
 }
 
 export interface Trip {
-  id: string
+  _id: string
   data: TripData
   profiler_id: string
   created_by_user_id: string
