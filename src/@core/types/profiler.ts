@@ -1,5 +1,10 @@
 import { Media } from '.'
 
+export interface Contact {
+  contact_type: string
+  link: string
+}
+
 export interface BankAccount {
   bank_title: string
   account_number: string
@@ -9,6 +14,7 @@ export interface ProfilerData {
   name: string
   description: string
   bank_accounts: BankAccount[]
+  contacts: Contact[]
   logo_image?: Media | null
   cover_image?: Media | null
 }

@@ -61,7 +61,8 @@ const CreateProfiler = () => {
     const profilerData: ProfilerData = {
       name: data?.name,
       description: data?.description,
-      bank_accounts: data?.bank_accounts || []
+      bank_accounts: data?.bank_accounts || [],
+      contacts: []
     }
 
     const media: Media | undefined = R.pathOr<Media | undefined>(undefined, ['logo_image'], data)
