@@ -12,16 +12,14 @@ import TableContainer from '@mui/material/TableContainer'
 
 // ** Types Imports
 import { ThemeColor } from 'src/@core/layouts/types'
-
-interface RowType {
-  age: number
-  name: string
-  date: string
-  email: string
-  salary: string
-  status: string
-  designation: string
-}
+import { useApi } from 'src/@core/services'
+import { useEffect } from 'react'
+import { Profiler } from 'src/@core/types/profiler'
+import * as R from 'ramda'
+import { Paginate } from 'src/@core/types'
+import { Trip, TripStatus } from 'src/@core/types/trip'
+import { format } from 'date-fns'
+import { Button } from '@mui/material'
 
 interface StatusObj {
   [key: string]: {
@@ -29,121 +27,73 @@ interface StatusObj {
   }
 }
 
-const rows: RowType[] = [
-  {
-    age: 27,
-    status: 'current',
-    date: '09/27/2018',
-    name: 'Sally Quinn',
-    salary: '$19586.23',
-    email: 'eebsworth2m@sbwire.com',
-    designation: 'Human Resources Assistant'
-  },
-  {
-    age: 61,
-    date: '09/23/2016',
-    salary: '$23896.35',
-    status: 'professional',
-    name: 'Margaret Bowers',
-    email: 'kocrevy0@thetimes.co.uk',
-    designation: 'Nuclear Power Engineer'
-  },
-  {
-    age: 59,
-    date: '10/15/2017',
-    name: 'Minnie Roy',
-    status: 'rejected',
-    salary: '$18991.67',
-    email: 'ediehn6@163.com',
-    designation: 'Environmental Specialist'
-  },
-  {
-    age: 30,
-    date: '06/12/2018',
-    status: 'resigned',
-    salary: '$19252.12',
-    name: 'Ralph Leonard',
-    email: 'dfalloona@ifeng.com',
-    designation: 'Sales Representative'
-  },
-  {
-    age: 66,
-    status: 'applied',
-    date: '03/24/2018',
-    salary: '$13076.28',
-    name: 'Annie Martin',
-    designation: 'Operator',
-    email: 'sganderton2@tuttocitta.it'
-  },
-  {
-    age: 33,
-    date: '08/25/2017',
-    salary: '$10909.52',
-    name: 'Adeline Day',
-    status: 'professional',
-    email: 'hnisius4@gnu.org',
-    designation: 'Senior Cost Accountant'
-  },
-  {
-    age: 61,
-    status: 'current',
-    date: '06/01/2017',
-    salary: '$17803.80',
-    name: 'Lora Jackson',
-    designation: 'Geologist',
-    email: 'ghoneywood5@narod.ru'
-  },
-  {
-    age: 22,
-    date: '12/03/2017',
-    salary: '$12336.17',
-    name: 'Rodney Sharp',
-    status: 'professional',
-    designation: 'Cost Accountant',
-    email: 'dcrossman3@google.co.jp'
-  }
-]
-
 const statusObj: StatusObj = {
-  applied: { color: 'info' },
-  rejected: { color: 'error' },
-  current: { color: 'primary' },
-  resigned: { color: 'warning' },
-  professional: { color: 'success' }
+  [TripStatus[TripStatus.Full]]: { color: 'info' },
+  [TripStatus[TripStatus.NotFull]]: { color: 'primary' },
+  [TripStatus[TripStatus.NotAvailable]]: { color: 'error' }
 }
 
 const DashboardTable = () => {
+  const { tripAPI, profilerAPI } = useApi()
+
+  const { getCurrentProfiler } = profilerAPI
+  const { findTripByProfilerID } = tripAPI
+
+  const { data } = findTripByProfilerID
+
+  useEffect(() => {
+    async function getTripsList() {
+      const profiler: Profiler[] = await getCurrentProfiler()
+      if (!R.isEmpty(profiler)) {
+        const currProfiler = profiler[0]
+        const paginate: Paginate = {
+          page_size: 50,
+          page_number: 1
+        }
+
+        // TODO:: filter only available trips (ยังมาไม่ถึง)
+        findTripByProfilerID.mutate({ profilerID: currProfiler._id, paginate })
+      }
+    }
+
+    getTripsList()
+  }, [])
+
+  const trips: Trip[] = R.isNil(data) ? [] : (data as Trip[])
+
   return (
     <Card>
       <TableContainer>
         <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Salary</TableCell>
-              <TableCell>Age</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>Location</TableCell>
+              <TableCell>Members</TableCell>
+              <TableCell>Payments</TableCell>
+              <TableCell>From / To</TableCell>
               <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row: RowType) => (
-              <TableRow hover key={row.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+            {trips.map((row: Trip, index) => (
+              <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.name}</Typography>
-                    <Typography variant='caption'>{row.designation}</Typography>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.data.title}</Typography>
                   </Box>
                 </TableCell>
-                <TableCell>{row.email}</TableCell>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.salary}</TableCell>
-                <TableCell>{row.age}</TableCell>
+                <TableCell>{row.data.locations.reduce((prev, curr) => `${prev}, ${curr.title}`, '')}</TableCell>
+                <TableCell>{`${row.data.members.length}/${row.data.total_people}`}</TableCell>
+                <TableCell>{`${0.0}/${row.data.total_people * (row.data.payment?.full_price || 1)}`}</TableCell>
+                <TableCell>{`${format(new Date(row.data.from_date), 'dd-MM-yyyy')} / ${format(
+                  new Date(row.data.to_date),
+                  'dd-MM-yyyy'
+                )}`}</TableCell>
                 <TableCell>
                   <Chip
-                    label={row.status}
-                    color={statusObj[row.status].color}
+                    label={row.data.status}
+                    color={statusObj[row.data.status].color}
                     sx={{
                       height: 24,
                       fontSize: '0.75rem',
@@ -151,6 +101,16 @@ const DashboardTable = () => {
                       '& .MuiChip-label': { fontWeight: 500 }
                     }}
                   />
+                </TableCell>
+                <TableCell>
+                  <Box style={{ display: 'flex', flexDirection: 'row' }}>
+                    <Button variant='contained' style={{ color: 'white', marginRight: 20 }}>
+                      EDIT
+                    </Button>
+                    <Button variant='outlined' style={{ marginRight: 5 }}>
+                      REMOVE
+                    </Button>
+                  </Box>
                 </TableCell>
               </TableRow>
             ))}
