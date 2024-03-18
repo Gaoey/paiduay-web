@@ -57,13 +57,15 @@ function useProfilerAPI({ authInstance }: InstanceProps) {
     }
   })
   const updateProfiler = useMutation(api.updateProfiler)
+  const getCurrentProfilerMutation = useMutation(getCurrentProfiler)
 
   return {
     createProfiler,
     findProfilerByProfilerID,
     findProfiler,
     updateProfiler,
-    getCurrentProfiler
+    getCurrentProfiler,
+    getCurrentProfilerMutation
   }
 }
 

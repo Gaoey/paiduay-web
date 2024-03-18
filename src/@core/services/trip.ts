@@ -12,6 +12,9 @@ const tripAPI = (authIntance: AxiosInstance) => ({
     return authIntance.get(
       `/v1/profilers/${profilerID}/trips?page_size=${paginate.page_size}&page_number=${paginate.page_number}`
     )
+  },
+  findTripByID: (tripID: string): Promise<Trip> => {
+    return authIntance.get(`/v1/trips/${tripID}`)
   }
 })
 
@@ -20,10 +23,12 @@ function useTripAPI({ authInstance }: InstanceProps) {
 
   const createTrip = useMutation(api.createTrip)
   const findTripByProfilerID = useMutation(api.findTripByProfilerID)
+  const findTripByID = useMutation(api.findTripByID)
 
   return {
     createTrip,
-    findTripByProfilerID
+    findTripByProfilerID,
+    findTripByID
   }
 }
 

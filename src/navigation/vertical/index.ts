@@ -26,6 +26,11 @@ const navigation = (): VerticalNavItemsType => {
       path: '/admin/trip-list'
     },
     {
+      title: 'Trip History',
+      icon: AccountCogOutline,
+      path: '/admin/trip-history'
+    },
+    {
       title: 'Create a Trip',
       icon: AccountCogOutline,
       path: '/admin/create-trip'

@@ -111,7 +111,7 @@ function TripForm(props: TripFormProps) {
 
             <Grid item xs={12}>
               <TextField
-                {...register('title', { required: true })}
+                {...register('description', { required: true })}
                 label='Description'
                 variant='outlined'
                 fullWidth

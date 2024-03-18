@@ -20,6 +20,8 @@ import { Paginate } from 'src/@core/types'
 import { Trip, TripStatus } from 'src/@core/types/trip'
 import { format } from 'date-fns'
 import { Button } from '@mui/material'
+import { toCurrency } from 'src/@core/utils/currency'
+import { useRouter } from 'next/router'
 
 interface StatusObj {
   [key: string]: {
@@ -34,6 +36,7 @@ const statusObj: StatusObj = {
 }
 
 const DashboardTable = () => {
+  const router = useRouter()
   const { tripAPI, profilerAPI } = useApi()
 
   const { getCurrentProfiler } = profilerAPI
@@ -71,49 +74,61 @@ const DashboardTable = () => {
               <TableCell>Location</TableCell>
               <TableCell>Members</TableCell>
               <TableCell>Payments</TableCell>
-              <TableCell>From / To</TableCell>
+              <TableCell>From - To</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell>ACTIONs</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {trips.map((row: Trip, index) => (
-              <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.data.title}</Typography>
-                  </Box>
-                </TableCell>
-                <TableCell>{row.data.locations.reduce((prev, curr) => `${prev}, ${curr.title}`, '')}</TableCell>
-                <TableCell>{`${row.data.members.length}/${row.data.total_people}`}</TableCell>
-                <TableCell>{`${0.0}/${row.data.total_people * (row.data.payment?.full_price || 1)}`}</TableCell>
-                <TableCell>{`${format(new Date(row.data.from_date), 'dd-MM-yyyy')} / ${format(
-                  new Date(row.data.to_date),
-                  'dd-MM-yyyy'
-                )}`}</TableCell>
-                <TableCell>
-                  <Chip
-                    label={row.data.status}
-                    color={statusObj[row.data.status].color}
-                    sx={{
-                      height: 24,
-                      fontSize: '0.75rem',
-                      textTransform: 'capitalize',
-                      '& .MuiChip-label': { fontWeight: 500 }
-                    }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <Box style={{ display: 'flex', flexDirection: 'row' }}>
-                    <Button variant='contained' style={{ color: 'white', marginRight: 20 }}>
-                      EDIT
-                    </Button>
-                    <Button variant='outlined' style={{ marginRight: 5 }}>
-                      REMOVE
-                    </Button>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ))}
+            {trips.map((row: Trip, index) => {
+              const total_payments = row.data.total_people * (row.data.payment?.full_price || 1)
+
+              return (
+                <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                  <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
+                        {row.data.title}
+                      </Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>{row.data.locations.reduce((prev, curr) => `${prev}, ${curr.title}`, '')}</TableCell>
+                  <TableCell>{`${row.data.members.length} / ${row.data.total_people}`}</TableCell>
+                  <TableCell>{`${toCurrency(0.0)} / ${toCurrency(total_payments)}`}</TableCell>
+                  <TableCell>{`${format(new Date(row.data.from_date), 'dd-MM-yyyy')} - ${format(
+                    new Date(row.data.to_date),
+                    'dd-MM-yyyy'
+                  )}`}</TableCell>
+                  <TableCell>
+                    <Chip
+                      label={row.data.status}
+                      color={statusObj[row.data.status].color}
+                      sx={{
+                        height: 24,
+                        fontSize: '0.75rem',
+                        textTransform: 'capitalize',
+                        '& .MuiChip-label': { fontWeight: 500 }
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Box style={{ display: 'flex', flexDirection: 'row' }}>
+                      <Button
+                        variant='contained'
+                        style={{ color: 'white', marginRight: 20 }}
+                        onClick={() => router.push(`/admin/trip-list/${row._id}`)}
+                      >
+                        VIEW
+                      </Button>
+                      <Button variant='outlined' style={{ marginRight: 20 }}>
+                        EDIT
+                      </Button>
+                      <Button variant='outlined'>REMOVE</Button>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </TableContainer>
