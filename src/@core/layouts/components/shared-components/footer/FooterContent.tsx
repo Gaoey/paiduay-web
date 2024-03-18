@@ -18,7 +18,7 @@ const FooterContent = () => {
         </Box>
         {` by `}
         <Link target='_blank' href='https://themeselection.com/'>
-          ThemeSelection
+          Log21Ruby
         </Link>
       </Typography>
       {hidden ? null : (

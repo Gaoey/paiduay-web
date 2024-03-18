@@ -2,7 +2,7 @@ export interface Seat {
   seat_number: number
   user_id?: string | null
   is_lock: boolean
-  status: SeatStatus
+  status: SeatStatus | string
 }
 
 export enum SeatStatus {
@@ -23,7 +23,8 @@ export enum Transportation {
 
 export interface TransportData {
   name: string
-  transport_by: Transportation
+  transport_by: Transportation | string
+  total_seats: number
   seats: Seat[]
 }
 

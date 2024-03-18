@@ -17,9 +17,9 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import { getSession } from 'next-auth/react'
 import { ReactNode } from 'react'
 import AdminLayout from 'src/layouts/AdminLayout'
+import TripList from 'src/views/admin/TripList'
 import Profile from 'src/views/dashboard/Profile'
 import StatisticsCard from 'src/views/dashboard/StatisticsCard'
-import Table from 'src/views/dashboard/Table'
 import TotalEarning from 'src/views/dashboard/TotalEarning'
 import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
 
@@ -86,7 +86,7 @@ const Dashboard = () => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <Table />
+          <TripList />
         </Grid>
       </Grid>
     </ApexChartWrapper>

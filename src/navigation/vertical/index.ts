@@ -13,9 +13,9 @@ const navigation = (): VerticalNavItemsType => {
       path: '/admin/dashboard'
     },
     {
-      title: 'Account Settings',
+      title: 'Profiler Settings',
       icon: AccountCogOutline,
-      path: '/admin/account-settings'
+      path: '/admin/profiler-settings'
     },
     {
       sectionTitle: 'Trips'
