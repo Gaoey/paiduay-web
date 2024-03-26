@@ -8,7 +8,7 @@ export interface Seat {
 export enum SeatStatus {
   EMPTY,
   PENDING,
-  SUCCESS
+  RESERVE
 }
 
 export enum Transportation {

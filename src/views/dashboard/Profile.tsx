@@ -5,6 +5,7 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { styled, useTheme } from '@mui/material/styles'
+import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useEffect } from 'react'
 import { useApi } from 'src/@core/services'
@@ -29,6 +30,7 @@ const ProfileImg = styled('img')({
 const Profile = () => {
   // ** Hook
   const theme = useTheme()
+  const router = useRouter()
   const { profilerAPI, userAPI } = useApi()
 
   const { getUser } = userAPI
@@ -60,7 +62,7 @@ const Profile = () => {
             <Typography variant='h5' sx={{ my: 4, color: 'primary.main' }}>
               {profiler?.data.name}
             </Typography>
-            <Button size='small' variant='contained'>
+            <Button size='small' variant='contained' onClick={() => router.push('/admin/profiler-settings')}>
               UPDATE
             </Button>
             <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />

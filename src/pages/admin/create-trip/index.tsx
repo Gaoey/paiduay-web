@@ -18,8 +18,9 @@ import { Profiler } from 'src/@core/types/profiler'
 import AdminLayout from 'src/layouts/AdminLayout'
 import TripForm from 'src/views/admin/TripForm'
 import * as R from 'ramda'
-import { TripData, TripStatus } from 'src/@core/types/trip'
+import { TripData, TripPayload, TripStatus } from 'src/@core/types/trip'
 import { useRouter } from 'next/router'
+import { Seat, SeatStatus, TransportData } from 'src/@core/types/transport'
 
 const CreateTrip = () => {
   const router = useRouter()
@@ -34,8 +35,9 @@ const CreateTrip = () => {
     const profiler: Profiler[] = await getCurrentProfiler()
     if (!R.isEmpty(profiler)) {
       const currentProfiler: Profiler = profiler[0]
-      const params = data as TripData
-      const newParams: TripData = {
+      const params = data as TripData & { transport_data: TransportData[] }
+
+      const tripData: TripData = {
         ...params,
         status: TripStatus[TripStatus.NotFull],
         payment: {
@@ -45,7 +47,27 @@ const CreateTrip = () => {
         },
         total_people: Number(params?.total_people)
       }
-      createTrip.mutate({ profilerID: currentProfiler._id, params: newParams })
+
+      const transport_data: TransportData[] = params.transport_data.map((v: TransportData) => {
+        return {
+          ...v,
+          total_seats: Number(v.total_seats),
+          seats: v.seats.map((u: Seat) => {
+            return {
+              ...u,
+              seat_number: Number(u.seat_number),
+              status: u.is_lock ? SeatStatus[SeatStatus.RESERVE] : SeatStatus[SeatStatus.EMPTY]
+            }
+          })
+        }
+      })
+
+      const payload: TripPayload = {
+        trip_data: tripData,
+        transport_data: transport_data
+      }
+
+      createTrip.mutate({ profilerID: currentProfiler._id, params: payload })
     }
   }
 

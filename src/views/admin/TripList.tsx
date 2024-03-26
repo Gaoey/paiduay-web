@@ -92,7 +92,7 @@ const DashboardTable = () => {
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell>{row.data.locations.reduce((prev, curr) => `${prev}, ${curr.title}`, '')}</TableCell>
+                  <TableCell>{row.data.locations.reduce((prev, curr) => `${prev} ${curr.title}`, '')}</TableCell>
                   <TableCell>{`${row.data.members.length} / ${row.data.total_people}`}</TableCell>
                   <TableCell>{`${toCurrency(0.0)} / ${toCurrency(total_payments)}`}</TableCell>
                   <TableCell>{`${format(new Date(row.data.from_date), 'dd-MM-yyyy')} - ${format(

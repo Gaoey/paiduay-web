@@ -1,5 +1,6 @@
 import { Media } from '.'
 import { Contact } from './profiler'
+import { TransportData } from './transport'
 
 export interface Location {
   title: string
@@ -64,4 +65,9 @@ export interface Trip {
   created_at: Date
   updated_at: Date
   deleted_at?: Date | null
+}
+
+export interface TripPayload {
+  trip_data: TripData
+  transport_data: TransportData[]
 }
