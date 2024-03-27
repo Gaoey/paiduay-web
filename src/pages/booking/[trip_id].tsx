@@ -1,18 +1,17 @@
-import { Box, Button, Grid, TextField } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { ReactNode, useEffect } from 'react'
+import { Transport, Transportation } from 'src/@core/types/transport'
+import UserLayout from 'src/layouts/UserLayout'
+import * as R from 'ramda'
 import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
-import { Transport, Transportation } from 'src/@core/types/transport'
-import AdminLayout from 'src/layouts/AdminLayout'
-import TripDetailComponent from 'src/views/admin/TripDetail'
-import * as R from 'ramda'
-import { TransportationNormalForm, VanForm } from 'src/views/admin/TransportationForm'
+import { Grid, TextField } from '@mui/material'
+import { TransportationNormalBookingForm, VanBookingForm } from 'src/views/trip/TransportationForm'
 
-export default function TripDetail() {
+export default function BookingTrip() {
   const router = useRouter()
-  const tripID = router.query.id as string
+  const tripID = router.query.trip_id as string
 
   const { transportAPI } = useApi()
 
@@ -27,29 +26,7 @@ export default function TripDetail() {
   return (
     <ApexChartWrapper>
       <Grid container spacing={7}>
-        <Grid item md={6} xs={12}>
-          <Grid container spacing={7}>
-            <Grid item md={12}>
-              <Box style={{ display: 'flex', flexDirection: 'row' }}>
-                <Button
-                  variant='contained'
-                  style={{ color: 'white', marginRight: 20 }}
-                  onClick={() => router.push(`/trips/${tripID}`)}
-                >
-                  PREVIEW
-                </Button>
-                <Button variant='outlined' style={{ marginRight: 20 }}>
-                  EDIT
-                </Button>
-                <Button variant='outlined'>REMOVE</Button>
-              </Box>
-            </Grid>
-            <Grid item md={12}>
-              <TripDetailComponent tripID={tripID} />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item md={6} xs={12}>
+        <Grid item md={12}>
           {!R.isEmpty(transports) &&
             transports.map(item => {
               if (item.data.transport_by === Transportation[Transportation.VAN]) {
@@ -62,12 +39,12 @@ export default function TripDetail() {
                       <TextField label='Transport By' defaultValue={item.data.transport_by} disabled />
                     </Grid>
                     <Grid item xs={12}>
-                      <VanForm values={item.data.seats} isShow />
+                      <VanBookingForm values={item.data.seats} tripID={tripID} transportID={item._id} />
                     </Grid>
                   </Grid>
                 )
               } else {
-                return <TransportationNormalForm />
+                return <TransportationNormalBookingForm />
               }
             })}
         </Grid>
@@ -76,7 +53,7 @@ export default function TripDetail() {
   )
 }
 
-TripDetail.getLayout = (page: ReactNode) => <AdminLayout>{page}</AdminLayout>
+BookingTrip.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>
 
 export async function getServerSideProps(ctx: any) {
   const session = await getSession(ctx)

@@ -75,6 +75,15 @@ function ProfilerForm(props: ProfilerFormProps) {
     name: 'contacts'
   })
 
+  const {
+    fields: bankAccountsField,
+    append: appendBankAccount,
+    remove: removeBankAccount
+  } = useFieldArray({
+    control,
+    name: 'bank_accounts'
+  })
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   const handleLogoFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -189,6 +198,41 @@ function ProfilerForm(props: ProfilerFormProps) {
                 )}
               />
             </Grid>
+
+            <Grid item xs={12}>
+              {bankAccountsField.map((item, index) => (
+                <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
+                  <TextField
+                    {...register(`bank_accounts.${index}.bank_title`)}
+                    label='Bank name'
+                    defaultValue={item.bank_title}
+                    style={{ marginLeft: 10 }}
+                  />
+                  <TextField
+                    {...register(`bank_accounts.${index}.account_name`)}
+                    label='Account name'
+                    defaultValue={item.account_name}
+                    style={{ marginLeft: 10 }}
+                  />
+                  <TextField
+                    {...register(`bank_accounts.${index}.account_number`)}
+                    label='Account number'
+                    defaultValue={item.account_number}
+                    style={{ marginLeft: 10 }}
+                  />
+                  <Button type='button' onClick={() => removeBankAccount(index)}>
+                    Remove
+                  </Button>
+                </Box>
+              ))}
+              <Button
+                type='button'
+                onClick={() => appendBankAccount({ bank_title: '', account_name: '', account_number: '' })}
+              >
+                Add Bank Account
+              </Button>
+            </Grid>
+
             <Grid item xs={12}>
               {contactsField.map((item, index) => (
                 <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>

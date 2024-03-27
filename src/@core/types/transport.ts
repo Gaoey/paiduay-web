@@ -1,5 +1,6 @@
 export interface Seat {
   seat_number: number
+  transport_id?: string | null
   user_id?: string | null
   is_lock: boolean
   status: SeatStatus | string

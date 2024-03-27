@@ -12,6 +12,9 @@ const profilerAPI = (authIntance: AxiosInstance) => ({
   findProfilerByProfilerID: (profilerID: string): Promise<Profiler | null> => {
     return authIntance.get(`/v1/profilers/${profilerID}`)
   },
+  findProfilerByTripID: (tripID: string): Promise<Profiler | null> => {
+    return authIntance.get(`/v1/profilers/trip/${tripID}`)
+  },
   findProfiler: (): Promise<Profiler[]> => {
     return authIntance.get(`/v1/profilers`)
   },
@@ -44,6 +47,7 @@ function useProfilerAPI({ authInstance }: InstanceProps) {
 
   const createProfiler = useMutation(api.createProfiler)
   const findProfilerByProfilerID = useMutation(api.findProfilerByProfilerID)
+  const findProfilerByTripID = useMutation(api.findProfilerByTripID)
   const findProfiler = useMutation(api.findProfiler, {
     onSuccess: async (resp: Profiler[]) => {
       if (R.isNil(profilerCache)) {
@@ -65,7 +69,8 @@ function useProfilerAPI({ authInstance }: InstanceProps) {
     findProfiler,
     updateProfiler,
     getCurrentProfiler,
-    getCurrentProfilerMutation
+    getCurrentProfilerMutation,
+    findProfilerByTripID
   }
 }
 

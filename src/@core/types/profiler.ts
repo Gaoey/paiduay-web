@@ -7,6 +7,7 @@ export interface Contact {
 
 export interface BankAccount {
   bank_title: string
+  account_name: string
   account_number: string
 }
 

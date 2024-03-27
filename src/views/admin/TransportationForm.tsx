@@ -73,116 +73,22 @@ export function VanForm(props: VanFormProps) {
           DRIVER
         </Paper>
       </Grid>
-      <Grid item xs={4} key={'2'}>
-        <Paper style={{ height: 100, textAlign: 'center', lineHeight: '100px' }}>
-          <Button
-            variant='contained'
-            onClick={() => handleLock(2)}
-            color={values[1].is_lock ? 'error' : 'primary'}
-            disabled={isShow}
-          >
-            {values[1].is_lock ? 'LOCK' : '#2'}
-          </Button>
-        </Paper>
-      </Grid>
-      <Grid item xs={4} key={'3'}>
-        <Paper style={{ height: 100, textAlign: 'center', lineHeight: '100px' }}>
-          <Button
-            variant='contained'
-            onClick={() => handleLock(3)}
-            color={values[2].is_lock ? 'error' : 'primary'}
-            disabled={isShow}
-          >
-            {values[2].is_lock ? 'LOCK' : '#3'}
-          </Button>
-        </Paper>
-      </Grid>
-      <Grid item xs={4} key={'4'}>
-        <Paper style={{ height: 100, textAlign: 'center', lineHeight: '100px' }}>
-          <Button
-            variant='contained'
-            onClick={() => handleLock(4)}
-            color={values[3].is_lock ? 'error' : 'primary'}
-            disabled={isShow}
-          >
-            {values[3].is_lock ? 'LOCK' : '#4'}
-          </Button>
-        </Paper>
-      </Grid>
-      <Grid item xs={4} key={'5'}>
-        <Paper style={{ height: 100, textAlign: 'center', lineHeight: '100px' }}>
-          {' '}
-          <Button
-            variant='contained'
-            onClick={() => handleLock(5)}
-            color={values[4].is_lock ? 'error' : 'primary'}
-            disabled={isShow}
-          >
-            {values[4].is_lock ? 'LOCK' : '#5'}
-          </Button>
-        </Paper>
-      </Grid>
-      <Grid item xs={4} key={'6'}>
-        <Paper style={{ height: 100, textAlign: 'center', lineHeight: '100px' }}>
-          <Button
-            variant='contained'
-            onClick={() => handleLock(6)}
-            color={values[5].is_lock ? 'error' : 'primary'}
-            disabled={isShow}
-          >
-            {values[5].is_lock ? 'LOCK' : '#6'}
-          </Button>
-        </Paper>
-      </Grid>
-      <Grid item xs={4} key={'7'}>
-        <Paper style={{ height: 100, textAlign: 'center', lineHeight: '100px' }}>
-          <Button
-            variant='contained'
-            onClick={() => handleLock(7)}
-            color={values[6].is_lock ? 'error' : 'primary'}
-            disabled={isShow}
-          >
-            {values[6].is_lock ? 'LOCK' : '#7'}
-          </Button>
-        </Paper>
-      </Grid>
-      <Grid item xs={4} key={'8'}>
-        <Paper style={{ height: 100, textAlign: 'center', lineHeight: '100px' }}>
-          {' '}
-          <Button
-            variant='contained'
-            onClick={() => handleLock(8)}
-            color={values[7].is_lock ? 'error' : 'primary'}
-            disabled={isShow}
-          >
-            {values[7].is_lock ? 'LOCK' : '#8'}
-          </Button>
-        </Paper>
-      </Grid>
-      <Grid item xs={4} key={'9'}>
-        <Paper style={{ height: 100, textAlign: 'center', lineHeight: '100px' }}>
-          <Button
-            variant='contained'
-            onClick={() => handleLock(9)}
-            color={values[8].is_lock ? 'error' : 'primary'}
-            disabled={isShow}
-          >
-            {values[8].is_lock ? 'LOCK' : '#9'}
-          </Button>
-        </Paper>
-      </Grid>
-      <Grid item xs={4} key={'10'}>
-        <Paper style={{ height: 100, textAlign: 'center', lineHeight: '100px' }}>
-          <Button
-            variant='contained'
-            onClick={() => handleLock(10)}
-            color={values[9].is_lock ? 'error' : 'primary'}
-            disabled={isShow}
-          >
-            {values[9].is_lock ? 'LOCK' : '#10'}
-          </Button>
-        </Paper>
-      </Grid>
+      {[2, 3, 4, 5, 6, 7, 8, 9, 10].map(pos => {
+        return (
+          <Grid item xs={4} key={pos}>
+            <Paper style={{ height: 100, textAlign: 'center', lineHeight: '100px' }}>
+              <Button
+                variant='contained'
+                onClick={() => handleLock(pos)}
+                color={values[pos - 1].is_lock ? 'error' : 'primary'}
+                disabled={isShow}
+              >
+                {values[pos - 1].is_lock ? 'LOCK' : `#${pos}`}
+              </Button>
+            </Paper>
+          </Grid>
+        )
+      })}
     </Grid>
   )
 }

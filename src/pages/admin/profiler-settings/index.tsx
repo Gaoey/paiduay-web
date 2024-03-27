@@ -32,7 +32,6 @@ const UpdateProfiler = () => {
   }, [])
 
   const onSubmit: SubmitHandler<any> = async data => {
-    console.log({ data })
     if (!R.isNil(currentProfilerData) && !R.isEmpty(currentProfilerData)) {
       const profiler = currentProfilerData[0] as Profiler
       const profilerData: ProfilerData = {
