@@ -26,3 +26,9 @@ export interface Booking {
   created_at: Date
   updated_at: Date
 }
+
+export interface BookingFilter {
+  is_passed?: boolean
+  status?: BookingStatus | string
+  trip_id?: string
+}

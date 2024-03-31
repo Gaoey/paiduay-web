@@ -34,20 +34,17 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Create a Trip',
       icon: AccountCogOutline,
       path: '/admin/create-trip'
-    },
-    {
-      sectionTitle: 'Membership'
-    },
-    {
-      title: 'Payment Status',
-      icon: AccountCogOutline,
-      path: '/admin/payment-status'
-    },
-    {
-      title: 'Member details',
-      icon: AccountCogOutline,
-      path: '/admin/member-details'
     }
+
+    // {
+    //   sectionTitle: 'Membership'
+    // }
+
+    // {
+    //   title: 'Member details',
+    //   icon: AccountCogOutline,
+    //   path: '/admin/member-details'
+    // }
   ]
 }
 
