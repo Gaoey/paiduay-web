@@ -5,6 +5,7 @@ import useMediaAPI from './media'
 import useUserAPI from './user'
 import useTripAPI from './trip'
 import useTransportAPI from './transport'
+import useBookingAPI from './booking'
 
 const axiosInstance = (accessToken = '', baseURL = process.env.NEXT_PUBLIC_CORE_API) => {
   const instance = axios.create({
@@ -45,7 +46,8 @@ export const useApi = () => {
     mediaAPI: useMediaAPI(ctx),
     userAPI: useUserAPI(ctx),
     tripAPI: useTripAPI(ctx),
-    transportAPI: useTransportAPI(ctx)
+    transportAPI: useTransportAPI(ctx),
+    bookingAPI: useBookingAPI(ctx)
   }
 }
 

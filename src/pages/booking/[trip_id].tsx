@@ -44,7 +44,7 @@ export default function BookingTrip() {
                   </Grid>
                 )
               } else {
-                return <TransportationNormalBookingForm />
+                return <TransportationNormalBookingForm key={item._id} />
               }
             })}
         </Grid>

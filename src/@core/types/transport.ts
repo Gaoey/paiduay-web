@@ -1,4 +1,5 @@
 export interface Seat {
+  name: string
   seat_number: number
   transport_id?: string | null
   user_id?: string | null

@@ -1,14 +1,14 @@
 import { Box, Button, Grid, TextField } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
 import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
-import { Transport, Transportation } from 'src/@core/types/transport'
+import { Seat, Transport, Transportation } from 'src/@core/types/transport'
 import AdminLayout from 'src/layouts/AdminLayout'
-import TripDetailComponent from 'src/views/admin/TripDetail'
-import * as R from 'ramda'
 import { TransportationNormalForm, VanForm } from 'src/views/admin/TransportationForm'
+import TripDetailComponent from 'src/views/admin/TripDetail'
 
 export default function TripDetail() {
   const router = useRouter()
@@ -16,13 +16,27 @@ export default function TripDetail() {
 
   const { transportAPI } = useApi()
 
-  const { findTransportByTripID } = transportAPI
+  const { findTransportByTripID, updateSeatByTransportID } = transportAPI
   const { data } = findTransportByTripID
+  const { isSuccess } = updateSeatByTransportID
   const transports = R.pathOr<Transport[]>([], [], data)
+
+  const onSetSeat = (seats: Seat[]) => {
+    if (!R.isNil(seats[0].transport_id)) {
+      const transportID = seats[0].transport_id
+      updateSeatByTransportID.mutate({ transportID, seats })
+    }
+  }
 
   useEffect(() => {
     findTransportByTripID.mutate(tripID)
   }, [])
+
+  useEffect(() => {
+    if (isSuccess) {
+      findTransportByTripID.mutate(tripID)
+    }
+  }, [isSuccess, tripID])
 
   return (
     <ApexChartWrapper>
@@ -55,19 +69,19 @@ export default function TripDetail() {
               if (item.data.transport_by === Transportation[Transportation.VAN]) {
                 return (
                   <Grid container spacing={7} key={item._id} style={{ marginBottom: 40 }}>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                       <TextField label='Name' defaultValue={item.data.name} fullWidth disabled />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                       <TextField label='Transport By' defaultValue={item.data.transport_by} disabled />
                     </Grid>
                     <Grid item xs={12}>
-                      <VanForm values={item.data.seats} isShow />
+                      <VanForm values={item.data.seats} onChange={(seat: Seat[]) => onSetSeat(seat)} />
                     </Grid>
                   </Grid>
                 )
               } else {
-                return <TransportationNormalForm />
+                return <TransportationNormalForm key={item._id} />
               }
             })}
         </Grid>

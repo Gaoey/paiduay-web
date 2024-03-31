@@ -8,10 +8,9 @@ import {
   Grid,
   Paper
 } from '@mui/material'
-import React, { useState } from 'react'
-import { Seat } from 'src/@core/types/transport'
-import * as R from 'ramda'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { Seat, SeatStatus } from 'src/@core/types/transport'
 
 interface VanBookingForm {
   values: Seat[]
@@ -19,10 +18,10 @@ interface VanBookingForm {
   transportID: string
 }
 
-function showSeatText(seat: Seat): string {
+export function showSeatText(seat: Seat): string {
   if (seat.is_lock) {
     return 'LOCK'
-  } else if (!R.isNil(seat.user_id)) {
+  } else if (seat.status !== SeatStatus[SeatStatus.EMPTY]) {
     return 'RESERVE'
   } else {
     return `#${seat.seat_number}`
@@ -89,7 +88,7 @@ function SeatButton(props: SeatButtonProps) {
         variant='contained'
         onClick={handleClickOpen}
         color={seat.is_lock ? 'error' : 'primary'}
-        disabled={seat.is_lock || !R.isNil(seat.user_id)}
+        disabled={seat.is_lock || seat.status != SeatStatus[SeatStatus.EMPTY]}
       >
         {showSeatText(seat)}
       </Button>

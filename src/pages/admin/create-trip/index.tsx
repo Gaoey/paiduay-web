@@ -55,6 +55,7 @@ const CreateTrip = () => {
           seats: v.seats.map((u: Seat) => {
             return {
               ...u,
+              name: `#${u.seat_number}`,
               seat_number: Number(u.seat_number),
               status: u.is_lock ? SeatStatus[SeatStatus.RESERVE] : SeatStatus[SeatStatus.EMPTY]
             }
