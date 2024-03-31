@@ -20,7 +20,7 @@ export interface BookingData {
 }
 
 export interface Booking {
-  id: string
+  _id: string
   trip_id: string
   data: BookingData
   created_at: Date

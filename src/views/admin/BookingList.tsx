@@ -11,12 +11,14 @@ import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 
 // ** Types Imports
-import { Button } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
 
 // import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { ThemeColor } from 'src/@core/layouts/types'
-import { Booking, BookingStatus } from 'src/@core/types/booking'
+import { Booking, BookingData, BookingStatus } from 'src/@core/types/booking'
 import { Transport } from 'src/@core/types/transport'
+import { useApi } from 'src/@core/services'
 
 interface StatusObj {
   [key: string]: {
@@ -35,11 +37,12 @@ const statusObj: StatusObj = {
 interface Props {
   bookings: Booking[]
   transports: Transport[]
+  onUpdateBooking: (bookingID: string, params: BookingData) => void
 }
 
 const BookingTable = (props: Props) => {
   // const router = useRouter()
-  const { bookings, transports } = props
+  const { bookings, transports, onUpdateBooking } = props
 
   return (
     <Card>
@@ -88,9 +91,15 @@ const BookingTable = (props: Props) => {
                       <Button variant='contained' style={{ color: 'white', marginRight: 20 }}>
                         VIEW USER
                       </Button>
-                      <Button variant='contained' style={{ color: 'white', marginRight: 20 }}>
-                        UPDATE STATUS
-                      </Button>
+                      <UpdateStatusButton
+                        onChange={status => {
+                          const newBooking: BookingData = {
+                            ...row.data,
+                            status
+                          }
+                          onUpdateBooking(row._id, newBooking)
+                        }}
+                      />
                       <Button variant='outlined' style={{ marginRight: 20 }}>
                         EDIT
                       </Button>
@@ -104,6 +113,71 @@ const BookingTable = (props: Props) => {
         </Table>
       </TableContainer>
     </Card>
+  )
+}
+
+interface UpdateStatusButtonProps {
+  onChange: (status: BookingStatus | string) => void
+}
+
+function UpdateStatusButton(props: UpdateStatusButtonProps) {
+  const { onChange } = props
+
+  const [open, setOpen] = useState(false)
+
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  return (
+    <>
+      <Button variant='contained' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
+        UPDATE STATUS
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{`Do you want to confirm this payment?`}</DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              const status = BookingStatus[BookingStatus.CONFIRM]
+              onChange(status)
+              handleClose()
+            }}
+            variant='contained'
+            color='info'
+          >
+            CONFIRM
+          </Button>
+          <Button
+            onClick={() => {
+              const status = BookingStatus[BookingStatus.PENDING]
+              onChange(status)
+              handleClose()
+            }}
+            variant='contained'
+            color='primary'
+          >
+            PENDING
+          </Button>
+          <Button
+            onClick={() => {
+              const status = BookingStatus[BookingStatus.FAILED]
+              onChange(status)
+              handleClose()
+            }}
+            variant='contained'
+            color='error'
+          >
+            REJECT
+          </Button>
+          <Button onClick={handleClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
+    </>
   )
 }
 

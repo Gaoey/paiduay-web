@@ -6,7 +6,7 @@ import { ReactNode, useEffect } from 'react'
 import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import { Paginate } from 'src/@core/types'
-import { Booking, BookingFilter } from 'src/@core/types/booking'
+import { Booking, BookingData, BookingFilter } from 'src/@core/types/booking'
 import { Seat, Transport, Transportation } from 'src/@core/types/transport'
 import AdminLayout from 'src/layouts/AdminLayout'
 import BookingTable from 'src/views/admin/BookingList'
@@ -19,11 +19,14 @@ export default function TripDetail() {
 
   const { transportAPI, bookingAPI } = useApi()
 
-  const { findBookings } = bookingAPI
+  const { findBookings, updateBooking } = bookingAPI
   const { findTransportByTripID, updateSeatByTransportID } = transportAPI
+
   const { data } = findTransportByTripID
   const { data: findBookingsData } = findBookings
   const { isSuccess } = updateSeatByTransportID
+  const { isSuccess: isUpdateBookingSuccess } = updateBooking
+
   const transports = R.pathOr<Transport[]>([], [], data)
   const bookings = R.pathOr<Booking[]>([], [], findBookingsData)
 
@@ -32,6 +35,10 @@ export default function TripDetail() {
       const transportID = seats[0].transport_id
       updateSeatByTransportID.mutate({ tripID, transportID, seats })
     }
+  }
+
+  const onUpdateBooking = (bookingID: string, params: BookingData) => {
+    updateBooking.mutate({ bookingID, tripID, params })
   }
 
   useEffect(() => {
@@ -50,6 +57,17 @@ export default function TripDetail() {
       findTransportByTripID.mutate(tripID)
     }
   }, [isSuccess, tripID])
+
+  useEffect(() => {
+    if (isUpdateBookingSuccess) {
+      const filters: BookingFilter = { trip_id: tripID }
+      const paginate: Paginate = {
+        page_size: 100,
+        page_number: 1
+      }
+      findBookings.mutate({ filters, paginate })
+    }
+  }, [isUpdateBookingSuccess, tripID])
 
   return (
     <ApexChartWrapper>
@@ -102,7 +120,7 @@ export default function TripDetail() {
           <Typography variant='h5'>PAYMENTS</Typography>
         </Grid>
         <Grid item md={12}>
-          <BookingTable bookings={bookings} transports={transports} />
+          <BookingTable bookings={bookings} transports={transports} onUpdateBooking={onUpdateBooking} />
         </Grid>
       </Grid>
     </ApexChartWrapper>
