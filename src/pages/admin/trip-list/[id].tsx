@@ -30,7 +30,7 @@ export default function TripDetail() {
   const onSetSeat = (seats: Seat[]) => {
     if (!R.isNil(seats[0].transport_id)) {
       const transportID = seats[0].transport_id
-      updateSeatByTransportID.mutate({ transportID, seats })
+      updateSeatByTransportID.mutate({ tripID, transportID, seats })
     }
   }
 

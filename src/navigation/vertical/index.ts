@@ -25,11 +25,12 @@ const navigation = (): VerticalNavItemsType => {
       icon: AccountCogOutline,
       path: '/admin/trip-list'
     },
-    {
-      title: 'Trip History',
-      icon: AccountCogOutline,
-      path: '/admin/trip-history'
-    },
+
+    // {
+    //   title: 'Trip History',
+    //   icon: AccountCogOutline,
+    //   path: '/admin/trip-history'
+    // },
     {
       title: 'Create a Trip',
       icon: AccountCogOutline,

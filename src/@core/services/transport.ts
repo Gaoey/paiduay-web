@@ -7,8 +7,16 @@ const transportAPI = (authIntance: AxiosInstance) => ({
   findTransportByTripID: (tripID: string): Promise<Transport[]> => {
     return authIntance.get(`/v1/trips/${tripID}/transports`)
   },
-  updateSeatByTransportID: ({ transportID, seats }: { transportID: string; seats: Seat[] }): Promise<boolean> => {
-    return authIntance.put(`/v1/transports/${transportID}`, seats)
+  updateSeatByTransportID: ({
+    tripID,
+    transportID,
+    seats
+  }: {
+    tripID: string
+    transportID: string
+    seats: Seat[]
+  }): Promise<boolean> => {
+    return authIntance.put(`/v1/trips/${tripID}/transports/${transportID}/seats`, seats)
   }
 })
 

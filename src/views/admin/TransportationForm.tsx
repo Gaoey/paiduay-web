@@ -119,19 +119,29 @@ function SeatButton(props: SeatButtonProps) {
 
   return (
     <>
-      <Button variant='contained' onClick={handleClickOpen} color={seat.is_lock ? 'error' : 'primary'}>
+      <Button
+        variant='contained'
+        onClick={handleClickOpen}
+        color={seat.is_lock ? 'error' : isDefaultName ? 'primary' : 'info'}
+      >
         {showSeatText(seat)}
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{`Update seat #${seat.seat_number}`}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {!isDefaultName && (
-              <Typography variant='subtitle2' sx={{ mt: 1 }} color='red'>
-                {`Warning!! Do you want to update this seat, it was reserved by ${seat.name}`}
-              </Typography>
-            )}
-            <TextField label='Update seat name' onChange={v => setSeatName(v.target.value)} fullWidth />
+            <Grid container spacing={2}>
+              <Grid item md={12}>
+                {!isDefaultName && (
+                  <Typography variant='subtitle2' sx={{ mt: 1 }} color='red'>
+                    {`Warning!! Do you want to update this seat, it was reserved by "${seat.name}"`}
+                  </Typography>
+                )}
+              </Grid>
+              <Grid item md={12}>
+                <TextField label='Update seat name' onChange={v => setSeatName(v.target.value)} fullWidth />
+              </Grid>
+            </Grid>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
