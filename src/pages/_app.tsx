@@ -34,6 +34,7 @@ import '../../styles/globals.css'
 import type { AppProps } from 'next/app'
 import * as R from 'ramda'
 import { Session } from 'next-auth'
+import { ParallaxProvider } from 'react-scroll-parallax'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -70,23 +71,27 @@ const App = (props: ExtendedAppProps) => {
       <SessionProvider session={session}>
         <QueryClientProvider client={new QueryClient()}>
           <APIProvider>
-            <Head>
-              <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
-              <meta
-                name='description'
-                content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
-              />
-              <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
-              <meta name='viewport' content='initial-scale=1, width=device-width' />
-            </Head>
+            <ParallaxProvider>
+              <Head>
+                <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
+                <meta
+                  name='description'
+                  content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
+                />
+                <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
+                <meta name='viewport' content='initial-scale=1, width=device-width' />
+              </Head>
 
-            <SettingsProvider>
-              <SettingsConsumer>
-                {({ settings }) => {
-                  return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-                }}
-              </SettingsConsumer>
-            </SettingsProvider>
+              <SettingsProvider>
+                <SettingsConsumer>
+                  {({ settings }) => {
+                    return (
+                      <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+                    )
+                  }}
+                </SettingsConsumer>
+              </SettingsProvider>
+            </ParallaxProvider>
           </APIProvider>
         </QueryClientProvider>
       </SessionProvider>
