@@ -155,6 +155,12 @@ const UserDropdown = () => {
             Profile
           </Box>
         </MenuItem>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+          <Box sx={styles}>
+            <AccountOutline sx={{ marginRight: 2 }} />
+            Booking history
+          </Box>
+        </MenuItem>
         {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
             <EmailOutline sx={{ marginRight: 2 }} />
