@@ -1,5 +1,7 @@
+import { Grid, Typography } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
 import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
@@ -8,8 +10,6 @@ import { Booking } from 'src/@core/types/booking'
 import UserLayout from 'src/layouts/UserLayout'
 import BookingHistoryTable from 'src/views/user/BookingHistory'
 import UserProfileForm from 'src/views/user/UserProfileForm'
-import * as R from 'ramda'
-import { Box, Grid, Paper, Typography } from '@mui/material'
 
 export default function UserProfileDetail() {
   const router = useRouter()
