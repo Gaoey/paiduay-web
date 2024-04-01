@@ -11,14 +11,15 @@ import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 
 // ** Types Imports
-import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 
 // import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { ThemeColor } from 'src/@core/layouts/types'
 import { Booking, BookingData, BookingStatus } from 'src/@core/types/booking'
 import { Transport } from 'src/@core/types/transport'
-import { useApi } from 'src/@core/services'
+import { Media } from 'src/@core/types'
+import ImageCarousel from 'src/@core/components/image-carousel'
 
 interface StatusObj {
   [key: string]: {
@@ -85,7 +86,9 @@ const BookingTable = (props: Props) => {
                       }}
                     />
                   </TableCell>
-                  <TableCell>View Slips</TableCell>
+                  <TableCell>
+                    <ViewSlipButton slipImg={row.data.slips} />
+                  </TableCell>
                   <TableCell>
                     <Box style={{ display: 'flex', flexDirection: 'row' }}>
                       <Button variant='contained' style={{ color: 'white', marginRight: 20 }}>
@@ -174,6 +177,45 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
           >
             REJECT
           </Button>
+          <Button onClick={handleClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  )
+}
+
+interface ViewSlipButtonProps {
+  slipImg: Media[]
+}
+
+function ViewSlipButton(props: ViewSlipButtonProps) {
+  const { slipImg } = props
+
+  const [open, setOpen] = useState(false)
+
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  console.log({ slipImg })
+
+  return (
+    <>
+      <Button variant='contained' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
+        VIEW SLIP
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>SLIP</DialogTitle>
+        <DialogContent style={{ width: 400 }}>
+          <DialogContentText>
+            <ImageCarousel medias={slipImg} />
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>

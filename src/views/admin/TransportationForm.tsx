@@ -185,7 +185,7 @@ export function showSeatText(seat: Seat): string {
   if (seat.is_lock) {
     return 'LOCK'
   } else if (!regexPattern.test(seat.name || '#1')) {
-    return seat.name
+    return `(${seat.seat_number}) ${seat.name}`
   } else {
     return `#${seat.seat_number}`
   }

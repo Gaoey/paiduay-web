@@ -67,7 +67,7 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
         }
         title={profiler?.name}
       />
-      <CardMedia component='img' height='194' image={imgSrc} alt='Paella dish' />
+      <CardMedia component='img' image={imgSrc} alt='Paella dish' />
       <CardContent>
         <Grid container spacing={7}>
           <Grid item xs={12}>
