@@ -186,6 +186,12 @@ const UserDropdown = () => {
             FAQ
           </Box>
         </MenuItem>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+          <Box sx={styles}>
+            <HelpCircleOutline sx={{ marginRight: 2 }} />
+            Term & Conditions
+          </Box>
+        </MenuItem>
         <Divider />
         <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
