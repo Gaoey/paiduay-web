@@ -27,7 +27,7 @@ interface StatusObj {
   }
 }
 
-const statusObj: StatusObj = {
+export const bookingStatusObj: StatusObj = {
   [BookingStatus[BookingStatus.CONFIRM]]: { color: 'success' },
   [BookingStatus[BookingStatus.PENDING]]: { color: 'primary' },
   [BookingStatus[BookingStatus.NONE]]: { color: 'error' },
@@ -76,7 +76,7 @@ const BookingTable = (props: Props) => {
                   <TableCell>
                     <Chip
                       label={row.data.status}
-                      color={statusObj[row.data.status].color}
+                      color={bookingStatusObj[row.data.status].color}
                       sx={{
                         height: 24,
                         fontSize: '0.75rem',
