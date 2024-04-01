@@ -1,0 +1,141 @@
+/* Headline CSS */
+.headlineContainer {
+  height: 60vh;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-self: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+.title {
+  display: flex;
+  flex: 1;
+  align-self: center;
+  align-items: center;
+  text-align: center;
+  font-size: 10em;
+}
+.subtitle {
+  display: flex;
+  flex: 1;
+  align-self: center;
+  text-align: center;
+  padding: 1em;
+  font-size: 1.2em;
+}
+
+/* Hero Image CSS */
+.firstTerrain {
+  position: absolute;
+  width: 100vw;
+  right: 0px;
+  bottom: 0px;
+  z-index: 1;
+}
+.secondTerrain {
+  position: absolute;
+  width: 50vw;
+  right: 0px;
+  bottom: 35vw;
+}
+.thirdTerrain {
+  position: absolute;
+  width: 45vw;
+  left: 0px;
+  bottom: 40vw;
+}
+.fourthTerrain {
+  position: absolute;
+  width: 45vw;
+  right: 0px;
+  bottom: 44vw;
+}
+.backMountainOne {
+  position: absolute;
+  width: 80vw;
+  left: 0px;
+  bottom: 44vw;
+}
+.backMountainTwo {
+  position: absolute;
+  width: 100vw;
+  right: 0px;
+  bottom: 47vw;
+}
+.waterRipple {
+  position: absolute;
+  bottom: 7vw;
+  height: 40vw;
+  width: 100vw;
+  background-image: url("/images/landing/hero/water.svg");
+  background-size: cover;
+  filter: url("#turbulence");
+  opacity: 0.2;
+}
+
+/* Sky CSS */
+/* KEYFRAMES */
+@-webkit-keyframes animateCloud {
+  0% {
+    margin-left: -1000px;
+  }
+  100% {
+    margin-left: 100%;
+  }
+}
+
+@-moz-keyframes animateCloud {
+  0% {
+    margin-left: -1000px;
+  }
+  100% {
+    margin-left: 100%;
+  }
+}
+
+@keyframes animateCloud {
+  0% {
+    margin-left: -1000px;
+  }
+  100% {
+    margin-left: 100%;
+  }
+}
+
+/* ANIMATIONS */
+.x1 {
+  -webkit-animation: animateCloud 150s linear infinite;
+  -moz-animation: animateCloud 150s linear infinite;
+  animation: animateCloud 150s linear infinite;
+  animation-delay: -50s;
+}
+
+.x2 {
+  -webkit-animation: animateCloud 160s linear infinite;
+  -moz-animation: animateCloud 160s linear infinite;
+  animation: animateCloud 160s linear infinite;
+  animation-delay: -20s;
+}
+
+.x3 {
+  -webkit-animation: animateCloud 170s linear infinite;
+  -moz-animation: animateCloud 170s linear infinite;
+  animation: animateCloud 170s linear infinite;
+  animation-delay: -100s;
+}
+
+.x4 {
+  -webkit-animation: animateCloud 180s linear infinite;
+  -moz-animation: animateCloud 180s linear infinite;
+  animation: animateCloud 180s linear infinite;
+  animation-delay: -10s;
+}
+
+.x5 {
+  -webkit-animation: animateCloud 190s linear infinite;
+  -moz-animation: animateCloud 190s linear infinite;
+  animation: animateCloud 190s linear infinite;
+  animation-delay: -80s;
+}
