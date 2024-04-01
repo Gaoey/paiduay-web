@@ -198,8 +198,6 @@ function ViewSlipButton(props: ViewSlipButtonProps) {
     setOpen(false)
   }
 
-  console.log({ slipImg })
-
   return (
     <>
       <Button variant='contained' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>

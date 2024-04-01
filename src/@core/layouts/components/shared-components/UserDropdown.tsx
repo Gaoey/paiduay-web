@@ -17,16 +17,15 @@ import { styled } from '@mui/material/styles'
 // ** Icons Imports
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import CogOutline from 'mdi-material-ui/CogOutline'
 import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 
+import { signOut } from 'next-auth/react'
 import * as R from 'ramda'
 import { useAPICtx } from 'src/@core/hooks/useAPICtx'
 import { useApi } from 'src/@core/services'
-import { signOut } from 'next-auth/react'
 
 // ** Styled Components
-const BadgeContentSpan = styled('span')(({ theme }) => ({
+export const BadgeContentSpan = styled('span')(({ theme }) => ({
   width: 8,
   height: 8,
   borderRadius: '50%',
@@ -155,16 +154,10 @@ const UserDropdown = () => {
             </Box>
           </MenuItem>
         )}
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        <MenuItem sx={{ p: 0 }} onClick={() => router.push(`/user/${user?._id}`)}>
           <Box sx={styles}>
             <AccountOutline sx={{ marginRight: 2 }} />
             Profile
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <CogOutline sx={{ marginRight: 2 }} />
-            Booking history
           </Box>
         </MenuItem>
         {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>

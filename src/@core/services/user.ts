@@ -6,6 +6,9 @@ import { User, UserProfile } from '../types/user'
 import { useSession } from 'next-auth/react'
 
 const userAPI = (authIntance: AxiosInstance) => ({
+  getUserById: (userID: string): Promise<User> => {
+    return authIntance.get(`/v1/user/${userID}`)
+  },
   getUser: (): Promise<User> => {
     return authIntance.get(`/v1/user`)
   },
@@ -19,7 +22,6 @@ function useUserAPI({ authInstance }: InstanceProps) {
   const api = userAPI(authInstance)
 
   const session = useSession()
-  console.log({ session })
 
   const userCache: User | undefined = queryClient.getQueryData<User | undefined>('user') as User
 
@@ -47,10 +49,12 @@ function useUserAPI({ authInstance }: InstanceProps) {
   })
 
   const updateProfile = useMutation(api.updateProfile)
+  const getUserById = useMutation(api.getUserById)
 
   return {
     user,
     getUser: userCache,
+    getUserById,
     updateProfile,
     isLogin: session.status === 'authenticated'
   }

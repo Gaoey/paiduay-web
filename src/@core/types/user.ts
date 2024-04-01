@@ -28,6 +28,7 @@ export interface UserProfile {
   passport_card_image?: Media | null
   address: string
   telephone_number: string
+  line_contacts: string
   beneficiary_name?: string | null
   gender?: Gender | null
 }
