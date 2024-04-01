@@ -95,29 +95,37 @@ export default function TripDetail() {
           </Grid>
         </Grid>
         <Grid item md={6} xs={12}>
-          {!R.isEmpty(transports) &&
-            transports.map(item => {
-              if (item.data.transport_by === Transportation[Transportation.VAN]) {
-                return (
-                  <Grid container spacing={7} key={item._id} style={{ marginBottom: 40 }}>
-                    <Grid item xs={6}>
-                      <TextField label='Name' defaultValue={item.data.name} fullWidth disabled />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField label='Transport By' defaultValue={item.data.transport_by} disabled />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <VanForm values={item.data.seats} onChange={(seat: Seat[]) => onSetSeat(seat)} />
-                    </Grid>
-                  </Grid>
-                )
-              } else {
-                return <TransportationNormalForm key={item._id} />
-              }
-            })}
+          <Grid container spacing={7}>
+            <Grid item md={12}>
+              <Typography variant='h5'>Transports</Typography>
+            </Grid>
+
+            <Grid item md={12}>
+              {!R.isEmpty(transports) &&
+                transports.map(item => {
+                  if (item.data.transport_by === Transportation[Transportation.VAN]) {
+                    return (
+                      <Grid container spacing={7} key={item._id} style={{ marginBottom: 40 }}>
+                        <Grid item xs={6}>
+                          <TextField label='Name' defaultValue={item.data.name} fullWidth disabled />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField label='Transport By' defaultValue={item.data.transport_by} disabled />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <VanForm values={item.data.seats} onChange={(seat: Seat[]) => onSetSeat(seat)} />
+                        </Grid>
+                      </Grid>
+                    )
+                  } else {
+                    return <TransportationNormalForm key={item._id} />
+                  }
+                })}
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item md={12}>
-          <Typography variant='h5'>PAYMENTS</Typography>
+          <Typography variant='h5'>Payments</Typography>
         </Grid>
         <Grid item md={12}>
           <BookingTable bookings={bookings} transports={transports} onUpdateBooking={onUpdateBooking} />
