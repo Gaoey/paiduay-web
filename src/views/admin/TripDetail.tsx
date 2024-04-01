@@ -1,4 +1,3 @@
-import { MoreVert } from '@mui/icons-material'
 import {
   Avatar,
   Box,
@@ -9,15 +8,14 @@ import {
   Chip,
   CircularProgress,
   Grid,
-  IconButton,
   Typography
 } from '@mui/material'
-import React, { useEffect } from 'react'
-import { useApi } from 'src/@core/services'
+import { format } from 'date-fns'
 import * as R from 'ramda'
+import { useEffect } from 'react'
+import { useApi } from 'src/@core/services'
 import { ProfilerData } from 'src/@core/types/profiler'
 import { Trip } from 'src/@core/types/trip'
-import { format } from 'date-fns'
 import { toCurrency } from 'src/@core/utils/currency'
 import { trimMessage } from 'src/@core/utils/string'
 
@@ -60,14 +58,12 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
             <Avatar>{profiler?.name[0]}</Avatar>
           )
         }
-        action={
-          <IconButton>
-            <MoreVert />
-          </IconButton>
-        }
         title={profiler?.name}
+        subheader={() => {
+          ;<></>
+        }}
       />
-      <CardMedia component='img' image={imgSrc} alt='Paella dish' />
+      <CardMedia component='img' image={imgSrc} alt='Paella dish' sx={{ maxHeight: 500 }} />
       <CardContent>
         <Grid container spacing={7}>
           <Grid item xs={12}>

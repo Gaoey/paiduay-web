@@ -1,62 +1,78 @@
 // ** React Imports
 import { ReactNode } from 'react'
 
-// ** MUI Imports
-import { Theme } from '@mui/material/styles'
-import useMediaQuery from '@mui/material/useMediaQuery'
+import { AppBar, Button, Toolbar, Typography } from '@mui/material'
+import { Head } from 'mdi-material-ui'
+import { useRouter } from 'next/router'
+import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
+import { useApi } from 'src/@core/services'
 
-// ** Layout Imports
-// !Do not remove this Layout import
-
-// ** Navigation Imports
-import VerticalNavItems from 'src/navigation/vertical'
-
-// ** Component Import
-import VerticalAppBarContent from './components/vertical/AppBarContent'
-
-// ** Hook Import
-import { useSettings } from 'src/@core/hooks/useSettings'
-import HorizontalLayout from 'src/@core/layouts/HorizontalLayout'
-
-// import Link from 'next/link'
+import Link from 'next/link'
+import { StyledLink } from 'src/@core/layouts/components/vertical/navigation/VerticalNavHeader'
+import themeConfig from 'src/configs/themeConfig'
+import { ContentWrapper, MainContentWrapper } from 'src/@core/layouts/VerticalLayout'
 
 interface Props {
   children: ReactNode
+  isContentWrap?: boolean
 }
 
-const UserLayout = ({ children }: Props) => {
-  // ** Hooks
-  const { settings, saveSettings } = useSettings()
+const UserLayout = ({ children, isContentWrap = true }: Props) => {
+  const router = useRouter()
+  const { userAPI } = useApi()
 
-  /**
-   *  The below variable will hide the current layout menu at given screen size.
-   *  The menu will be accessible from the Hamburger icon only (Vertical Overlay Menu).
-   *  You can change the screen size from which you want to hide the current layout menu.
-   *  Please refer useMediaQuery() hook: https://mui.com/components/use-media-query/,
-   *  to know more about what values can be passed to this hook.
-   *  ! Do not change this value unless you know what you are doing. It can break the template.
-   */
-  const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
+  const { isLogin } = userAPI
 
   return (
-    <HorizontalLayout
-      hidden={hidden}
-      settings={settings}
-      saveSettings={saveSettings}
-      verticalNavItems={VerticalNavItems()} // Navigation Items
-      verticalAppBarContent={(
-        props // AppBar Content
-      ) => (
-        <VerticalAppBarContent
-          hidden={hidden}
-          settings={settings}
-          saveSettings={saveSettings}
-          toggleNavVisibility={props.toggleNavVisibility}
-        />
-      )}
-    >
-      {children}
-    </HorizontalLayout>
+    <div>
+      <Head>
+        <title>Headache-Free Trip Manager</title>
+        {/* Add meta tags for description, SEO, etc. */}
+      </Head>
+
+      {/* (1) Top Menu Bar */}
+
+      <MainContentWrapper className='layout-content-wrapper'>
+        {/* AppBar Component */}
+        <AppBar>
+          <div style={{ backgroundColor: '#3B534A', width: '100vw', padding: '0 2em 0 2em', overflow: 'hidden' }}>
+            <Toolbar disableGutters>
+              {/* Logo */}
+              <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+                <Link href='/' passHref>
+                  <StyledLink sx={{ color: 'white' }}>{themeConfig.templateName}</StyledLink>
+                </Link>
+              </Typography>
+
+              {/* Navigation Links */}
+              <nav>
+                {/* <Link href='/trip-leader' passHref>
+            <Button color='inherit'>Trip Leader</Button>
+          </Link> */}
+              </nav>
+
+              {/* Login Button (Right Aligned) */}
+              {isLogin ? (
+                <UserDropdown />
+              ) : (
+                <Button color='inherit' sx={{ ml: 'auto' }} onClick={() => router.push('/pages/login')}>
+                  Login
+                </Button>
+              )}
+            </Toolbar>
+          </div>
+        </AppBar>
+
+        {/* Content */}
+        {isContentWrap ? (
+          <ContentWrapper className='layout-page-content' sx={{ marginTop: 10 }}>
+            {children}
+          </ContentWrapper>
+        ) : (
+          <>{children}</>
+        )}
+      </MainContentWrapper>
+    </div>
   )
 }
 

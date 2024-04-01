@@ -17,11 +17,13 @@ import { styled } from '@mui/material/styles'
 // ** Icons Imports
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
+import CogOutline from 'mdi-material-ui/CogOutline'
 import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 
 import * as R from 'ramda'
 import { useAPICtx } from 'src/@core/hooks/useAPICtx'
 import { useApi } from 'src/@core/services'
+import { signOut } from 'next-auth/react'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -79,6 +81,10 @@ const UserDropdown = () => {
       router.push(url)
     }
     setAnchorEl(null)
+  }
+
+  const signout = async () => {
+    await signOut({ callbackUrl: '/' })
   }
 
   const styles = {
@@ -157,7 +163,7 @@ const UserDropdown = () => {
         </MenuItem>
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
-            <AccountOutline sx={{ marginRight: 2 }} />
+            <CogOutline sx={{ marginRight: 2 }} />
             Booking history
           </Box>
         </MenuItem>
@@ -199,7 +205,7 @@ const UserDropdown = () => {
           </Box>
         </MenuItem>
         <Divider />
-        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+        <MenuItem sx={{ py: 2 }} onClick={() => signout()}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
           Logout
         </MenuItem>

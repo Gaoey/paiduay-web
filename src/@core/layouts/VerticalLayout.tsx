@@ -29,7 +29,7 @@ const VerticalLayoutWrapper = styled('div')({
   display: 'flex'
 })
 
-const MainContentWrapper = styled(Box)<BoxProps>({
+export const MainContentWrapper = styled(Box)<BoxProps>({
   flexGrow: 1,
   minWidth: 0,
   display: 'flex',
@@ -37,7 +37,7 @@ const MainContentWrapper = styled(Box)<BoxProps>({
   flexDirection: 'column'
 })
 
-const ContentWrapper = styled('main')(({ theme }) => ({
+export const ContentWrapper = styled('main')(({ theme }) => ({
   flexGrow: 1,
   width: '100%',
   padding: theme.spacing(6),
