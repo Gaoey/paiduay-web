@@ -3,8 +3,12 @@ import * as R from 'ramda'
 import { useMutation, useQueryClient } from 'react-query'
 import { InstanceProps } from '../context/apiContext'
 import { User, UserProfile } from '../types/user'
+import { useSession } from 'next-auth/react'
 
 const userAPI = (authIntance: AxiosInstance) => ({
+  getUserById: (userID: string): Promise<User> => {
+    return authIntance.get(`/v1/user/${userID}`)
+  },
   getUser: (): Promise<User> => {
     return authIntance.get(`/v1/user`)
   },
@@ -16,6 +20,8 @@ const userAPI = (authIntance: AxiosInstance) => ({
 function useUserAPI({ authInstance }: InstanceProps) {
   const queryClient = useQueryClient()
   const api = userAPI(authInstance)
+
+  const session = useSession()
 
   const userCache: User | undefined = queryClient.getQueryData<User | undefined>('user') as User
 
@@ -43,11 +49,14 @@ function useUserAPI({ authInstance }: InstanceProps) {
   })
 
   const updateProfile = useMutation(api.updateProfile)
+  const getUserById = useMutation(api.getUserById)
 
   return {
     user,
     getUser: userCache,
-    updateProfile
+    getUserById,
+    updateProfile,
+    isLogin: session.status === 'authenticated'
   }
 }
 

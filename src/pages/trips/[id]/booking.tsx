@@ -71,11 +71,8 @@ export default function Booking() {
   }
 
   const onSubmit: SubmitHandler<any> = async data => {
-    console.log('xxx')
-    console.log(userData?._id)
     if (!R.isNil(slipImage) && !R.isNil(userData?._id)) {
       const newMedias: Media[] = await uploadMedias.mutateAsync([slipImage])
-      console.log({ newMedias })
       const bookingData: BookingData = {
         user_id: userData._id,
         transport_id: transport_id,
@@ -89,7 +86,6 @@ export default function Booking() {
     }
   }
 
-  console.log({ isSuccess })
   useEffect(() => {
     if (isSuccess) {
       router.push(`/trips/${tripID}/booking/success`)

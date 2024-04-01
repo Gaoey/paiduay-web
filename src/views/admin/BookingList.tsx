@@ -27,8 +27,8 @@ interface StatusObj {
   }
 }
 
-const statusObj: StatusObj = {
-  [BookingStatus[BookingStatus.CONFIRM]]: { color: 'info' },
+export const bookingStatusObj: StatusObj = {
+  [BookingStatus[BookingStatus.CONFIRM]]: { color: 'success' },
   [BookingStatus[BookingStatus.PENDING]]: { color: 'primary' },
   [BookingStatus[BookingStatus.NONE]]: { color: 'error' },
   [BookingStatus[BookingStatus.FAILED]]: { color: 'error' },
@@ -55,7 +55,6 @@ const BookingTable = (props: Props) => {
               <TableCell>Seat name</TableCell>
               <TableCell>Seat number</TableCell>
               <TableCell>Booking Status</TableCell>
-              <TableCell>Slips</TableCell>
               <TableCell>ACTIONs</TableCell>
             </TableRow>
           </TableHead>
@@ -77,7 +76,7 @@ const BookingTable = (props: Props) => {
                   <TableCell>
                     <Chip
                       label={row.data.status}
-                      color={statusObj[row.data.status].color}
+                      color={bookingStatusObj[row.data.status].color}
                       sx={{
                         height: 24,
                         fontSize: '0.75rem',
@@ -87,11 +86,9 @@ const BookingTable = (props: Props) => {
                     />
                   </TableCell>
                   <TableCell>
-                    <ViewSlipButton slipImg={row.data.slips} />
-                  </TableCell>
-                  <TableCell>
                     <Box style={{ display: 'flex', flexDirection: 'row' }}>
-                      <Button variant='contained' style={{ color: 'white', marginRight: 20 }}>
+                      <ViewSlipButton slipImg={row.data.slips} />
+                      <Button variant='contained' color='success' style={{ color: 'white', marginRight: 20 }}>
                         VIEW USER
                       </Button>
                       <UpdateStatusButton
@@ -138,7 +135,7 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
 
   return (
     <>
-      <Button variant='contained' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
+      <Button variant='contained' color='info' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
         UPDATE STATUS
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -200,8 +197,6 @@ function ViewSlipButton(props: ViewSlipButtonProps) {
   const handleClose = () => {
     setOpen(false)
   }
-
-  console.log({ slipImg })
 
   return (
     <>

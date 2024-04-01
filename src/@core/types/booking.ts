@@ -1,4 +1,5 @@
 import { Media } from '.'
+import { TripData } from './trip'
 import { UserProfile } from './user'
 
 export enum BookingStatus {
@@ -23,6 +24,7 @@ export interface Booking {
   _id: string
   trip_id: string
   data: BookingData
+  trip_data?: TripData | undefined
   created_at: Date
   updated_at: Date
 }

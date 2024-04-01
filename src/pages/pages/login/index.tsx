@@ -36,8 +36,7 @@ const LoginPage = () => {
 
   const handleSingIn = async () => {
     try {
-      const res = await signIn('google', { callbackUrl: callback })
-      console.log(res)
+      await signIn('google', { callbackUrl: callback })
     } catch (err) {
       console.error(err)
     }
