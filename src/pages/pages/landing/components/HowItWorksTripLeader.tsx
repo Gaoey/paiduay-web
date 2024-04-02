@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Image from 'next/image'
 import gsap from 'gsap'
+import Button from '@mui/material/Button'
 
 const HowItWorksTripLeader = () => {
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 }); 
@@ -82,7 +83,7 @@ const HowItWorksTripLeader = () => {
               >
                 <Image
                   className='image-container'
-                  src='/images/landing/how_it_works/how_it_works_1.png' // Path relative to '/public' folder
+                  src='/images/landing/how_it_works/how_it_works_leader_1.png' // Path relative to '/public' folder
                   alt='จัดการทริปให้เต็มที่'
                   width={imageDimensions.width}
                   height={imageDimensions.width}
@@ -109,7 +110,7 @@ const HowItWorksTripLeader = () => {
               >
                 <Image
                   className='image-container'
-                  src='/images/landing/how_it_works/how_it_works_2.png' // Path relative to '/public' folder
+                  src='/images/landing/how_it_works/how_it_works_leader_2.png' // Path relative to '/public' folder
                   alt='จัดการทริปให้เต็มที่'
                   width={imageDimensions.width}
                   height={imageDimensions.width}
@@ -137,7 +138,7 @@ const HowItWorksTripLeader = () => {
               >
                 <Image
                   className='image-container'
-                  src='/images/landing/how_it_works/how_it_works_4.png' // Path relative to '/public' folder
+                  src='/images/landing/how_it_works/how_it_works_leader_3.png' // Path relative to '/public' folder
                   alt='จัดการทริปให้เต็มที่'
                   width={imageDimensions.width}
                   height={imageDimensions.width}
@@ -149,6 +150,7 @@ const HowItWorksTripLeader = () => {
                 <Typography paragraph align='center' color='#FDECEF'>
                   สร้างชื่อ เก็บรวบรวมคำชมและรีวิว connect กับชุมชนนักเดินทางของคุณ
                 </Typography>
+                <Button variant="contained" color="secondary">สร้างทริปเลย!</Button>
               </div>
             </Parallax>
           </Grid>

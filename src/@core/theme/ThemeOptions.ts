@@ -10,6 +10,7 @@ import palette from './palette'
 import spacing from './spacing'
 import shadows from './shadows'
 import breakpoints from './breakpoints'
+// import { Itim } from 'next/font/google'
 
 const themeOptions = (settings: Settings): ThemeOptions => {
   // ** Vars
@@ -19,6 +20,7 @@ const themeOptions = (settings: Settings): ThemeOptions => {
     palette: palette(mode, themeColor),
     typography: {
       fontFamily: [
+        'Noto Sans Thai looped',
         'Inter',
         'sans-serif',
         '-apple-system',
@@ -49,7 +51,13 @@ const themeOptions = (settings: Settings): ThemeOptions => {
   return deepmerge(themeConfig, {
     palette: {
       primary: {
-        ...themeConfig.palette[themeColor]
+        main: '#3B5249'
+      },
+      secondary: {
+        main: '#A71D31'
+      },
+      neutral: {
+        main: '#FDECEF'
       }
     }
   })

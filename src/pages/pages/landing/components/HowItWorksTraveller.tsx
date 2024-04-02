@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Image from 'next/image'
 import gsap from 'gsap'
+import Button from '@mui/material/Button'
 
 const HowItWorksTraveller = () => {
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 })
@@ -26,7 +27,7 @@ const HowItWorksTraveller = () => {
   }, [])
 
   useEffect(() => {
-    const imageContainers = document.querySelectorAll('.image-container') // Replace with the correct selector
+    const imageContainers = document.querySelectorAll('.image-container')
 
     imageContainers.forEach(container => {
       gsap.to(container, {
@@ -74,7 +75,7 @@ const HowItWorksTraveller = () => {
               >
                 <Image
                   className='image-container'
-                  src='/images/landing/how_it_works/how_it_works_5.png' // Path relative to '/public' folder
+                  src='/images/landing/how_it_works/how_it_works_traveller_1.png'
                   alt='จัดการทริปให้เต็มที่'
                   width={imageDimensions.width}
                   height={imageDimensions.width}
@@ -102,7 +103,7 @@ const HowItWorksTraveller = () => {
               >
                 <Image
                   className='image-container'
-                  src='/images/landing/how_it_works/how_it_works_6.png' // Path relative to '/public' folder
+                  src='/images/landing/how_it_works/how_it_works_traveller_2.png'
                   alt='จัดการทริปให้เต็มที่'
                   width={imageDimensions.width}
                   height={imageDimensions.width}
@@ -114,6 +115,7 @@ const HowItWorksTraveller = () => {
                 <Typography paragraph align='center' color='#FDECEF'>
                   จองที่นั่งรถ ใส่ข้อมูล cancel ทริป ทำง่ายๆผ่าน dashboard ของเรา
                 </Typography>
+                
               </div>
             </Parallax>
           </Grid>
@@ -130,7 +132,7 @@ const HowItWorksTraveller = () => {
               >
                 <Image
                   className='image-container'
-                  src='/images/landing/how_it_works/how_it_works_7.png' // Path relative to '/public' folder
+                  src='/images/landing/how_it_works/how_it_works_traveller_3.png'
                   alt='จัดการทริปให้เต็มที่'
                   width={imageDimensions.width}
                   height={imageDimensions.width}
@@ -142,6 +144,7 @@ const HowItWorksTraveller = () => {
                 <Typography paragraph align='center' color='#FDECEF'>
                   หาเพื่อน เจอคนใหม่ๆ สร้างความสัมพันธ์ในโลกของนักท่องเที่ยว
                 </Typography>
+                <Button variant="contained" color="secondary">จองทริปเลย!</Button>
               </div>
             </Parallax>
           </Grid>
