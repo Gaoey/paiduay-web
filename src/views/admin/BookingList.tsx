@@ -53,11 +53,11 @@ const BookingTable = (props: Props) => {
         <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
-              <TableCell>Transport name</TableCell>
-              <TableCell>Seat name</TableCell>
-              <TableCell>Seat number</TableCell>
-              <TableCell>Booking Status</TableCell>
-              <TableCell>ACTIONs</TableCell>
+              <TableCell>วิธีเดินทาง</TableCell>
+              <TableCell>ชื่อที่นั่ง</TableCell>
+              <TableCell>เบอร์ที่นั่ง</TableCell>
+              <TableCell>สถานะการจอง</TableCell>
+              <TableCell>แก้ไข</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -96,7 +96,7 @@ const BookingTable = (props: Props) => {
                         style={{ color: 'white', marginRight: 20 }}
                         onClick={() => router.push(`/user/${row.data.user_id}`)}
                       >
-                        VIEW USER
+                        ดูลูกทริป
                       </Button>
                       <UpdateStatusButton
                         onChange={status => {
@@ -108,9 +108,9 @@ const BookingTable = (props: Props) => {
                         }}
                       />
                       <Button variant='outlined' style={{ marginRight: 20 }}>
-                        EDIT
+                        แก้ไข
                       </Button>
-                      <Button variant='outlined'>REMOVE</Button>
+                      <Button variant='outlined'>ลบ</Button>
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -143,10 +143,10 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
   return (
     <>
       <Button variant='contained' color='info' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
-        UPDATE STATUS
+        เปลี่ยนสถานะ
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{`Do you want to confirm this payment?`}</DialogTitle>
+        <DialogTitle>{`ต้องการจะคอนเฟิร์มเงินโอนไหม?`}</DialogTitle>
         <DialogActions>
           <Button
             onClick={() => {
@@ -157,7 +157,7 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
             variant='contained'
             color='info'
           >
-            CONFIRM
+            คอนเฟิร์ม
           </Button>
           <Button
             onClick={() => {
@@ -168,7 +168,7 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
             variant='contained'
             color='primary'
           >
-            PENDING
+            รอรับเงินอยู่
           </Button>
           <Button
             onClick={() => {
@@ -179,7 +179,7 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
             variant='contained'
             color='error'
           >
-            REJECT
+            ปฏิเสธการรับเงิน
           </Button>
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
@@ -208,10 +208,10 @@ function ViewSlipButton(props: ViewSlipButtonProps) {
   return (
     <>
       <Button variant='contained' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
-        VIEW SLIP
+        ดูสลิป
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>SLIP</DialogTitle>
+        <DialogTitle>สลิป</DialogTitle>
         <DialogContent style={{ width: 400 }}>
           <DialogContentText>
             <ImageCarousel medias={slipImg} />

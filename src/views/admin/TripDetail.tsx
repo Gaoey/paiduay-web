@@ -63,7 +63,7 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
           ;<></>
         }}
       />
-      <CardMedia component='img' image={imgSrc} alt='Paella dish' sx={{ maxHeight: 500 }} />
+      <CardMedia component='img' image={imgSrc} alt='image of trip' sx={{ maxHeight: 500 }} />
       <CardContent>
         <Grid container spacing={7}>
           <Grid item xs={12}>
@@ -94,7 +94,7 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
               {format(new Date(trip?.data.to_date), 'dd MMM yyyy')})
             </Typography>
             <Typography variant='body2' color='text.secondary'>
-              Members: {trip?.data?.members.length} / {trip?.data?.total_people}
+              จำนวนคน: {trip?.data?.members.length} / {trip?.data?.total_people}
             </Typography>
             <Typography variant='body2' color='text.secondary' style={{ marginTop: 10 }}>
               {trimMessage(trip?.data?.description, 1000)}

@@ -18,7 +18,7 @@ export default function UserTripDetail() {
         </Grid>
         <Grid item md={12} style={{ display: 'flex', justifyContent: 'center' }}>
           <Button variant='contained' onClick={() => router.push(`/booking/${tripID}`)}>
-            BOOKING
+            จองที่
           </Button>
         </Grid>
       </Grid>

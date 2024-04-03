@@ -130,13 +130,13 @@ function ProfilerForm(props: ProfilerFormProps) {
                       onChange={e => handleLogoFileChange(e)}
                     />
                     <Button variant='contained' component='span' startIcon={<CloudUploadIcon />}>
-                      Upload Logo
+                      อัพโหลด logo
                     </Button>
                     <ResetButtonStyled color='error' variant='outlined' onClick={() => setSelectedFile(null)}>
-                      Reset
+                      เริ่มใหม่
                     </ResetButtonStyled>
                     <Typography variant='body2' sx={{ marginTop: 5 }}>
-                      Allowed PNG or JPEG. Max size of 800K.
+                      ใส่ได้แค่ไฟล์ PNG หรือ JPEG. ไซส์ห้ามเกิน 800K.
                     </Typography>
                   </Box>
                 </Box>
@@ -159,7 +159,7 @@ function ProfilerForm(props: ProfilerFormProps) {
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextField
                     fullWidth
-                    label='Profiler name'
+                    label='ชื่อ'
                     onBlur={onBlur}
                     onChange={onChange}
                     value={value}
@@ -188,7 +188,7 @@ function ProfilerForm(props: ProfilerFormProps) {
                     fullWidth
                     multiline
                     rows={4}
-                    label='Description'
+                    label='คำแนะนำตัวเอง'
                     onBlur={onBlur}
                     onChange={onChange}
                     value={value}
@@ -204,24 +204,24 @@ function ProfilerForm(props: ProfilerFormProps) {
                 <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
                   <TextField
                     {...register(`bank_accounts.${index}.bank_title`)}
-                    label='Bank name'
+                    label='ชื่อธนาคาร'
                     defaultValue={item.bank_title}
                     style={{ marginLeft: 10 }}
                   />
                   <TextField
                     {...register(`bank_accounts.${index}.account_name`)}
-                    label='Account name'
+                    label='ชื่อบัญชี'
                     defaultValue={item.account_name}
                     style={{ marginLeft: 10 }}
                   />
                   <TextField
                     {...register(`bank_accounts.${index}.account_number`)}
-                    label='Account number'
+                    label='เลขบัญชี'
                     defaultValue={item.account_number}
                     style={{ marginLeft: 10 }}
                   />
                   <Button type='button' onClick={() => removeBankAccount(index)}>
-                    Remove
+                    ลบ
                   </Button>
                 </Box>
               ))}
@@ -229,7 +229,7 @@ function ProfilerForm(props: ProfilerFormProps) {
                 type='button'
                 onClick={() => appendBankAccount({ bank_title: '', account_name: '', account_number: '' })}
               >
-                Add Bank Account
+                เพิ่มบัญชีธนาคาร
               </Button>
             </Grid>
 
@@ -238,22 +238,22 @@ function ProfilerForm(props: ProfilerFormProps) {
                 <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
                   <TextField
                     {...register(`contacts.${index}.contact_type`)}
-                    label='Contact Platform'
+                    label='วิธีการติดต่อ'
                     defaultValue={item.contact_type}
                   />
                   <TextField
                     {...register(`contacts.${index}.link`)}
-                    label='Link'
+                    label='ลิงค์'
                     defaultValue={item.link}
                     style={{ marginLeft: 10 }}
                   />
                   <Button type='button' onClick={() => removeContact(index)}>
-                    Remove
+                    ลบ
                   </Button>
                 </Box>
               ))}
               <Button type='button' onClick={() => appendContact({ contact_type: '', link: '' })}>
-                Add Contact
+                เพิ่มวิธีการติดต่อ
               </Button>
             </Grid>
 
@@ -268,7 +268,7 @@ function ProfilerForm(props: ProfilerFormProps) {
                 }}
               >
                 <Button type='submit' variant='contained' size='large'>
-                  Save
+                  บันทึก
                 </Button>
               </Box>
             </Grid>
