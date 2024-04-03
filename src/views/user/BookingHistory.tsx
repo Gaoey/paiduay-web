@@ -23,16 +23,20 @@ import {
 
 // import { useRouter } from 'next/router'
 import { format } from 'date-fns'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Booking } from 'src/@core/types/booking'
 import { bookingStatusObj } from '../admin/BookingList'
+import { useApi } from 'src/@core/services'
+import * as R from 'ramda'
+import { Transport } from 'src/@core/types/transport'
+import { useRouter } from 'next/router'
 
 interface Props {
   bookings: Booking[]
 }
 
 const BookingHistoryTable = (props: Props) => {
-  // const router = useRouter()
+  const router = useRouter()
   const { bookings } = props
 
   return (
@@ -42,7 +46,9 @@ const BookingHistoryTable = (props: Props) => {
           <TableHead>
             <TableRow>
               <TableCell>ชื่อทริป</TableCell>
-              <TableCell>วันที่</TableCell>
+              <TableCell>ชื่อที่นั่ง</TableCell>
+              <TableCell>ที่นั่ง</TableCell>
+              <TableCell>วันที่ไป</TableCell>
               <TableCell>สถานะ</TableCell>
               <TableCell>ACTIONs</TableCell>
             </TableRow>
@@ -51,11 +57,14 @@ const BookingHistoryTable = (props: Props) => {
             {bookings.map((row: Booking, index) => {
               return (
                 <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                  <TableCell>{row.trip_data?.title}</TableCell>
+                  <TableCell>{row.trip_data?.data?.title}</TableCell>
+                  <TableCell>{row.data?.seat_name}</TableCell>
+                  <TableCell>{row.data?.seat_number}</TableCell>
                   <TableCell>
                     <Typography variant='body2' color='text.secondary'>
-                      Date: ({format(new Date(row.trip_data?.from_date || 0), 'dd MMM yyyy')} -
-                      {format(new Date(row.trip_data?.to_date || 0), 'dd MMM yyyy')})
+                      {`${format(new Date(row.trip_data?.data?.from_date || 0), 'dd MMM yyyy')}
+                      -
+                      ${format(new Date(row.trip_data?.data?.to_date || 0), 'dd MMM yyyy')}`}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -72,6 +81,14 @@ const BookingHistoryTable = (props: Props) => {
                   </TableCell>
                   <TableCell>
                     <Box style={{ display: 'flex', flexDirection: 'row' }}>
+                      <Button
+                        variant='contained'
+                        color='info'
+                        style={{ color: 'white', marginRight: 20 }}
+                        onClick={() => router.push(`/trips/${row.trip_id}`)}
+                      >
+                        ดูข้อมูลทริป
+                      </Button>
                       <ViewSeatButton booking={row} />
                     </Box>
                   </TableCell>
@@ -90,8 +107,11 @@ interface ViewSeatButtonProps {
 }
 
 function ViewSeatButton(props: ViewSeatButtonProps) {
+  const { transportAPI } = useApi()
   const { booking } = props
 
+  const { findTransportByTripID } = transportAPI
+  const { data } = findTransportByTripID
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
@@ -102,20 +122,27 @@ function ViewSeatButton(props: ViewSeatButtonProps) {
     setOpen(false)
   }
 
+  useEffect(() => {
+    if (open && R.isNil(data)) {
+      findTransportByTripID.mutate(booking.trip_id)
+    }
+  }, [open])
+
+  const transports: Transport[] = R.pathOr<Transport[]>([], [], data)
+  const transport = transports.filter(v => v._id === booking.data.transport_id)[0] || null
+
   return (
     <>
       <Button variant='contained' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
-        ดูที่นั่ง
+        ดูคันรถ
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>ที่นั่งคุณอยู่ที่</DialogTitle>
+        <DialogTitle>รถคุณคือ</DialogTitle>
         <DialogContent style={{ width: 400 }}>
           <DialogContentText>
-            <Grid container spacing={2}>
-              <Typography variant='body2' color='text.secondary'>
-                {`${booking.data.transport_id}, ที่นั่ง #${booking.data.seat_number}`}
-              </Typography>
-            </Grid>
+            <Typography variant='body2' color='text.secondary'>
+              {`${transport?.data.name}, ที่นั่ง #${booking.data.seat_number}`}
+            </Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
