@@ -75,7 +75,7 @@ export function VanForm(props: VanFormProps) {
         <Paper
           style={{ height: 100, textAlign: 'center', lineHeight: '100px', backgroundColor: 'grey', color: 'white' }}
         >
-          DRIVER
+          คนขับ
         </Paper>
       </Grid>
       {[2, 3, 4, 5, 6, 7, 8, 9, 10].map(pos => {
@@ -127,7 +127,7 @@ function SeatButton(props: SeatButtonProps) {
         {showSeatText(seat)}
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{`Update seat #${seat.seat_number}`}</DialogTitle>
+        <DialogTitle>{`เปลี่ยนชื่อที่นั่ง #${seat.seat_number}`}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             <Grid container spacing={2}>
@@ -139,7 +139,7 @@ function SeatButton(props: SeatButtonProps) {
                 )}
               </Grid>
               <Grid item md={12}>
-                <TextField label='Update seat name' onChange={v => setSeatName(v.target.value)} fullWidth />
+                <TextField label='เปลี่ยนชื่อที่นั่ง' onChange={v => setSeatName(v.target.value)} fullWidth />
               </Grid>
             </Grid>
           </DialogContentText>
@@ -153,7 +153,7 @@ function SeatButton(props: SeatButtonProps) {
               handleClose()
             }}
           >
-            {seat.is_lock ? 'UNLOCK' : 'LOCK'}
+            {seat.is_lock ? 'ปลดล็อก' : 'ล็อกที่นั่ง'}
           </Button>
           <Button
             variant='contained'
@@ -162,7 +162,7 @@ function SeatButton(props: SeatButtonProps) {
               handleClose()
             }}
           >
-            Confirm
+            คอนเฟิร์ม
           </Button>
           <Button
             variant='outlined'
@@ -171,9 +171,9 @@ function SeatButton(props: SeatButtonProps) {
               handleClose()
             }}
           >
-            Empty Seat
+            ที่ว่าง
           </Button>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleClose}>ปิด</Button>
         </DialogActions>
       </Dialog>
     </>

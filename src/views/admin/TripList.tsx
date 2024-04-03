@@ -70,13 +70,13 @@ const DashboardTable = () => {
         <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Members</TableCell>
-              <TableCell>Payments</TableCell>
-              <TableCell>From - To</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>ACTIONs</TableCell>
+              <TableCell>ชื่อทริป</TableCell>
+              <TableCell>จุดหมาย</TableCell>
+              <TableCell>จำนวนคน</TableCell>
+              <TableCell>วิธีการรับเงิน</TableCell>
+              <TableCell>ไป - กลับ</TableCell>
+              <TableCell>สถานะ</TableCell>
+              <TableCell>ปุ่ม</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -118,12 +118,12 @@ const DashboardTable = () => {
                         style={{ color: 'white', marginRight: 20 }}
                         onClick={() => router.push(`/admin/trip-list/${row._id}`)}
                       >
-                        VIEW
+                        ดู
                       </Button>
                       <Button variant='outlined' style={{ marginRight: 20 }}>
-                        EDIT
+                        แก้ไข
                       </Button>
-                      <Button variant='outlined'>REMOVE</Button>
+                      <Button variant='outlined'>ลบ</Button>
                     </Box>
                   </TableCell>
                 </TableRow>
