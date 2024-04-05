@@ -243,20 +243,6 @@ function TripForm(props: TripFormProps) {
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <DatePicker
-                selected={watch('date_to_reserve', new Date())}
-                showYearDropdown
-                showMonthDropdown
-                id='date_to_reserve_picker'
-                placeholderText='MM-DD-YYYY'
-                customInput={
-                  <TextField label='วันเริ่มจอง' {...register('date_to_reserve', { required: true })} fullWidth />
-                }
-                onChange={(date: Date) => setValue('date_to_reserve', date)}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
               <DatePickerWrapper>
                 <DatePicker
                   selected={watch('from_date', new Date())}
