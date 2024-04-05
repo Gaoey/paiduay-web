@@ -1,5 +1,5 @@
 import { Media } from '.'
-import { Contact } from './profiler'
+import { Contact, Profiler } from './profiler'
 import { TransportData } from './transport'
 
 export interface Location {
@@ -11,6 +11,7 @@ export interface Location {
 
 export interface PaymentData {
   full_price: number
+  accumulate_price?: number | null
   deposit_price?: number | null
   payment_date: Date
 }
@@ -53,11 +54,13 @@ export interface TripFilter {
   location?: string | null
   from_price?: number | null
   to_price?: number | null
+  is_filter_going_date: boolean
 }
 
 export interface Trip {
   _id: string
   data: TripData
+  profiler_data?: Profiler
   profiler_id: string
   created_by_user_id: string
   is_deleted: boolean
