@@ -50,7 +50,6 @@ function TripForm(props: TripFormProps) {
         }
       })
 
-      console.log({ medias })
       setSelectedImages(prevMedias => [...prevMedias, ...medias])
     }
   }
