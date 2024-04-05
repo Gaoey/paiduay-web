@@ -1,4 +1,4 @@
-import { Fab, Grid } from '@mui/material'
+import { Button, Grid } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
@@ -12,7 +12,7 @@ export default function UserTripDetail() {
 
   return (
     <ApexChartWrapper>
-      <Grid container spacing={7}>
+      <Grid container spacing={7} style={{ paddingBottom: '6em'}}>
         <Grid
           item
           md={12}
@@ -26,15 +26,15 @@ export default function UserTripDetail() {
           <TripDetailComponent tripID={tripID} />
         </Grid>
       </Grid>
-      <div style={{ position: 'fixed', bottom: '2em', right: '2em' }}>
-        <Fab
-          size='large'
+      <div style={{ position: 'fixed', bottom: '2em', textAlign: 'center', width: '100%' }}>
+        <Button
+          variant="contained"
           color='secondary'
-          style={{ filter: 'drop-shadow(2px 2px 2px #aaa)', width: '2.5em', height: '2.5em', fontSize: '1.2em' }}
+          style={{ filter: 'drop-shadow(1px 1px 1px #444)', fontSize: '1em' }}
           onClick={() => router.push(`/booking/${tripID}`)}
         >
           จอง
-        </Fab>
+        </Button>
       </div>
     </ApexChartWrapper>
   )
