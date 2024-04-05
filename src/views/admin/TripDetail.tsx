@@ -1,5 +1,6 @@
 import Groups from '@mui/icons-material/Groups'
 import Schedule from '@mui/icons-material/Schedule'
+import AlternateEmail from '@mui/icons-material/AlternateEmail'
 import ChevronLeft from '@mui/icons-material/ChevronLeft'
 import ChevronRight from '@mui/icons-material/ChevronRight'
 import Fullscreen from '@mui/icons-material/Fullscreen'
@@ -78,7 +79,7 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
           ;<></>
         }}
       />
-      
+
       <ImageGallery
         items={images}
         showPlayButton={false}
@@ -143,11 +144,13 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
             {trip?.data?.contacts.map((v, id) => {
               return (
                 <div style={{ display: 'flex' }} key={id}>
-                  <Groups style={{ color: '#3B5249' }} />
-
-                  <a href={v.link} rel='noopener noreferrer' target='_blank'>
+                  <AlternateEmail style={{ color: '#3B5249' }} />
+                  <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
+                    {v.contact_type}
+                  </Typography>
+                  <a href={`//${v.link}`} rel='noopener noreferrer' target='_blank'>
                     <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
-                      {v.contact_type}
+                      {v.link}
                     </Typography>
                   </a>
                 </div>
