@@ -1,14 +1,14 @@
 import { Close } from '@mui/icons-material'
 import { Box, Button, Card, CardContent, CardHeader, Grid, IconButton, TextField, Typography } from '@mui/material'
 import * as R from 'ramda'
-import React from 'react'
-import DatePicker from 'react-datepicker'
+import React, { useEffect } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
-import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import { BUCKET_NAME, Media } from 'src/@core/types'
 import { Seat, Transportation } from 'src/@core/types/transport'
 import { TripPayload, TripStatus } from 'src/@core/types/trip'
 import { TransportationNormalForm, VanForm, getDefaultTransport } from './TransportationForm'
+import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import DatePicker from 'react-datepicker'
 
 interface TripFormProps {
   trip_payload?: TripPayload
@@ -22,10 +22,9 @@ function TripForm(props: TripFormProps) {
     title: p?.trip_data?.title || '',
     description: p?.trip_data.description || '',
     cover_images: p?.trip_data.cover_images || [],
-    date_to_reserve: p?.trip_data.date_to_reserve || new Date(),
-    from_date: p?.trip_data.from_date || new Date(),
-    to_date: p?.trip_data.to_date || new Date(),
-    going_date: p?.trip_data.to_date || new Date(),
+    date_to_reserve: new Date(p?.trip_data.date_to_reserve || 0) || new Date(),
+    from_date: new Date(p?.trip_data.from_date || 0) || new Date(),
+    to_date: new Date(p?.trip_data.to_date || 0) || new Date(),
     payment: p?.trip_data.payment || null,
     total_people: p?.trip_data.total_people || 10,
     members: p?.trip_data.members || [],
@@ -35,7 +34,7 @@ function TripForm(props: TripFormProps) {
     transport_data: p?.transport_data || []
   }
 
-  const [selectedImages, setSelectedImages] = React.useState<Media[]>([])
+  const [selectedImages, setSelectedImages] = React.useState<Media[]>(defaultValues.cover_images)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -50,6 +49,8 @@ function TripForm(props: TripFormProps) {
           file: file
         }
       })
+
+      console.log({ medias })
       setSelectedImages(prevMedias => [...prevMedias, ...medias])
     }
   }
@@ -61,6 +62,12 @@ function TripForm(props: TripFormProps) {
       setSelectedImages([...newSelectedImage])
     }
   }
+
+  useEffect(() => {
+    if (selectedImages.length >= 0) {
+      setValue('cover_images', selectedImages)
+    }
+  }, [selectedImages.length])
 
   const {
     register,
@@ -224,35 +231,6 @@ function TripForm(props: TripFormProps) {
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <DatePicker
-                selected={watch('date_to_reserve', new Date())}
-                showYearDropdown
-                showMonthDropdown
-                id='date_to_reserve_picker'
-                placeholderText='MM-DD-YYYY'
-                customInput={
-                  <TextField label='วันเริ่มจอง' {...register('date_to_reserve', { required: true })} fullWidth />
-                }
-                onChange={(date: Date) => setValue('date_to_reserve', date)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <DatePickerWrapper>
-                <DatePicker
-                  selected={watch('going_date', new Date())}
-                  showYearDropdown
-                  showMonthDropdown
-                  id='going_date_picker'
-                  placeholderText='MM-DD-YYYY'
-                  customInput={
-                    <TextField label='วันไป' {...register('going_date', { required: true })} fullWidth />
-                  }
-                  onChange={(date: Date) => setValue('going_date', date)}
-                />
-              </DatePickerWrapper>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
               <DatePickerWrapper>
                 <DatePicker
                   selected={watch('from_date', new Date())}
@@ -280,6 +258,19 @@ function TripForm(props: TripFormProps) {
               </DatePickerWrapper>
             </Grid>
 
+            <Grid item xs={12} sm={6}>
+              <DatePicker
+                selected={watch('date_to_reserve', new Date())}
+                showYearDropdown
+                showMonthDropdown
+                id='date_to_reserve_picker'
+                placeholderText='MM-DD-YYYY'
+                customInput={
+                  <TextField label='วันเริ่มจอง' {...register('date_to_reserve', { required: true })} fullWidth />
+                }
+                onChange={(date: Date) => setValue('date_to_reserve', date)}
+              />
+            </Grid>
             <Grid item xs={12}>
               <Typography variant='body2' sx={{ fontWeight: 600 }}>
                 2. วิธีการรับเงิน
@@ -406,7 +397,7 @@ function TripForm(props: TripFormProps) {
 
             <Grid item xs={12}>
               <Button type='submit' variant='contained' color='primary'>
-                สร้างทริป
+                SAVE
               </Button>
             </Grid>
           </Grid>

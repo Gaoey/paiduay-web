@@ -93,14 +93,14 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
               />
             </Box>
             <div style={{ display: 'flex' }}>
-              <Schedule style={{ color: '#3B5249' }}/>
+              <Schedule style={{ color: '#3B5249' }} />
               <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                 {format(new Date(trip?.data.from_date), 'dd MMM yyyy')} -
                 {format(new Date(trip?.data.to_date), 'dd MMM yyyy')}
               </Typography>
             </div>
             <div style={{ display: 'flex' }}>
-              <Groups style={{ color: '#3B5249' }}/>
+              <Groups style={{ color: '#3B5249' }} />
               <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                 จำนวนคน: {trip?.data?.members.length} / {trip?.data?.total_people}
               </Typography>

@@ -107,7 +107,11 @@ const BookingTable = (props: Props) => {
                           onUpdateBooking(row._id, newBooking)
                         }}
                       />
-                      <Button variant='outlined' style={{ marginRight: 20 }}>
+                      <Button
+                        variant='outlined'
+                        style={{ marginRight: 20 }}
+                        onClick={() => router.push(`/admin/update-trip/${row.trip_id}`)}
+                      >
                         แก้ไข
                       </Button>
                       <Button variant='outlined'>ลบ</Button>

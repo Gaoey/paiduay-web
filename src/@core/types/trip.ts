@@ -27,7 +27,6 @@ export interface TripData {
   date_to_reserve: Date
   from_date: Date
   to_date: Date
-  going_date: Date
   payment?: PaymentData | null
   total_people: number
   members: TripMember[]
