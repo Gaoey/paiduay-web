@@ -52,7 +52,6 @@ const VerticalNavHeader = (props: Props) => {
   const { verticalNavMenuBranding: userVerticalNavMenuBranding } = props
 
   // ** Hooks
-
   return (
     <MenuHeaderWrapper className='nav-header' sx={{ pl: 6 }}>
       {userVerticalNavMenuBranding ? (
@@ -60,7 +59,7 @@ const VerticalNavHeader = (props: Props) => {
       ) : (
         <Link href='/' passHref>
           <StyledLink>
-            <HeaderTitle variant='h6' sx={{ ml: 3 }}>
+            <HeaderTitle variant='h6' sx={{ ml: 3, fontFamily: 'Itim' }}>
               {themeConfig.templateName}
             </HeaderTitle>
           </StyledLink>

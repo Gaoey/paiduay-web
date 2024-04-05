@@ -40,7 +40,7 @@ const UserLayout = ({ children, isContentWrap = true }: Props) => {
               {/* Logo */}
               <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
                 <Link href='/' passHref>
-                  <StyledLink sx={{ color: 'white' }}>{themeConfig.templateName}</StyledLink>
+                  <StyledLink sx={{ color: 'white', fontFamily: 'Itim' }}>{themeConfig.templateName}</StyledLink>
                 </Link>
               </Typography>
 
