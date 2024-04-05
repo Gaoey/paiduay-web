@@ -83,7 +83,11 @@ export default function TripDetail() {
                 >
                   PREVIEW
                 </Button>
-                <Button variant='outlined' style={{ marginRight: 20 }}>
+                <Button
+                  variant='outlined'
+                  style={{ marginRight: 20 }}
+                  onClick={() => router.push(`/admin/update-trip/${tripID}`)}
+                >
                   EDIT
                 </Button>
                 <Button variant='outlined'>REMOVE</Button>

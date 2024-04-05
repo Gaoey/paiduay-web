@@ -21,13 +21,15 @@ import * as R from 'ramda'
 import { TripData, TripPayload, TripStatus } from 'src/@core/types/trip'
 import { useRouter } from 'next/router'
 import { Seat, SeatStatus, TransportData } from 'src/@core/types/transport'
+import { Media } from 'src/@core/types'
 
 const CreateTrip = () => {
   const router = useRouter()
-  const { tripAPI, profilerAPI } = useApi()
+  const { tripAPI, profilerAPI, mediaAPI } = useApi()
 
   const { getCurrentProfiler } = profilerAPI
   const { createTrip } = tripAPI
+  const { uploadMedias } = mediaAPI
 
   const { isSuccess, data } = createTrip
 
@@ -46,6 +48,12 @@ const CreateTrip = () => {
           payment_date: params?.payment?.payment_date || new Date()
         },
         total_people: Number(params?.total_people)
+      }
+
+      const media: Media | undefined = R.pathOr<Media | undefined>(undefined, ['cover_images'], params)
+      if (!R.isNil(media)) {
+        const newMedias: Media[] = await uploadMedias.mutateAsync([media])
+        tripData.cover_images = newMedias
       }
 
       const transport_data: TransportData[] = params.transport_data.map((v: TransportData) => {
