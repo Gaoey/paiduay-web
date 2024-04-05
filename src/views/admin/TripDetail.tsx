@@ -1,6 +1,21 @@
 import Groups from '@mui/icons-material/Groups'
 import Schedule from '@mui/icons-material/Schedule'
-import { Avatar, Box, Card, CardContent, CardHeader, Chip, CircularProgress, Grid, Typography } from '@mui/material'
+import ChevronLeft from '@mui/icons-material/ChevronLeft'
+import ChevronRight from '@mui/icons-material/ChevronRight'
+import Fullscreen from '@mui/icons-material/Fullscreen'
+import CloseFullscreen from '@mui/icons-material/CloseFullscreen'
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Chip,
+  CircularProgress,
+  Grid,
+  IconButton,
+  Typography
+} from '@mui/material'
 
 import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/css/image-gallery.css'
@@ -63,9 +78,29 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
           ;<></>
         }}
       />
-      {/* <CardMedia component='img' image={imgSrc} alt='image of trip' sx={{ maxHeight: 500 }} /> */}
-
-      <ImageGallery items={images} showPlayButton={false} autoPlay={true} />
+      
+      <ImageGallery
+        items={images}
+        showPlayButton={false}
+        autoPlay={true}
+        renderLeftNav={(onClick: any, disabled: boolean) => (
+          <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
+            <ChevronLeft />
+          </IconButton>
+        )}
+        renderRightNav={(onClick: any, disabled: boolean) => (
+          <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
+            <ChevronRight />
+          </IconButton>
+        )}
+        renderFullscreenButton={(onClick: any, isFullscreen: boolean) => (
+          <div style={{ position: 'absolute', bottom: '1em', right: '1em' }}>
+            <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick}>
+              {isFullscreen ? <CloseFullscreen /> : <Fullscreen />}
+            </IconButton>
+          </div>
+        )}
+      />
 
       <CardContent>
         <Grid container spacing={7}>
@@ -110,11 +145,11 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
                 <div style={{ display: 'flex' }} key={id}>
                   <Groups style={{ color: '#3B5249' }} />
 
-                  <Link href={v.link} passHref rel='noopener noreferrer' target='_blank'>
+                  <a href={v.link} rel='noopener noreferrer' target='_blank'>
                     <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                       {v.contact_type}
                     </Typography>
-                  </Link>
+                  </a>
                 </div>
               )
             })}
