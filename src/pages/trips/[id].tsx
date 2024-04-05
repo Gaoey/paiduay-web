@@ -1,4 +1,4 @@
-import { Typography, Grid, Fab } from '@mui/material'
+import { Fab, Grid } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
@@ -13,7 +13,16 @@ export default function UserTripDetail() {
   return (
     <ApexChartWrapper>
       <Grid container spacing={7}>
-        <Grid item md={12}>
+        <Grid
+          item
+          md={12}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%'
+          }}
+        >
           <TripDetailComponent tripID={tripID} />
         </Grid>
       </Grid>
