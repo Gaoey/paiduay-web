@@ -85,14 +85,18 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
         showPlayButton={false}
         autoPlay={true}
         renderLeftNav={(onClick: any, disabled: boolean) => (
-          <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
-            <ChevronLeft />
-          </IconButton>
+          <div style={{ position: 'absolute', top: '48%', left: '1em' }}>
+            <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
+              <ChevronLeft />
+            </IconButton>
+          </div>
         )}
         renderRightNav={(onClick: any, disabled: boolean) => (
-          <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
-            <ChevronRight />
-          </IconButton>
+          <div style={{ position: 'absolute', top: '48$', right: '1em' }}>
+            <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
+              <ChevronRight />
+            </IconButton>
+          </div>
         )}
         renderFullscreenButton={(onClick: any, isFullscreen: boolean) => (
           <div style={{ position: 'absolute', bottom: '1em', right: '1em' }}>
@@ -148,7 +152,7 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
                   <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                     {v.contact_type}
                   </Typography>
-                  <a href={`//${v.link}`} rel='noopener noreferrer' target='_blank'>
+                  <a href={`https://line.me/R/ti/g/OVvKBVRdhk`} rel='noopener noreferrer' target='_blank'>
                     <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                       {v.link}
                     </Typography>
