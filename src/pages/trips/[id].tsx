@@ -21,7 +21,7 @@ export default function UserTripDetail() {
         <Fab
           size='large'
           color='secondary'
-          style={{ filter: 'drop-shadow(3px 3px 2px #aaa)', width: '3em', height: '3em', fontSize: '1.5em' }}
+          style={{ filter: 'drop-shadow(2px 2px 2px #aaa)', width: '2.5em', height: '2.5em', fontSize: '1.2em' }}
           onClick={() => router.push(`/booking/${tripID}`)}
         >
           จอง

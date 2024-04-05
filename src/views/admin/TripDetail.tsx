@@ -13,6 +13,9 @@ import {
 import Schedule from '@mui/icons-material/Schedule'
 import Groups from '@mui/icons-material/Groups'
 
+import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
+
 import { format } from 'date-fns'
 import * as R from 'ramda'
 import { useEffect } from 'react'
@@ -51,6 +54,13 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
     ? 'https://img.freepik.com/free-vector/gradient-spring-illustration_23-2149264032.jpg?w=1380&t=st=1710694509~exp=1710695109~hmac=99468e4d3221b7e0b1890066b623b4fc51c382dc7a2f0c68bbdd92ad88a0cc42'
     : trip?.data.cover_images[0].signed_url
 
+  const images = [
+    {
+      original: imgSrc,
+      thumbnail: imgSrc,
+    },
+  ];
+
   return (
     <Card style={{ margin: 0 }}>
       <CardHeader
@@ -66,7 +76,8 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
           ;<></>
         }}
       />
-      <CardMedia component='img' image={imgSrc} alt='image of trip' sx={{ maxHeight: 500 }} />
+      {/* <CardMedia component='img' image={imgSrc} alt='image of trip' sx={{ maxHeight: 500 }} /> */}
+      <ImageGallery items={images} showPlayButton={false} autoPlay={true}/>
       <CardContent>
         <Grid container spacing={7}>
           <Grid item xs={12}>
