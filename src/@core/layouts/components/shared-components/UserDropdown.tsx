@@ -16,8 +16,10 @@ import { styled } from '@mui/material/styles'
 
 // ** Icons Imports
 import AccountOutline from 'mdi-material-ui/AccountOutline'
-import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 import LogoutVariant from 'mdi-material-ui/LogoutVariant'
+import DashboardOutlined from '@mui/icons-material/DashboardOutlined'
+import QuizOutlined from '@mui/icons-material/QuizOutlined'
+import GavelOutlined from '@mui/icons-material/GavelOutlined'
 
 import { signOut } from 'next-auth/react'
 import * as R from 'ramda'
@@ -140,7 +142,7 @@ const UserDropdown = () => {
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
               <Typography sx={{ fontWeight: 600 }}>{user?.name}</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                {isAdmin ? 'TRIP MAKER' : 'USER'}
+                {isAdmin ? 'ทริปลีดเดอร์' : 'ผู้จองทริป'}
               </Typography>
             </Box>
           </Box>
@@ -149,15 +151,15 @@ const UserDropdown = () => {
         {isAdmin && (
           <MenuItem sx={{ p: 0 }} onClick={() => router.push('/admin/dashboard')}>
             <Box sx={styles}>
-              <AccountOutline sx={{ marginRight: 2 }} />
-              Admin Dashboard
+              <DashboardOutlined sx={{ marginRight: 2 }} />
+              Dashboard
             </Box>
           </MenuItem>
         )}
         <MenuItem sx={{ p: 0 }} onClick={() => router.push(`/user/${user?._id}`)}>
           <Box sx={styles}>
             <AccountOutline sx={{ marginRight: 2 }} />
-            Profile
+            โปรไฟล์
           </Box>
         </MenuItem>
         {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
@@ -187,13 +189,13 @@ const UserDropdown = () => {
         </MenuItem> */}
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
-            <HelpCircleOutline sx={{ marginRight: 2 }} />
+            <QuizOutlined sx={{ marginRight: 2 }} />
             FAQ
           </Box>
         </MenuItem>
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
-            <HelpCircleOutline sx={{ marginRight: 2 }} />
+            <GavelOutlined sx={{ marginRight: 2 }} />
             Term & Conditions
           </Box>
         </MenuItem>

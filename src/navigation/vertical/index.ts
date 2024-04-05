@@ -1,6 +1,8 @@
 // ** Icon imports
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
+import AddCircleOutline from '@mui/icons-material/AddCircleOutline'
+import List from '@mui/icons-material/List'
 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
@@ -22,7 +24,7 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       title: 'ทริปของคุณ',
-      icon: AccountCogOutline,
+      icon: List,
       path: '/admin/trip-list'
     },
 
@@ -33,7 +35,7 @@ const navigation = (): VerticalNavItemsType => {
     // },
     {
       title: 'สร้างทริป',
-      icon: AccountCogOutline,
+      icon: AddCircleOutline,
       path: '/admin/create-trip'
     }
 
