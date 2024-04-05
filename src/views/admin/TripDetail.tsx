@@ -1,10 +1,10 @@
-import Groups from '@mui/icons-material/Groups'
-import Schedule from '@mui/icons-material/Schedule'
 import AlternateEmail from '@mui/icons-material/AlternateEmail'
 import ChevronLeft from '@mui/icons-material/ChevronLeft'
 import ChevronRight from '@mui/icons-material/ChevronRight'
-import Fullscreen from '@mui/icons-material/Fullscreen'
 import CloseFullscreen from '@mui/icons-material/CloseFullscreen'
+import Fullscreen from '@mui/icons-material/Fullscreen'
+import Groups from '@mui/icons-material/Groups'
+import Schedule from '@mui/icons-material/Schedule'
 import {
   Avatar,
   Box,
@@ -30,7 +30,6 @@ import { ProfilerData } from 'src/@core/types/profiler'
 import { Trip } from 'src/@core/types/trip'
 import { toCurrency } from 'src/@core/utils/currency'
 import { trimMessage } from 'src/@core/utils/string'
-import Link from 'next/link'
 
 interface TripDetailsProps {
   tripID: string
@@ -89,14 +88,18 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
           showPlayButton={false}
           autoPlay={true}
           renderLeftNav={(onClick: any, disabled: boolean) => (
-            <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
-              <ChevronLeft />
-            </IconButton>
+            <div style={{ position: 'absolute', top: '48%', left: '1em' }}>
+              <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
+                <ChevronLeft />
+              </IconButton>
+            </div>
           )}
           renderRightNav={(onClick: any, disabled: boolean) => (
-            <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
-              <ChevronRight />
-            </IconButton>
+            <div style={{ position: 'absolute', top: '48$', right: '1em' }}>
+              <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
+                <ChevronRight />
+              </IconButton>
+            </div>
           )}
           renderFullscreenButton={(onClick: any, isFullscreen: boolean) => (
             <div style={{ position: 'absolute', bottom: '1em', right: '1em' }}>
@@ -107,7 +110,6 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
           )}
         />
       )}
-
       <CardContent>
         <Grid container spacing={7}>
           <Grid item xs={12}>
@@ -153,7 +155,7 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
                   <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                     {v.contact_type}
                   </Typography>
-                  <a href={`//${v.link}`} rel='noopener noreferrer' target='_blank'>
+                  <a href={`https://line.me/R/ti/g/OVvKBVRdhk`} rel='noopener noreferrer' target='_blank'>
                     <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                       {v.link}
                     </Typography>

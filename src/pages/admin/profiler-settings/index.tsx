@@ -59,7 +59,7 @@ const UpdateProfiler = () => {
     <Card>
       <ProfilerForm
         onSubmit={onSubmit}
-        title='Update Profiler'
+        title='ตั้งค่าโปรไฟล์ของคุณ'
         profiler={!R.isNil(currentProfilerData) ? currentProfilerData[0] : undefined}
       />
     </Card>

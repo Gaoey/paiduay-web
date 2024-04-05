@@ -151,7 +151,7 @@ function SeatButton(props: SeatButtonProps) {
                 )}
               </Grid>
               <Grid item md={12}>
-                <TextField label='จองที่นั่ง' onChange={v => setSeatName(v.target.value)} fullWidth />
+                <TextField label='ชื่อผู้จอง' onChange={v => setSeatName(v.target.value)} fullWidth />
               </Grid>
             </Grid>
           </DialogContentText>
@@ -176,15 +176,16 @@ function SeatButton(props: SeatButtonProps) {
           >
             คอนเฟิร์ม
           </Button>
-          {/* <Button
+          <Button
             variant='outlined'
+            color='secondary'
             onClick={() => {
               onChange({ ...seat, name: `#${seat.seat_number}`, status: SeatStatus[SeatStatus.EMPTY] })
               handleClose()
             }}
           >
-            ที่ว่าง
-          </Button> */}
+            ยกเลิกการจอง
+          </Button>
           <Button onClick={handleClose}>ปิด</Button>
         </DialogActions>
       </Dialog>
