@@ -11,6 +11,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CardMedia,
   Chip,
   CircularProgress,
   Grid,
@@ -80,28 +81,32 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
         }}
       />
 
-      <ImageGallery
-        items={images}
-        showPlayButton={false}
-        autoPlay={true}
-        renderLeftNav={(onClick: any, disabled: boolean) => (
-          <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
-            <ChevronLeft />
-          </IconButton>
-        )}
-        renderRightNav={(onClick: any, disabled: boolean) => (
-          <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
-            <ChevronRight />
-          </IconButton>
-        )}
-        renderFullscreenButton={(onClick: any, isFullscreen: boolean) => (
-          <div style={{ position: 'absolute', bottom: '1em', right: '1em' }}>
-            <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick}>
-              {isFullscreen ? <CloseFullscreen /> : <Fullscreen />}
+      {imgSrc.length === 1 ? (
+        <CardMedia component='img' image={imgSrc[0]} alt='image of trip' sx={{ maxHeight: 500 }} />
+      ) : (
+        <ImageGallery
+          items={images}
+          showPlayButton={false}
+          autoPlay={true}
+          renderLeftNav={(onClick: any, disabled: boolean) => (
+            <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
+              <ChevronLeft />
             </IconButton>
-          </div>
-        )}
-      />
+          )}
+          renderRightNav={(onClick: any, disabled: boolean) => (
+            <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
+              <ChevronRight />
+            </IconButton>
+          )}
+          renderFullscreenButton={(onClick: any, isFullscreen: boolean) => (
+            <div style={{ position: 'absolute', bottom: '1em', right: '1em' }}>
+              <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick}>
+                {isFullscreen ? <CloseFullscreen /> : <Fullscreen />}
+              </IconButton>
+            </div>
+          )}
+        />
+      )}
 
       <CardContent>
         <Grid container spacing={7}>

@@ -50,9 +50,9 @@ const CreateTrip = () => {
         total_people: Number(params?.total_people)
       }
 
-      const media: Media | undefined = R.pathOr<Media | undefined>(undefined, ['cover_images'], params)
-      if (!R.isNil(media)) {
-        const newMedias: Media[] = await uploadMedias.mutateAsync([media])
+      const media: Media[] = R.pathOr<Media[]>([], ['cover_images'], params)
+      if (!R.isEmpty(media)) {
+        const newMedias: Media[] = await uploadMedias.mutateAsync(media)
         tripData.cover_images = newMedias
       }
 

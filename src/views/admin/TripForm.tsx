@@ -10,8 +10,6 @@ import { Seat, Transportation } from 'src/@core/types/transport'
 import { TripPayload, TripStatus } from 'src/@core/types/trip'
 import { TransportationNormalForm, VanForm, getDefaultTransport } from './TransportationForm'
 
-import { useRef } from 'react'
-
 interface TripFormProps {
   trip_payload?: TripPayload
   onSubmit: SubmitHandler<any>
@@ -36,7 +34,6 @@ function TripForm(props: TripFormProps) {
     transport_data: p?.transport_data || []
   }
 
-  const rteRef = useRef<RichTextEditorRef>(null)
   const [selectedImages, setSelectedImages] = React.useState<Media[]>(defaultValues.cover_images)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
