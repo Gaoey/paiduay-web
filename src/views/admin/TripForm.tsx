@@ -168,7 +168,7 @@ function TripForm(props: TripFormProps) {
                   />
                   <IconButton
                     size='large'
-                    aria-label='remove-destination'
+                    aria-label='remove-contact'
                     onClick={() => removeContact(index)}
                     style={{ color: 'darkgrey' }}
                   >

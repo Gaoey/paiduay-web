@@ -11,7 +11,7 @@ import Menu from 'mdi-material-ui/Menu'
 import { Settings } from 'src/@core/context/settingsContext'
 
 // ** Components
-import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
+// import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
 import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
 import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
 
@@ -54,7 +54,7 @@ const AppBarContent = (props: Props) => {
         /> */}
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
-        <ModeToggler settings={settings} saveSettings={saveSettings} />
+        {/* <ModeToggler settings={settings} saveSettings={saveSettings} /> */}
         <NotificationDropdown />
         <UserDropdown />
       </Box>
