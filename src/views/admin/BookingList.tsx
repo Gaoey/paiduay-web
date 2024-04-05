@@ -20,6 +20,7 @@ import { Booking, BookingData, BookingStatus } from 'src/@core/types/booking'
 import { Transport } from 'src/@core/types/transport'
 import { Media } from 'src/@core/types'
 import ImageCarousel from 'src/@core/components/image-carousel'
+import { useRouter } from 'next/router'
 
 interface StatusObj {
   [key: string]: {
@@ -44,6 +45,7 @@ interface Props {
 const BookingTable = (props: Props) => {
   // const router = useRouter()
   const { bookings, transports, onUpdateBooking } = props
+  const router = useRouter()
 
   return (
     <Card>
@@ -88,7 +90,12 @@ const BookingTable = (props: Props) => {
                   <TableCell>
                     <Box style={{ display: 'flex', flexDirection: 'row' }}>
                       <ViewSlipButton slipImg={row.data.slips} />
-                      <Button variant='contained' color='success' style={{ color: 'white', marginRight: 20 }}>
+                      <Button
+                        variant='contained'
+                        color='success'
+                        style={{ color: 'white', marginRight: 20 }}
+                        onClick={() => router.push(`/user/${row.data.user_id}`)}
+                      >
                         ดูลูกทริป
                       </Button>
                       <UpdateStatusButton

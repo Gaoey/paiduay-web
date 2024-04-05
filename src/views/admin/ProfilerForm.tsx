@@ -201,12 +201,11 @@ function ProfilerForm(props: ProfilerFormProps) {
 
             <Grid item xs={12}>
               {bankAccountsField.map((item, index) => (
-                <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
+                <Box key={item.id}>
                   <TextField
                     {...register(`bank_accounts.${index}.bank_title`)}
                     label='ชื่อธนาคาร'
                     defaultValue={item.bank_title}
-                    style={{ marginLeft: 10 }}
                   />
                   <TextField
                     {...register(`bank_accounts.${index}.account_name`)}
