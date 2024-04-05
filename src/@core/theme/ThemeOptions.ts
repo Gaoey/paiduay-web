@@ -58,6 +58,9 @@ const themeOptions = (settings: Settings): ThemeOptions => {
       },
       neutral: {
         main: '#FDECEF'
+      },
+      info: {
+        main: '#74B3CE'
       }
     }
   })

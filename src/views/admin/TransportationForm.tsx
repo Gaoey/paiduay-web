@@ -10,6 +10,8 @@ import {
   TextField,
   Typography
 } from '@mui/material'
+import EventSeat from '@mui/icons-material/EventSeat'
+
 import { useState } from 'react'
 import { Seat, SeatStatus, Transportation } from 'src/@core/types/transport'
 
@@ -73,7 +75,7 @@ export function VanForm(props: VanFormProps) {
       </Grid>
       <Grid item xs={8} key={'driver'}>
         <Paper
-          style={{ height: 100, textAlign: 'center', lineHeight: '100px', backgroundColor: 'grey', color: 'white' }}
+          style={{ height: 100, textAlign: 'center', lineHeight: '100px', backgroundColor: '#74B3CE', color: 'white' }}
         >
           คนขับ
         </Paper>
@@ -123,11 +125,21 @@ function SeatButton(props: SeatButtonProps) {
         variant='contained'
         onClick={handleClickOpen}
         color={seat.is_lock ? 'error' : isDefaultName ? 'primary' : 'info'}
+        style={seat.status === SeatStatus[SeatStatus.RESERVE] ? { height: '100%', width: '100%' } : {}}
       >
-        {showSeatText(seat)}
+        <div style={{ display: 'flex' }}>
+          {seat.status === SeatStatus[SeatStatus.RESERVE] ? (
+            ''
+          ) : (
+            <div style={{ paddingRight: '5px' }}>
+              <EventSeat />
+            </div>
+          )}
+          {showSeatText(seat)}
+        </div>
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{`เปลี่ยนชื่อที่นั่ง #${seat.seat_number}`}</DialogTitle>
+        <DialogTitle>{`จองที่นั่ง #${seat.seat_number}`}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             <Grid container spacing={2}>
@@ -139,13 +151,13 @@ function SeatButton(props: SeatButtonProps) {
                 )}
               </Grid>
               <Grid item md={12}>
-                <TextField label='เปลี่ยนชื่อที่นั่ง' onChange={v => setSeatName(v.target.value)} fullWidth />
+                <TextField label='จองที่นั่ง' onChange={v => setSeatName(v.target.value)} fullWidth />
               </Grid>
             </Grid>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
+          {/* <Button
             variant='contained'
             color='error'
             onClick={() => {
@@ -154,7 +166,7 @@ function SeatButton(props: SeatButtonProps) {
             }}
           >
             {seat.is_lock ? 'ปลดล็อก' : 'ล็อกที่นั่ง'}
-          </Button>
+          </Button> */}
           <Button
             variant='contained'
             onClick={() => {
@@ -164,7 +176,7 @@ function SeatButton(props: SeatButtonProps) {
           >
             คอนเฟิร์ม
           </Button>
-          <Button
+          {/* <Button
             variant='outlined'
             onClick={() => {
               onChange({ ...seat, name: `#${seat.seat_number}`, status: SeatStatus[SeatStatus.EMPTY] })
@@ -172,7 +184,7 @@ function SeatButton(props: SeatButtonProps) {
             }}
           >
             ที่ว่าง
-          </Button>
+          </Button> */}
           <Button onClick={handleClose}>ปิด</Button>
         </DialogActions>
       </Dialog>
@@ -187,6 +199,6 @@ export function showSeatText(seat: Seat): string {
   } else if (!regexPattern.test(seat.name || '#1')) {
     return `(${seat.seat_number}) ${seat.name}`
   } else {
-    return `#${seat.seat_number}`
+    return `${seat.seat_number}`
   }
 }

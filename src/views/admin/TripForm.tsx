@@ -130,7 +130,7 @@ function TripForm(props: TripFormProps) {
                 error={!R.isNil(errors.description)}
                 helperText={errors.description && errors.description?.message}
                 multiline
-                rows={6}
+                minRows={6}
               />
             </Grid>
 
@@ -160,12 +160,17 @@ function TripForm(props: TripFormProps) {
                     defaultValue={item.link}
                     style={{ marginLeft: 10 }}
                   />
-                  <Button type='button' onClick={() => removeContact(index)}>
-                    ลบ
-                  </Button>
+                  <IconButton
+                    size='large'
+                    aria-label='remove-destination'
+                    onClick={() => removeLocation(index)}
+                    style={{ color: 'darkgrey' }}
+                  >
+                    <Close />
+                  </IconButton>
                 </Box>
               ))}
-              <Button type='button' onClick={() => appendContact({ contact_type: '', link: '' })}>
+              <Button type='button' variant='outlined' onClick={() => appendContact({ contact_type: '', link: '' })}>
                 เพิ่มวิธีการติดต่อ
               </Button>
             </Grid>
@@ -180,16 +185,21 @@ function TripForm(props: TripFormProps) {
                   />
                   <TextField
                     {...register(`locations.${index}.description`)}
-                    label='อธิบายเพิ่มเติม (ใส่ ไม่ใส่ก็ได้)'
+                    label='ลิงค์ GPS หรือ แผนที่'
                     defaultValue={item.description}
                     style={{ marginLeft: 10 }}
                   />
-                  <Button type='button' onClick={() => removeLocation(index)}>
-                    ลบ
-                  </Button>
+                  <IconButton
+                    size='large'
+                    aria-label='remove-destination'
+                    onClick={() => removeLocation(index)}
+                    style={{ color: 'darkgrey' }}
+                  >
+                    <Close />
+                  </IconButton>
                 </Box>
               ))}
-              <Button type='button' onClick={() => appendLocation({ title: '', description: '' })}>
+              <Button type='button' variant='outlined' onClick={() => appendLocation({ title: '', description: '' })}>
                 เพิ่มจุดหมาย
               </Button>
             </Grid>
@@ -244,9 +254,7 @@ function TripForm(props: TripFormProps) {
                   showMonthDropdown
                   id='going_date_picker'
                   placeholderText='MM-DD-YYYY'
-                  customInput={
-                    <TextField label='วันไป' {...register('going_date', { required: true })} fullWidth />
-                  }
+                  customInput={<TextField label='วันไป' {...register('going_date', { required: true })} fullWidth />}
                   onChange={(date: Date) => setValue('going_date', date)}
                 />
               </DatePickerWrapper>
