@@ -5,7 +5,7 @@ import { ChangeEvent, useState } from 'react'
 
 // ** MUI Components
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import { Avatar, Typography, styled } from '@mui/material'
+import { Avatar, Typography, styled, IconButton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button, { ButtonProps } from '@mui/material/Button'
 import Card from '@mui/material/Card'
@@ -13,6 +13,7 @@ import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
+import { Close } from '@mui/icons-material'
 
 // ** Layout Import
 
@@ -219,13 +220,20 @@ function ProfilerForm(props: ProfilerFormProps) {
                     defaultValue={item.account_number}
                     style={{ marginLeft: 10 }}
                   />
-                  <Button type='button' onClick={() => removeBankAccount(index)}>
-                    ลบ
-                  </Button>
+                  <IconButton
+                    size='large'
+                    aria-label='remove-bank-account'
+                    onClick={() => removeBankAccount(index)}
+                    style={{ color: 'darkgrey' }}
+                  >
+                    <Close />
+                  </IconButton>
                 </Box>
               ))}
               <Button
                 type='button'
+                variant='outlined'
+                style={{ marginTop: '1em'}}
                 onClick={() => appendBankAccount({ bank_title: '', account_name: '', account_number: '' })}
               >
                 เพิ่มบัญชีธนาคาร
@@ -246,12 +254,17 @@ function ProfilerForm(props: ProfilerFormProps) {
                     defaultValue={item.link}
                     style={{ marginLeft: 10 }}
                   />
-                  <Button type='button' onClick={() => removeContact(index)}>
-                    ลบ
-                  </Button>
+                  <IconButton
+                    size='large'
+                    aria-label='remove-destination'
+                    onClick={() => removeContact(index)}
+                    style={{ color: 'darkgrey' }}
+                  >
+                    <Close />
+                  </IconButton>
                 </Box>
               ))}
-              <Button type='button' onClick={() => appendContact({ contact_type: '', link: '' })}>
+              <Button type='button' variant='outlined' onClick={() => appendContact({ contact_type: '', link: '' })}>
                 เพิ่มวิธีการติดต่อ
               </Button>
             </Grid>

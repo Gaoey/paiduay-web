@@ -88,21 +88,21 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
           showPlayButton={false}
           autoPlay={true}
           renderLeftNav={(onClick: any, disabled: boolean) => (
-            <div style={{ position: 'absolute', top: '48%', left: '1em' }}>
+            <div style={{ position: 'absolute', top: '48%', left: '0.5em', zIndex: '1' }}>
               <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
                 <ChevronLeft />
               </IconButton>
             </div>
           )}
           renderRightNav={(onClick: any, disabled: boolean) => (
-            <div style={{ position: 'absolute', top: '48$', right: '1em' }}>
+            <div style={{ position: 'absolute', top: '48%', right: '0.5em', zIndex: '1' }}>
               <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
                 <ChevronRight />
               </IconButton>
             </div>
           )}
           renderFullscreenButton={(onClick: any, isFullscreen: boolean) => (
-            <div style={{ position: 'absolute', bottom: '1em', right: '1em' }}>
+            <div style={{ position: 'absolute', bottom: '1em', right: '1em', zIndex: '1' }}>
               <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick}>
                 {isFullscreen ? <CloseFullscreen /> : <Fullscreen />}
               </IconButton>

@@ -13,15 +13,15 @@ const navigation = (): VerticalNavItemsType => {
       path: '/admin/dashboard'
     },
     {
-      title: 'Profiler Settings',
+      title: 'โปรไฟล์ทริปลีดเดอร์',
       icon: AccountCogOutline,
       path: '/admin/profiler-settings'
     },
     {
-      sectionTitle: 'Trips'
+      sectionTitle: 'ทริป'
     },
     {
-      title: 'Trip Lists',
+      title: 'ทริปของคุณ',
       icon: AccountCogOutline,
       path: '/admin/trip-list'
     },
@@ -32,7 +32,7 @@ const navigation = (): VerticalNavItemsType => {
     //   path: '/admin/trip-history'
     // },
     {
-      title: 'Create a Trip',
+      title: 'สร้างทริป',
       icon: AccountCogOutline,
       path: '/admin/create-trip'
     }
