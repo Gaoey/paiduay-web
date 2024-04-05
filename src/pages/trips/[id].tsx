@@ -1,4 +1,4 @@
-import { Button, Grid } from '@mui/material'
+import { Typography, Grid, Fab } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
@@ -16,12 +16,17 @@ export default function UserTripDetail() {
         <Grid item md={12}>
           <TripDetailComponent tripID={tripID} />
         </Grid>
-        <Grid item md={12} style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button variant='contained' onClick={() => router.push(`/booking/${tripID}`)}>
-            จองที่
-          </Button>
-        </Grid>
       </Grid>
+      <div style={{ position: 'fixed', bottom: '2em', right: '2em' }}>
+        <Fab
+          size='large'
+          color='secondary'
+          style={{ filter: 'drop-shadow(3px 3px 2px #aaa)', width: '3em', height: '3em', fontSize: '1.5em' }}
+          onClick={() => router.push(`/booking/${tripID}`)}
+        >
+          จอง
+        </Fab>
+      </div>
     </ApexChartWrapper>
   )
 }

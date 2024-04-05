@@ -10,6 +10,9 @@ import {
   Grid,
   Typography
 } from '@mui/material'
+import Schedule from '@mui/icons-material/Schedule'
+import Groups from '@mui/icons-material/Groups'
+
 import { format } from 'date-fns'
 import * as R from 'ramda'
 import { useEffect } from 'react'
@@ -49,7 +52,7 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
     : trip?.data.cover_images[0].signed_url
 
   return (
-    <Card>
+    <Card style={{ margin: 0 }}>
       <CardHeader
         avatar={
           R.isNil(profiler?.logo_image?.signed_url) ? (
@@ -89,13 +92,19 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
                 }}
               />
             </Box>
-            <Typography variant='body2' color='text.secondary'>
-              Date: ({format(new Date(trip?.data.from_date), 'dd MMM yyyy')} -
-              {format(new Date(trip?.data.to_date), 'dd MMM yyyy')})
-            </Typography>
-            <Typography variant='body2' color='text.secondary'>
-              จำนวนคน: {trip?.data?.members.length} / {trip?.data?.total_people}
-            </Typography>
+            <div style={{ display: 'flex' }}>
+              <Schedule style={{ color: '#3B5249' }}/>
+              <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
+                {format(new Date(trip?.data.from_date), 'dd MMM yyyy')} -
+                {format(new Date(trip?.data.to_date), 'dd MMM yyyy')}
+              </Typography>
+            </div>
+            <div style={{ display: 'flex' }}>
+              <Groups style={{ color: '#3B5249' }}/>
+              <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
+                จำนวนคน: {trip?.data?.members.length} / {trip?.data?.total_people}
+              </Typography>
+            </div>
             <Typography variant='body2' color='text.secondary' style={{ marginTop: 10 }}>
               {trimMessage(trip?.data?.description, 1000)}
             </Typography>
