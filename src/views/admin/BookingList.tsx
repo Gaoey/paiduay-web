@@ -113,7 +113,6 @@ const BookingTable = (props: Props) => {
                       >
                         แก้ไข
                       </Button>
-                      <Button variant='outlined'>ลบ</Button>
                     </Box>
                   </TableCell>
                 </TableRow>

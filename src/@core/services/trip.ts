@@ -21,6 +21,9 @@ const tripAPI = (authIntance: AxiosInstance) => ({
   },
   findTripByID: (tripID: string): Promise<Trip> => {
     return authIntance.get(`/v1/trips/${tripID}`)
+  },
+  removeTrip: (tripID: string): Promise<Trip> => {
+    return authIntance.delete(`/v1/trips/${tripID}`)
   }
 })
 
@@ -32,13 +35,15 @@ function useTripAPI({ authInstance }: InstanceProps) {
   const updateTrip = useMutation(api.updateTrip)
   const findTripByProfilerID = useMutation(api.findTripByProfilerID)
   const findTripByID = useMutation(api.findTripByID)
+  const removeTrip = useMutation(api.removeTrip)
 
   return {
     findTrips,
     updateTrip,
     createTrip,
     findTripByProfilerID,
-    findTripByID
+    findTripByID,
+    removeTrip
   }
 }
 
