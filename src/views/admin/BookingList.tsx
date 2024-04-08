@@ -175,7 +175,7 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
           </Button>
           <Button
             onClick={() => {
-              const status = BookingStatus[BookingStatus.FAILED]
+              const status = BookingStatus[BookingStatus.REJECT]
               onChange(status)
               handleClose()
             }}
