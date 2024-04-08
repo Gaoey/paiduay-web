@@ -60,7 +60,7 @@ export interface TripFilter {
 export interface Trip {
   _id: string
   data: TripData
-  profiler_data?: Profiler
+  profiler?: Profiler | null
   profiler_id: string
   created_by_user_id: string
   is_deleted: boolean
