@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import EventSeat from '@mui/icons-material/EventSeat'
 
-import { useState } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { Seat, SeatStatus, Transportation } from 'src/@core/types/transport'
 
 export function range(start: number, end: number, step = 1): number[] {
@@ -104,9 +104,17 @@ interface SeatButtonProps {
 
 function SeatButton(props: SeatButtonProps) {
   const { seat, onChange } = props
-
   const [open, setOpen] = useState(false)
-  const [seatName, setSeatName] = useState<string>(seat.name || '')
+  const [reserveFormLocalStatus, setReserveFormLocalStatus] = useState<string>('EMPTY')
+
+  useEffect(() => {
+    if (seat.is_lock) {
+      setReserveFormLocalStatus('LOCKED')
+    }
+    if (seat.status === SeatStatus[SeatStatus.RESERVE]) {
+      setReserveFormLocalStatus('RESERVED')
+    }
+  }, [seat.is_lock, seat.status])
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -116,8 +124,119 @@ function SeatButton(props: SeatButtonProps) {
     setOpen(false)
   }
 
+  const handleOnReserve = useCallback(
+    (seatName: any, seatEmail: any, seatLineID: any, seatPhone: any) => {
+      onChange({
+        ...seat,
+        name: seatName,
+        status: SeatStatus[SeatStatus.RESERVE],
+        email: seatEmail,
+        line_id: seatLineID,
+        phone: seatPhone
+      })
+    },
+    [onChange, seat]
+  )
+
   const regexPattern = /^#\d+$/
   const isDefaultName = regexPattern.test(seat.name || '#1')
+
+  const ChooseActionForm = useCallback(
+    () => (
+      <>
+        <DialogContent>
+          <DialogContentText>
+            <Grid container spacing={2}>
+              <Grid item md={12}>
+                <Typography variant='subtitle2' sx={{ mt: 1 }}>
+                  {`การล็อกที่นั่งจะทำให้ลูกทัวร์จองที่ไม่ได้ การจองแทนลูกทัวร์จะสร้างการจองให้ในระบบ`}
+                </Typography>
+              </Grid>
+            </Grid>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant='contained'
+            color='error'
+            onClick={() => {
+              onChange({ ...seat, is_lock: !seat.is_lock })
+              handleClose()
+            }}
+          >
+            ล็อกที่นั่ง
+          </Button>
+          <Button
+            variant='contained'
+            onClick={() => {
+              setReserveFormLocalStatus('RESERVED')
+            }}
+          >
+            จองแทนลูกทัวร์
+          </Button>
+          <Button onClick={handleClose}>ปิด</Button>
+        </DialogActions>
+      </>
+    ),
+    [onChange, seat]
+  )
+
+  const LockForm = useCallback(
+    () => (
+      <>
+        <DialogContent>
+          <DialogContentText>
+            <Grid container spacing={2}>
+              <Grid item md={12}>
+                <Typography variant='subtitle2' sx={{ mt: 1 }} color='red'>
+                  {`คุณกำลังจะปลดล็อกที่นั่ง! โปรดตรวจสอบว่าถูกต้องแล้ว`}
+                </Typography>
+              </Grid>
+            </Grid>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant='contained'
+            color='error'
+            onClick={() => {
+              onChange({ ...seat, is_lock: false })
+              handleClose()
+              setReserveFormLocalStatus('EMPTY')
+            }}
+          >
+            ปลดล็อก
+          </Button>
+          <Button onClick={handleClose}>ปิด</Button>
+        </DialogActions>
+      </>
+    ),
+    [onChange, seat]
+  )
+
+  const formToRender = useMemo(() => {
+    const renderSwitch = (seatFormStatus: string) => {
+      switch (seatFormStatus) {
+        case 'RESERVED':
+          return (
+            <ReserveForm
+              isDefaultName={isDefaultName}
+              seat={seat}
+              handleClose={handleClose}
+              setReserveFormLocalStatus={setReserveFormLocalStatus}
+              onChange={onChange}
+              handleOnReserve={handleOnReserve}
+            />
+          )
+        case 'LOCKED':
+          return <LockForm />
+        default:
+          return <ChooseActionForm />
+      }
+    }
+
+    return renderSwitch(reserveFormLocalStatus)
+  }, [ChooseActionForm, LockForm, handleOnReserve, isDefaultName, onChange, reserveFormLocalStatus, seat])
 
   return (
     <>
@@ -138,57 +257,81 @@ function SeatButton(props: SeatButtonProps) {
           {showSeatText(seat)}
         </div>
       </Button>
+
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{`จองที่นั่ง #${seat.seat_number}`}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            <Grid container spacing={2}>
-              <Grid item md={12}>
-                {!isDefaultName && (
-                  <Typography variant='subtitle2' sx={{ mt: 1 }} color='red'>
-                    {`Warning!! Do you want to update this seat, it was reserved by "${seat.name}"`}
-                  </Typography>
-                )}
-              </Grid>
-              <Grid item md={12}>
-                <TextField label='ชื่อผู้จอง' onChange={v => setSeatName(v.target.value)} fullWidth />
-              </Grid>
+        <DialogTitle>{`เปลี่ยนสถานะที่นั่ง #${seat.seat_number}`}</DialogTitle>
+        {formToRender}
+      </Dialog>
+    </>
+  )
+}
+
+const ReserveForm = ({
+  isDefaultName,
+  seat,
+  handleClose,
+  setReserveFormLocalStatus,
+  onChange,
+  handleOnReserve
+}: any) => {
+  const [seatName, setSeatName] = useState<string>(seat.name || '')
+  const [seatEmail, setSeatEmail] = useState<string>(seat.name || '')
+  const [seatLineID, setSeatLineID] = useState<string>(seat.name || '')
+  const [seatPhone, setSeatPhone] = useState<string>(seat.name || '')
+
+  return (
+    <>
+      <DialogContent>
+        <DialogContentText>
+          <Grid container spacing={2}>
+            <Grid item md={12}>
+              {!isDefaultName && (
+                <Typography variant='subtitle2' sx={{ mt: 1 }} color='red'>
+                  {`คุณกำลังเปลี่ยนสถานะของ "${seat.name}"`}
+                </Typography>
+              )}
             </Grid>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          {/* <Button
-            variant='contained'
-            color='error'
-            onClick={() => {
-              onChange({ ...seat, is_lock: !seat.is_lock })
-              handleClose()
-            }}
-          >
-            {seat.is_lock ? 'ปลดล็อก' : 'ล็อกที่นั่ง'}
-          </Button> */}
-          <Button
-            variant='contained'
-            onClick={() => {
-              onChange({ ...seat, name: seatName, status: SeatStatus[SeatStatus.RESERVE] })
-              handleClose()
-            }}
-          >
-            คอนเฟิร์ม
-          </Button>
+            <Grid item md={12}>
+              <TextField label='อีเมล' onChange={v => setSeatEmail(v.target.value)} defaultValue={seat.email || ''} fullWidth />
+            </Grid>
+            <Grid item md={12}>
+              <TextField label='ชื่อผู้จอง' onChange={v => setSeatName(v.target.value)} defaultValue={seat.name || ''} fullWidth />
+            </Grid>
+            <Grid item md={12}>
+              <TextField label='LINE ID' onChange={v => setSeatLineID(v.target.value)} defaultValue={seat.line_id || ''} fullWidth />
+            </Grid>
+            <Grid item md={12}>
+              <TextField label='เบอร์โทร' onChange={v => setSeatPhone(v.target.value)} defaultValue={seat.phone || ''} fullWidth />
+            </Grid>
+          </Grid>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          variant='contained'
+          onClick={() => {
+            handleOnReserve(seatName, seatEmail, seatLineID, seatPhone)
+            handleClose()
+            setReserveFormLocalStatus('RESERVED')
+          }}
+        >
+          คอนเฟิร์ม
+        </Button>
+        {!isDefaultName && (
           <Button
             variant='outlined'
             color='secondary'
             onClick={() => {
               onChange({ ...seat, name: `#${seat.seat_number}`, status: SeatStatus[SeatStatus.EMPTY] })
               handleClose()
+              setReserveFormLocalStatus('EMPTY')
             }}
           >
             ยกเลิกการจอง
           </Button>
-          <Button onClick={handleClose}>ปิด</Button>
-        </DialogActions>
-      </Dialog>
+        )}
+        <Button onClick={handleClose}>ปิด</Button>
+      </DialogActions>
     </>
   )
 }
