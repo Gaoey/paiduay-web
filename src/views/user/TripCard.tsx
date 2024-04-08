@@ -6,6 +6,8 @@ import { Trip } from 'src/@core/types/trip'
 import { toCurrency } from 'src/@core/utils/currency'
 import { trimMessage } from 'src/@core/utils/string'
 import { DefaultCoverTripImage } from '../admin/TripDetail'
+import { LinkStyled } from 'src/pages/pages/register'
+import Link from 'next/link'
 
 interface TripCardProps {
   trip: Trip
@@ -75,9 +77,12 @@ export default function TripCard(props: TripCardProps) {
               return (
                 <div style={{ display: 'flex' }} key={id}>
                   <AlternateEmail style={{ color: '#3B5249' }} />
+                  <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
+                    {v.contact_type}
+                  </Typography>
                   <a href={v.link} rel='noopener noreferrer' target='_blank'>
                     <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
-                      {v.contact_type}
+                      {trimMessage(v.link, 50)}
                     </Typography>
                   </a>
                 </div>
