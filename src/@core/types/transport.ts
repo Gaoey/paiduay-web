@@ -5,6 +5,9 @@ export interface Seat {
   user_id?: string | null
   is_lock: boolean
   status: SeatStatus | string
+  email?: string
+  line_id?: string
+  phone?: string
 }
 
 export enum SeatStatus {
