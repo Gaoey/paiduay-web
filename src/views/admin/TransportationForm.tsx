@@ -202,6 +202,7 @@ function SeatButton(props: SeatButtonProps) {
             onClick={() => {
               onChange({ ...seat, is_lock: false })
               handleClose()
+              setReserveFormLocalStatus('EMPTY')
             }}
           >
             ปลดล็อก
