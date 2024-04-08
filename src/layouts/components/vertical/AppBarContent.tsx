@@ -24,7 +24,7 @@ interface Props {
 
 const AppBarContent = (props: Props) => {
   // ** Props
-  const { hidden, settings, saveSettings, toggleNavVisibility } = props
+  const { hidden, toggleNavVisibility } = props
 
   // ** Hook
   const hiddenSm = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))

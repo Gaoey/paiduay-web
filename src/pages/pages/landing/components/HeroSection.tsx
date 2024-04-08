@@ -1,9 +1,6 @@
-import React, { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import Container from '@mui/material/Container'
-import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import LandingFormGroup from './LandingFormGroup'
+import Typography from '@mui/material/Typography'
+import { useRouter } from 'next/router'
 import Main from './Main'
 
 interface HeroFormProps {
@@ -13,7 +10,8 @@ interface HeroFormProps {
   onPriceChange: (newPriceRange: [number, number]) => void
 }
 
-function HeroSection({ selectedDate, selectedPriceRange, onDateChange, onPriceChange }: HeroFormProps) {
+function HeroSection(_props: HeroFormProps) {
+  const router = useRouter()
 
   return (
     <div style={{ width: '100vw', position: 'relative', overflowY: 'hidden', zIndex: '10' }}>
@@ -33,8 +31,10 @@ function HeroSection({ selectedDate, selectedPriceRange, onDateChange, onPriceCh
         <Typography variant='h4' align='center' color='#3B534A'>
           เราคือเพื่อน ที่จะช่วยคุณจัดการทริป
         </Typography>
-        <div style={{ paddingTop: '4em'}}>
-         <Button variant="contained" color="secondary">ดู ทริป</Button>
+        <div style={{ paddingTop: '4em' }}>
+          <Button variant='contained' color='secondary' onClick={() => router.push('/trips')}>
+            ดู ทริป
+          </Button>
         </div>
 
         {/* <LandingFormGroup

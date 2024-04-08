@@ -31,6 +31,9 @@ import { Trip } from 'src/@core/types/trip'
 import { toCurrency } from 'src/@core/utils/currency'
 import { trimMessage } from 'src/@core/utils/string'
 
+export const DefaultCoverTripImage =
+  'https://img.freepik.com/free-vector/gradient-spring-illustration_23-2149264032.jpg?w=1380&t=st=1710694509~exp=1710695109~hmac=99468e4d3221b7e0b1890066b623b4fc51c382dc7a2f0c68bbdd92ad88a0cc42'
+
 interface TripDetailsProps {
   tripID: string
 }
@@ -57,9 +60,7 @@ export default function TripDetailComponent({ tripID }: TripDetailsProps) {
   }
 
   const imgSrc: string[] = R.isEmpty(trip?.data.cover_images)
-    ? [
-        'https://img.freepik.com/free-vector/gradient-spring-illustration_23-2149264032.jpg?w=1380&t=st=1710694509~exp=1710695109~hmac=99468e4d3221b7e0b1890066b623b4fc51c382dc7a2f0c68bbdd92ad88a0cc42'
-      ]
+    ? [DefaultCoverTripImage]
     : trip?.data.cover_images.map(v => v.signed_url)
 
   const images = imgSrc.map(v => ({ original: v, thumbnail: v, thumbnailHeight: '60px', originalHeight: '600px' }))
