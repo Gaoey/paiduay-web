@@ -34,6 +34,7 @@ const CreateTrip = () => {
   const { isSuccess, data } = createTrip
 
   const onSubmit: SubmitHandler<any> = async data => {
+    
     const profiler: Profiler[] = await getCurrentProfiler()
     if (!R.isEmpty(profiler)) {
       const currentProfiler: Profiler = profiler[0]
