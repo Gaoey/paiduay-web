@@ -10,6 +10,7 @@ import { Booking, BookingData, BookingFilter } from 'src/@core/types/booking'
 import { Seat, Transport, Transportation } from 'src/@core/types/transport'
 import AdminLayout from 'src/layouts/AdminLayout'
 import BookingTable from 'src/views/admin/BookingList'
+import RemoveTripPopUp from 'src/views/admin/RemoveTripPopUp'
 import { TransportationNormalForm, VanForm } from 'src/views/admin/TransportationForm'
 import TripDetailComponent from 'src/views/admin/TripDetail'
 
@@ -17,11 +18,13 @@ export default function TripDetail() {
   const router = useRouter()
   const tripID = router.query.id as string
 
-  const { transportAPI, bookingAPI } = useApi()
+  const { transportAPI, bookingAPI, tripAPI } = useApi()
 
+  const { removeTrip } = tripAPI
   const { findBookings, updateBooking } = bookingAPI
   const { findTransportByTripID, updateSeatByTransportID } = transportAPI
 
+  const { isSuccess: isRemoveSuccess } = removeTrip
   const { data } = findTransportByTripID
   const { data: findBookingsData } = findBookings
   const { isSuccess } = updateSeatByTransportID
@@ -59,6 +62,12 @@ export default function TripDetail() {
   }, [isSuccess, tripID])
 
   useEffect(() => {
+    if (isRemoveSuccess) {
+      router.replace('/admin/trip-list/')
+    }
+  }, [isRemoveSuccess])
+
+  useEffect(() => {
     if (isUpdateBookingSuccess) {
       const filters: BookingFilter = { trip_id: tripID }
       const paginate: Paginate = {
@@ -66,6 +75,7 @@ export default function TripDetail() {
         page_number: 1
       }
       findBookings.mutate({ filters, paginate })
+      findTransportByTripID.mutate(tripID)
     }
   }, [isUpdateBookingSuccess, tripID])
 
@@ -90,7 +100,7 @@ export default function TripDetail() {
                 >
                   EDIT
                 </Button>
-                <Button variant='outlined'>REMOVE</Button>
+                <RemoveTripPopUp tripID={tripID} onRemove={(tripID: string) => removeTrip.mutate(tripID)} />
               </Box>
             </Grid>
             <Grid item md={12}>

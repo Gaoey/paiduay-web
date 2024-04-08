@@ -22,6 +22,7 @@ import { format } from 'date-fns'
 import { Button } from '@mui/material'
 import { toCurrency } from 'src/@core/utils/currency'
 import { useRouter } from 'next/router'
+import RemoveTripPopUp from './RemoveTripPopUp'
 
 interface StatusObj {
   [key: string]: {
@@ -41,27 +42,34 @@ const DashboardTable = () => {
   const { tripAPI, profilerAPI } = useApi()
 
   const { getCurrentProfiler } = profilerAPI
-  const { findTripByProfilerID } = tripAPI
+  const { findTripByProfilerID, removeTrip } = tripAPI
 
+  const { isSuccess } = removeTrip
   const { data } = findTripByProfilerID
 
-  useEffect(() => {
-    async function getTripsList() {
-      const profiler: Profiler[] = await getCurrentProfiler()
-      if (!R.isEmpty(profiler)) {
-        const currProfiler = profiler[0]
-        const paginate: Paginate = {
-          page_size: 50,
-          page_number: 1
-        }
-
-        // TODO:: filter only available trips (ยังมาไม่ถึง)
-        findTripByProfilerID.mutate({ profilerID: currProfiler._id, paginate })
+  const getTripsList = async () => {
+    const profiler: Profiler[] = await getCurrentProfiler()
+    if (!R.isEmpty(profiler)) {
+      const currProfiler = profiler[0]
+      const paginate: Paginate = {
+        page_size: 50,
+        page_number: 1
       }
-    }
 
+      // TODO:: filter only available trips (ยังมาไม่ถึง)
+      findTripByProfilerID.mutate({ profilerID: currProfiler._id, paginate })
+    }
+  }
+
+  useEffect(() => {
     getTripsList()
   }, [])
+
+  useEffect(() => {
+    if (isSuccess) {
+      getTripsList()
+    }
+  }, [isSuccess])
 
   const trips: Trip[] = R.isNil(data) ? [] : (data as Trip[])
 
@@ -123,7 +131,7 @@ const DashboardTable = () => {
                       <Button variant='outlined' style={{ marginRight: 20 }}>
                         แก้ไข
                       </Button>
-                      <Button variant='outlined'>ลบ</Button>
+                      <RemoveTripPopUp tripID={row._id} onRemove={(tripID: string) => removeTrip.mutate(tripID)} />
                     </Box>
                   </TableCell>
                 </TableRow>
