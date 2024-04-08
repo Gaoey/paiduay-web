@@ -111,8 +111,10 @@ function SeatButton(props: SeatButtonProps) {
     if (seat.is_lock) {
       setReserveFormLocalStatus('LOCKED')
     }
-    if (seat.status === SeatStatus[SeatStatus.RESERVE]) {
+    else if (seat.status === SeatStatus[SeatStatus.RESERVE]) {
       setReserveFormLocalStatus('RESERVED')
+    } else {
+      setReserveFormLocalStatus('EMPTY')
     }
   }, [seat.is_lock, seat.status])
 
@@ -275,9 +277,11 @@ const ReserveForm = ({
   handleOnReserve
 }: any) => {
   const [seatName, setSeatName] = useState<string>(seat.name || '')
-  const [seatEmail, setSeatEmail] = useState<string>(seat.name || '')
-  const [seatLineID, setSeatLineID] = useState<string>(seat.name || '')
-  const [seatPhone, setSeatPhone] = useState<string>(seat.name || '')
+  const [seatEmail, setSeatEmail] = useState<string>(seat.email || '')
+  const [seatLineID, setSeatLineID] = useState<string>(seat.line_id || '')
+  const [seatPhone, setSeatPhone] = useState<string>(seat.phone || '')
+
+  const informationFilled = seatName && seatEmail && seatLineID && seatPhone
 
   return (
     <>
@@ -292,16 +296,16 @@ const ReserveForm = ({
               )}
             </Grid>
             <Grid item md={12}>
-              <TextField label='อีเมล' onChange={v => setSeatEmail(v.target.value)} defaultValue={seat.email || ''} fullWidth />
+              <TextField label='อีเมล' value={seatEmail} onChange={v => setSeatEmail(v.target.value)} defaultValue={seat.email || ''} fullWidth />
             </Grid>
             <Grid item md={12}>
-              <TextField label='ชื่อผู้จอง' onChange={v => setSeatName(v.target.value)} defaultValue={seat.name || ''} fullWidth />
+              <TextField label='ชื่อผู้จอง' value={seatName} onChange={v => setSeatName(v.target.value)} defaultValue={seat.name || ''} fullWidth />
             </Grid>
             <Grid item md={12}>
-              <TextField label='LINE ID' onChange={v => setSeatLineID(v.target.value)} defaultValue={seat.line_id || ''} fullWidth />
+              <TextField label='LINE ID' value={seatLineID} onChange={v => setSeatLineID(v.target.value)} defaultValue={seat.line_id || ''} fullWidth />
             </Grid>
             <Grid item md={12}>
-              <TextField label='เบอร์โทร' onChange={v => setSeatPhone(v.target.value)} defaultValue={seat.phone || ''} fullWidth />
+              <TextField label='เบอร์โทร' value={seatPhone} onChange={v => setSeatPhone(v.target.value)} defaultValue={seat.phone || ''} fullWidth />
             </Grid>
           </Grid>
         </DialogContentText>
@@ -310,6 +314,9 @@ const ReserveForm = ({
         <Button
           variant='contained'
           onClick={() => {
+            if (!informationFilled) {
+              return
+            }
             handleOnReserve(seatName, seatEmail, seatLineID, seatPhone)
             handleClose()
             setReserveFormLocalStatus('RESERVED')
@@ -322,7 +329,14 @@ const ReserveForm = ({
             variant='outlined'
             color='secondary'
             onClick={() => {
-              onChange({ ...seat, name: `#${seat.seat_number}`, status: SeatStatus[SeatStatus.EMPTY] })
+              onChange({ 
+                ...seat, 
+                name: `#${seat.seat_number}`, 
+                status: SeatStatus[SeatStatus.EMPTY],
+                email: '',
+                line_id: '',
+                phone: ''
+              })
               handleClose()
               setReserveFormLocalStatus('EMPTY')
             }}
@@ -330,7 +344,12 @@ const ReserveForm = ({
             ยกเลิกการจอง
           </Button>
         )}
-        <Button onClick={handleClose}>ปิด</Button>
+        <Button onClick={() => {
+          handleClose()
+          if (!informationFilled) {
+            setReserveFormLocalStatus('EMPTY')
+          }
+        }}>ปิด</Button>
       </DialogActions>
     </>
   )
