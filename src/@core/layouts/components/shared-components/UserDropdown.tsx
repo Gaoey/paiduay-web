@@ -187,13 +187,13 @@ const UserDropdown = () => {
             Pricing
           </Box>
         </MenuItem> */}
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        <MenuItem sx={{ p: 0 }} onClick={() => router.push('/faq')}>
           <Box sx={styles}>
             <QuizOutlined sx={{ marginRight: 2 }} />
             FAQ
           </Box>
         </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        <MenuItem sx={{ p: 0 }}  onClick={() => router.push('/terms-and-conditions')}>
           <Box sx={styles}>
             <GavelOutlined sx={{ marginRight: 2 }} />
             Term & Conditions
