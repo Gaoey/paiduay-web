@@ -73,7 +73,7 @@ const DashboardTable = () => {
               <TableCell>ชื่อทริป</TableCell>
               <TableCell>จุดหมาย</TableCell>
               <TableCell>จำนวนคน</TableCell>
-              <TableCell>วิธีการรับเงิน</TableCell>
+              <TableCell>จำนวนเงิน</TableCell>
               <TableCell>ไป - กลับ</TableCell>
               <TableCell>สถานะ</TableCell>
               <TableCell>ปุ่ม</TableCell>
@@ -82,6 +82,7 @@ const DashboardTable = () => {
           <TableBody>
             {trips.map((row: Trip, index) => {
               const total_payments = row.data.total_people * (row.data.payment?.full_price || 1)
+              const amount_received = row.data.payment?.accumulate_price || 0.00
 
               return (
                 <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
@@ -94,7 +95,7 @@ const DashboardTable = () => {
                   </TableCell>
                   <TableCell>{row.data.locations.reduce((prev, curr) => `${prev} ${curr.title}`, '')}</TableCell>
                   <TableCell>{`${row.data.members.length} / ${row.data.total_people}`}</TableCell>
-                  <TableCell>{`${toCurrency(0.0)} / ${toCurrency(total_payments)}`}</TableCell>
+                  <TableCell>{`${toCurrency(amount_received)} / ${toCurrency(total_payments)}`}</TableCell>
                   <TableCell>{`${format(new Date(row.data.from_date), 'dd-MM-yyyy')} - ${format(
                     new Date(row.data.to_date),
                     'dd-MM-yyyy'
