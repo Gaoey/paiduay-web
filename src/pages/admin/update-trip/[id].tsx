@@ -1,5 +1,4 @@
 import { CircularProgress, Grid } from '@mui/material'
-import { ConsoleLine } from 'mdi-material-ui'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
@@ -8,7 +7,7 @@ import { SubmitHandler } from 'react-hook-form'
 import { useApi } from 'src/@core/services'
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import { Media } from 'src/@core/types'
-import { Seat, SeatStatus, Transport, TransportData } from 'src/@core/types/transport'
+import { Transport, TransportData } from 'src/@core/types/transport'
 import { Trip, TripData, TripPayload, TripStatus } from 'src/@core/types/trip'
 import AdminLayout from 'src/layouts/AdminLayout'
 import TripForm from 'src/views/admin/TripForm'
@@ -46,30 +45,14 @@ export default function UpdateTrip() {
     }
 
     const medias: Media[] = R.pathOr<Media[]>([], ['cover_images'], params)
-    console.log({ medias })
-    if (!R.isEmpty(medias)) {
-      const newMedias: Media[] = await uploadMedias.mutateAsync(medias)
-      console.log({ newMedias })
+    const filterMedias: Media[] = medias.filter(v => R.isEmpty(v.signed_url))
+    if (!R.isEmpty(filterMedias)) {
+      const newUpdateMedias: Media[] = await uploadMedias.mutateAsync(filterMedias)
+      const oldMedias: Media[] = medias.filter(v => !R.isEmpty(v.signed_url))
+      const newMedias = [...oldMedias, ...newUpdateMedias]
       tripData.cover_images = newMedias
     }
 
-    // update transports
-    const transport_data: TransportData[] = params.transport_data.map((v: TransportData) => {
-      return {
-        ...v,
-        total_seats: Number(v.total_seats),
-        seats: v.seats.map((u: Seat) => {
-          return {
-            ...u,
-            name: `#${u.seat_number}`,
-            seat_number: Number(u.seat_number),
-            status: u.is_lock ? SeatStatus[SeatStatus.RESERVE] : SeatStatus[SeatStatus.EMPTY]
-          }
-        })
-      }
-    })
-
-    console.log({ tripData })
     updateTrip.mutate({ tripID, params: tripData })
   }
 
@@ -97,7 +80,7 @@ export default function UpdateTrip() {
     <DatePickerWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <TripForm onSubmit={onSubmit} trip_payload={payload} />
+          <TripForm onSubmit={onSubmit} trip_payload={payload} isHiddenTransport={true} />
         </Grid>
       </Grid>
     </DatePickerWrapper>

@@ -13,9 +13,11 @@ import { TransportationNormalForm, VanForm, getDefaultTransport } from './Transp
 interface TripFormProps {
   trip_payload?: TripPayload
   onSubmit: SubmitHandler<any>
+  isHiddenTransport?: boolean
 }
 
 function TripForm(props: TripFormProps) {
+  const { isHiddenTransport = false } = props
   const p = props?.trip_payload
 
   const defaultValues = {
@@ -25,7 +27,11 @@ function TripForm(props: TripFormProps) {
     date_to_reserve: new Date(p?.trip_data.date_to_reserve || 0) || new Date(),
     from_date: new Date(p?.trip_data.from_date || 0) || new Date(),
     to_date: new Date(p?.trip_data.to_date || 0) || new Date(),
-    payment: p?.trip_data.payment || null,
+    payment:
+      {
+        ...p?.trip_data.payment,
+        payment_date: new Date(p?.trip_data.payment?.payment_date || 0) || new Date()
+      } || null,
     total_people: p?.trip_data.total_people || 10,
     members: p?.trip_data.members || [],
     locations: p?.trip_data.locations || [],
@@ -242,7 +248,7 @@ function TripForm(props: TripFormProps) {
             <Grid item xs={12} sm={6}>
               <DatePickerWrapper>
                 <DatePicker
-                  selected={watch('from_date', new Date())}
+                  selected={watch('from_date', new Date()) || defaultValues.from_date}
                   showYearDropdown
                   showMonthDropdown
                   id='from_date_picker'
@@ -256,7 +262,7 @@ function TripForm(props: TripFormProps) {
             <Grid item xs={12} sm={6}>
               <DatePickerWrapper>
                 <DatePicker
-                  selected={watch('to_date', new Date())}
+                  selected={watch('to_date', new Date()) || defaultValues.to_date}
                   showYearDropdown
                   showMonthDropdown
                   id='to_date_picker'
@@ -269,7 +275,7 @@ function TripForm(props: TripFormProps) {
 
             <Grid item xs={12} sm={6}>
               <DatePicker
-                selected={watch('date_to_reserve', new Date())}
+                selected={watch('date_to_reserve', new Date()) || defaultValues.date_to_reserve}
                 showYearDropdown
                 showMonthDropdown
                 id='date_to_reserve_picker'
@@ -313,7 +319,7 @@ function TripForm(props: TripFormProps) {
             <Grid item xs={12} sm={6}>
               <DatePickerWrapper>
                 <DatePicker
-                  selected={watch('payment.payment_date', new Date())}
+                  selected={watch('payment.payment_date', new Date()) || defaultValues.payment.payment_date}
                   showYearDropdown
                   showMonthDropdown
                   id='payment_date'
@@ -330,79 +336,82 @@ function TripForm(props: TripFormProps) {
               </DatePickerWrapper>
             </Grid>
 
-            <Grid item xs={12}>
-              <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                3. วิธีการเดินทาง
-              </Typography>
-            </Grid>
-
-            <Grid item xs={12}>
-              <Box style={{ display: 'flex', flexDirection: 'row' }}>
-                <Button
-                  variant='outlined'
-                  style={{ marginRight: 20 }}
-                  onClick={() => appendTransport(getDefaultTransport(10, 'VAN #1', Transportation.VAN))}
-                >
-                  เพิ่มรถตู้
-                </Button>
-                <Button
-                  variant='outlined'
-                  onClick={() => appendTransport(getDefaultTransport(5, 'SELF #1', Transportation.SELF))}
-                >
-                  เพิ่อวิธีการเดินทางแบบอื่่น
-                </Button>
-              </Box>
-            </Grid>
-
-            <Grid item xs={12}>
-              {transports.map((item, index) => (
-                <Grid container spacing={7} key={index} style={{ marginBottom: 40 }}>
-                  <Grid item xs={4}>
-                    <TextField
-                      {...register(`transport_data.${index}.name`)}
-                      label='ชื่อ'
-                      defaultValue={item.name}
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={4}>
-                    <TextField
-                      {...register(`transport_data.${index}.transport_by`)}
-                      label='เดินทางด้วย'
-                      disabled
-                      fullWidth
-                      defaultValue={item.transport_by}
-                      style={{ marginLeft: 10 }}
-                    />
-                  </Grid>
-                  <Grid item xs={4}>
-                    <TextField
-                      {...register(`transport_data.${index}.total_seats`)}
-                      label='จำนวนที่นั่ง'
-                      disabled={item.transport_by === Transportation[Transportation.VAN]}
-                      defaultValue={item.total_seats}
-                      fullWidth
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    {item.transport_by === Transportation[Transportation.VAN] ? (
-                      <VanForm
-                        values={watch(`transport_data.${index}.seats`)}
-                        onChange={(data: Seat[]) => setValue(`transport_data.${index}.seats`, data)}
-                      />
-                    ) : (
-                      <TransportationNormalForm />
-                    )}
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button type='button' variant='outlined' onClick={() => removeTransport(index)}>
-                      ลบ
-                    </Button>
-                  </Grid>
+            {!isHiddenTransport && (
+              <>
+                <Grid item xs={12}>
+                  <Typography variant='body2' sx={{ fontWeight: 600 }}>
+                    3. วิธีการเดินทาง
+                  </Typography>
                 </Grid>
-              ))}
-            </Grid>
+
+                <Grid item xs={12}>
+                  <Box style={{ display: 'flex', flexDirection: 'row' }}>
+                    <Button
+                      variant='outlined'
+                      style={{ marginRight: 20 }}
+                      onClick={() => appendTransport(getDefaultTransport(10, 'VAN #1', Transportation.VAN))}
+                    >
+                      เพิ่มรถตู้
+                    </Button>
+                    <Button
+                      variant='outlined'
+                      onClick={() => appendTransport(getDefaultTransport(5, 'SELF #1', Transportation.SELF))}
+                    >
+                      เพิ่อวิธีการเดินทางแบบอื่น
+                    </Button>
+                  </Box>
+                </Grid>
+                <Grid item xs={12}>
+                  {transports.map((item, index) => (
+                    <Grid container spacing={7} key={index} style={{ marginBottom: 40 }}>
+                      <Grid item xs={4}>
+                        <TextField
+                          {...register(`transport_data.${index}.name`)}
+                          label='ชื่อ'
+                          defaultValue={item.name}
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <TextField
+                          {...register(`transport_data.${index}.transport_by`)}
+                          label='เดินทางด้วย'
+                          disabled
+                          fullWidth
+                          defaultValue={item.transport_by}
+                          style={{ marginLeft: 10 }}
+                        />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <TextField
+                          {...register(`transport_data.${index}.total_seats`)}
+                          label='จำนวนที่นั่ง'
+                          disabled={item.transport_by === Transportation[Transportation.VAN]}
+                          defaultValue={item.total_seats}
+                          fullWidth
+                        />
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        {item.transport_by === Transportation[Transportation.VAN] ? (
+                          <VanForm
+                            values={watch(`transport_data.${index}.seats`)}
+                            onChange={(data: Seat[]) => setValue(`transport_data.${index}.seats`, data)}
+                          />
+                        ) : (
+                          <TransportationNormalForm />
+                        )}
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Button type='button' variant='outlined' onClick={() => removeTransport(index)}>
+                          ลบ
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  ))}
+                </Grid>
+              </>
+            )}
 
             <Grid item xs={12}>
               <Button type='submit' variant='contained' color='primary'>

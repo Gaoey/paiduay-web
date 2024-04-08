@@ -128,7 +128,11 @@ const DashboardTable = () => {
                       >
                         ดู
                       </Button>
-                      <Button variant='outlined' style={{ marginRight: 20 }}>
+                      <Button
+                        variant='outlined'
+                        style={{ marginRight: 20 }}
+                        onClick={() => router.push(`/admin/update-trip/${row._id}`)}
+                      >
                         แก้ไข
                       </Button>
                       <RemoveTripPopUp tripID={row._id} onRemove={(tripID: string) => removeTrip.mutate(tripID)} />
