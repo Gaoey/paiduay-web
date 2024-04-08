@@ -32,8 +32,7 @@ export const bookingStatusObj: StatusObj = {
   [BookingStatus[BookingStatus.CONFIRM]]: { color: 'success' },
   [BookingStatus[BookingStatus.PENDING]]: { color: 'primary' },
   [BookingStatus[BookingStatus.NONE]]: { color: 'error' },
-  [BookingStatus[BookingStatus.FAILED]]: { color: 'error' },
-  [BookingStatus[BookingStatus.PAID]]: { color: 'info' }
+  [BookingStatus[BookingStatus.REJECT]]: { color: 'error' }
 }
 
 interface Props {

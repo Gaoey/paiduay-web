@@ -5,9 +5,8 @@ import { UserProfile } from './user'
 export enum BookingStatus {
   NONE = 'NONE',
   PENDING = 'PENDING',
-  PAID = 'PAID',
   CONFIRM = 'CONFIRM',
-  FAILED = 'FAILED'
+  REJECT = 'REJECT'
 }
 
 export interface BookingData {

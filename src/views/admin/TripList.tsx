@@ -26,13 +26,14 @@ import { useRouter } from 'next/router'
 interface StatusObj {
   [key: string]: {
     color: ThemeColor
+    display: string
   }
 }
 
 const statusObj: StatusObj = {
-  [TripStatus[TripStatus.Full]]: { color: 'info' },
-  [TripStatus[TripStatus.NotFull]]: { color: 'primary' },
-  [TripStatus[TripStatus.NotAvailable]]: { color: 'error' }
+  [TripStatus[TripStatus.Full]]: { color: 'info', display: 'เต็ม' },
+  [TripStatus[TripStatus.NotFull]]: { color: 'primary', display: 'ไม่เต็ม' },
+  [TripStatus[TripStatus.NotAvailable]]: { color: 'error', display: 'ผ่านไปแล้ว' }
 }
 
 const DashboardTable = () => {
@@ -71,7 +72,6 @@ const DashboardTable = () => {
           <TableHead>
             <TableRow>
               <TableCell>ชื่อทริป</TableCell>
-              <TableCell>จุดหมาย</TableCell>
               <TableCell>จำนวนคน</TableCell>
               <TableCell>จำนวนเงิน</TableCell>
               <TableCell>ไป - กลับ</TableCell>
@@ -82,7 +82,7 @@ const DashboardTable = () => {
           <TableBody>
             {trips.map((row: Trip, index) => {
               const total_payments = row.data.total_people * (row.data.payment?.full_price || 1)
-              const amount_received = row.data.payment?.accumulate_price || 0.00
+              const amount_received = row.data.payment?.accumulate_price || 0.0
 
               return (
                 <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
@@ -93,16 +93,15 @@ const DashboardTable = () => {
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell>{row.data.locations.reduce((prev, curr) => `${prev} ${curr.title}`, '')}</TableCell>
                   <TableCell>{`${row.data.members.length} / ${row.data.total_people}`}</TableCell>
                   <TableCell>{`${toCurrency(amount_received)} / ${toCurrency(total_payments)}`}</TableCell>
-                  <TableCell>{`${format(new Date(row.data.from_date), 'dd-MM-yyyy')} - ${format(
+                  <TableCell>{`${format(new Date(row.data.from_date), 'dd/MM/yyyy')} - ${format(
                     new Date(row.data.to_date),
-                    'dd-MM-yyyy'
+                    'dd/MM/yyyy'
                   )}`}</TableCell>
                   <TableCell>
                     <Chip
-                      label={row.data.status}
+                      label={statusObj[row.data.status].display}
                       color={statusObj[row.data.status].color}
                       sx={{
                         height: 24,
