@@ -246,7 +246,7 @@ function TripForm(props: TripFormProps) {
                   showYearDropdown
                   showMonthDropdown
                   id='from_date_picker'
-                  placeholderText='MM-DD-YYYY'
+                  placeholderText='MM/DD/YYYY'
                   customInput={<TextField label='วันไป' {...register('from_date', { required: true })} fullWidth />}
                   onChange={(date: Date) => setValue('from_date', date)}
                 />
@@ -260,7 +260,7 @@ function TripForm(props: TripFormProps) {
                   showYearDropdown
                   showMonthDropdown
                   id='to_date_picker'
-                  placeholderText='MM-DD-YYYY'
+                  placeholderText='MM/DD/YYYY'
                   customInput={<TextField label='วันกลับ' {...register('to_date', { required: true })} fullWidth />}
                   onChange={(date: Date) => setValue('to_date', date)}
                 />
@@ -273,7 +273,7 @@ function TripForm(props: TripFormProps) {
                 showYearDropdown
                 showMonthDropdown
                 id='date_to_reserve_picker'
-                placeholderText='MM-DD-YYYY'
+                placeholderText='MM/DD/YYYY'
                 customInput={
                   <TextField label='วันเริ่มจอง' {...register('date_to_reserve', { required: true })} fullWidth />
                 }
@@ -317,7 +317,7 @@ function TripForm(props: TripFormProps) {
                   showYearDropdown
                   showMonthDropdown
                   id='payment_date'
-                  placeholderText='MM-DD-YYYY'
+                  placeholderText='MM/DD/YYYY'
                   customInput={
                     <TextField
                       label='จ่ายภายในวัน'
