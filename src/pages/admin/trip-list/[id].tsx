@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextField, Typography } from '@mui/material'
+import { Box, Button, Grid, Typography } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
@@ -11,7 +11,8 @@ import { Seat, Transport, Transportation } from 'src/@core/types/transport'
 import AdminLayout from 'src/layouts/AdminLayout'
 import BookingTable from 'src/views/admin/BookingList'
 import RemoveTripPopUp from 'src/views/admin/RemoveTripPopUp'
-import { TransportationNormalForm, VanForm } from 'src/views/admin/TransportationForm'
+import VanDetail from 'src/views/admin/TransportDetail'
+import { TransportationNormalForm } from 'src/views/admin/TransportationForm'
 import TripDetailComponent from 'src/views/admin/TripDetail'
 
 export default function TripDetail() {
@@ -22,9 +23,10 @@ export default function TripDetail() {
 
   const { removeTrip } = tripAPI
   const { findBookings, updateBooking } = bookingAPI
-  const { findTransportByTripID, updateSeatByTransportID } = transportAPI
+  const { findTransportByTripID, updateSeatByTransportID, removeTransport } = transportAPI
 
-  const { isSuccess: isRemoveSuccess } = removeTrip
+  const { isSuccess: isRemoveTransportSuccess } = removeTransport
+  const { isSuccess: isRemoveTripSuccess } = removeTrip
   const { data } = findTransportByTripID
   const { data: findBookingsData } = findBookings
   const { isSuccess } = updateSeatByTransportID
@@ -56,16 +58,16 @@ export default function TripDetail() {
   }, [])
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || isRemoveTransportSuccess) {
       findTransportByTripID.mutate(tripID)
     }
-  }, [isSuccess, tripID])
+  }, [isSuccess, isRemoveTransportSuccess, tripID])
 
   useEffect(() => {
-    if (isRemoveSuccess) {
+    if (isRemoveTripSuccess) {
       router.replace('/admin/trip-list/')
     }
-  }, [isRemoveSuccess])
+  }, [isRemoveTripSuccess])
 
   useEffect(() => {
     if (isUpdateBookingSuccess) {
@@ -119,17 +121,13 @@ export default function TripDetail() {
                 transports.map(item => {
                   if (item.data.transport_by === Transportation[Transportation.VAN]) {
                     return (
-                      <Grid container spacing={7} key={item._id} style={{ marginBottom: 40 }}>
-                        <Grid item xs={6}>
-                          <TextField label='Name' defaultValue={item.data.name} fullWidth disabled />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <TextField label='Transport By' defaultValue={item.data.transport_by} disabled />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <VanForm values={item.data.seats} onChange={(seat: Seat[]) => onSetSeat(seat)} />
-                        </Grid>
-                      </Grid>
+                      <VanDetail
+                        item={item}
+                        onSetSeat={onSetSeat}
+                        onRemoveTransport={(tripID: string, transportID: string) =>
+                          removeTransport.mutate({ tripID, transportID })
+                        }
+                      />
                     )
                   } else {
                     return <TransportationNormalForm key={item._id} />

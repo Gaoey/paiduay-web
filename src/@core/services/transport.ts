@@ -17,6 +17,9 @@ const transportAPI = (authIntance: AxiosInstance) => ({
     seats: Seat[]
   }): Promise<boolean> => {
     return authIntance.put(`/v1/trips/${tripID}/transports/${transportID}/seats`, seats)
+  },
+  removeTransport: ({ tripID, transportID }: { tripID: string; transportID: string }): Promise<boolean> => {
+    return authIntance.delete(`/v1/trips/${tripID}/transports/${transportID}`)
   }
 })
 
@@ -25,10 +28,12 @@ function useTransportAPI({ authInstance }: InstanceProps) {
 
   const findTransportByTripID = useMutation(api.findTransportByTripID)
   const updateSeatByTransportID = useMutation(api.updateSeatByTransportID)
+  const removeTransport = useMutation(api.removeTransport)
 
   return {
     findTransportByTripID,
-    updateSeatByTransportID
+    updateSeatByTransportID,
+    removeTransport
   }
 }
 
