@@ -1,7 +1,7 @@
 import { Close } from '@mui/icons-material'
 import { Box, Button, Card, CardContent, CardHeader, Grid, IconButton, TextField, Typography } from '@mui/material'
 import * as R from 'ramda'
-import React, { useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import DatePicker from 'react-datepicker'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
@@ -9,6 +9,9 @@ import { BUCKET_NAME, Media } from 'src/@core/types'
 import { Seat, Transportation } from 'src/@core/types/transport'
 import { TripPayload, TripStatus } from 'src/@core/types/trip'
 import { TransportationNormalForm, VanForm, getDefaultTransport } from './TransportationForm'
+
+import Tiptap from '../editor/Tiptap'
+import styles from './TripForm.module.css'
 
 interface TripFormProps {
   trip_payload?: TripPayload
@@ -74,6 +77,12 @@ function TripForm(props: TripFormProps) {
     }
   }, [selectedImages.length])
 
+  const [tiptapContent, setTiptapContent] = useState('')
+
+  const handleTiptapChange = content => {
+    setTiptapContent(content)
+  }
+  
   const {
     register,
     handleSubmit,
@@ -82,6 +91,11 @@ function TripForm(props: TripFormProps) {
     control,
     formState: { errors }
   } = useForm({ defaultValues })
+
+  const handleSubmitWithTiptap = handleSubmit((data) => {
+    data.description = tiptapContent; 
+    props.onSubmit(data); 
+  });
 
   const {
     fields: locationFields,
@@ -114,7 +128,7 @@ function TripForm(props: TripFormProps) {
     <Card>
       <CardHeader title='สร้างทริป' titleTypographyProps={{ variant: 'h6' }} />
       <CardContent>
-        <form onSubmit={handleSubmit(props.onSubmit)}>
+        <form onSubmit={handleSubmitWithTiptap}>
           <Grid container spacing={7}>
             <Grid item xs={12}>
               <Typography variant='body2' sx={{ fontWeight: 600 }}>
@@ -134,16 +148,12 @@ function TripForm(props: TripFormProps) {
             </Grid>
 
             <Grid item xs={12}>
-              <TextField
-                {...register('description', { required: true })}
-                label='รายละเอียด'
-                variant='outlined'
-                fullWidth
-                error={!R.isNil(errors.description)}
-                helperText={errors.description && errors.description?.message}
-                multiline
-                minRows={6}
-              />
+              <Typography variant='body2' sx={{ fontWeight: 600, paddingBottom: '2em' }}>
+                2. รายละเอียด
+              </Typography>
+              <div style={{ border: '1px solid #ccc', borderRadius: '15px', padding: '1em' }}>
+                <Tiptap onContentChange={handleTiptapChange} />
+              </div>
             </Grid>
 
             <Grid item xs={12}>
@@ -182,7 +192,14 @@ function TripForm(props: TripFormProps) {
                   </IconButton>
                 </Box>
               ))}
-              <Button type='button' variant='outlined' onClick={() => appendContact({ contact_type: '', link: '' })}>
+              <Button
+                type='button'
+                variant='outlined'
+                onClick={() => {
+                  appendContact({ contact_type: '', link: '' })
+                  console.log(editorRef)
+                }}
+              >
                 เพิ่มวิธีการติดต่อ
               </Button>
             </Grid>
