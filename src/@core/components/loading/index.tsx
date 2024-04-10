@@ -27,7 +27,7 @@ const FullScreenLoadingComponent = () => {
 type BasicProps = {
   children: any
   isLoading: boolean
-  error: Error | null | unknown | (any & { data: string })
+  error?: Error | null | unknown | (any & { data: string })
   message?: string
 }
 
