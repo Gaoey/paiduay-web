@@ -9,6 +9,9 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
+import { CardContent, CardHeader, Grid } from '@mui/material'
+import Groups from '@mui/icons-material/Groups'
+import { useTheme } from '@mui/material/styles';
 
 // ** Types Imports
 import { ThemeColor } from 'src/@core/layouts/types'
@@ -148,4 +151,118 @@ const DashboardTable = () => {
   )
 }
 
-export default DashboardTable
+const DashboardCards = ({ ...props }) => {
+  const router = useRouter()
+  const { tripAPI, profilerAPI } = useApi()
+
+  const { getCurrentProfiler } = profilerAPI
+  const { findTripByProfilerID, removeTrip } = tripAPI
+
+  const { isSuccess } = removeTrip
+  const { data } = findTripByProfilerID
+
+  const getTripsList = async () => {
+    const profiler: Profiler[] = await getCurrentProfiler()
+    if (!R.isEmpty(profiler)) {
+      const currProfiler = profiler[0]
+      const paginate: Paginate = {
+        page_size: 50,
+        page_number: 1
+      }
+
+      // TODO:: filter only available trips (ยังมาไม่ถึง)
+      findTripByProfilerID.mutate({ profilerID: currProfiler._id, paginate })
+    }
+  }
+
+  useEffect(() => {
+    getTripsList()
+  }, [])
+
+  useEffect(() => {
+    if (isSuccess) {
+      getTripsList()
+    }
+  }, [isSuccess])
+
+  const trips: Trip[] = R.isNil(data) ? [] : (data as Trip[])
+  const theme = useTheme();
+
+
+  return (
+    <Grid container spacing={3}>
+      {trips.map((trip: Trip) => (
+        <Grid item xs={12} sm={6} md={4} key={trip._id}>
+          <Card>
+            <CardHeader
+              title={trip.data.title}
+              subheader={`${format(new Date(trip.data.from_date), 'dd/MM/yyyy')} - ${format(
+                new Date(trip.data.to_date),
+                'dd/MM/yyyy'
+              )}`}
+              color="#fff"
+              style={{ 
+                backgroundColor: "#74B3CE",
+              }}
+            />
+            <CardContent>
+              <Grid container spacing={5} style={{ paddingTop: '1em' }}>
+                <Grid item xs={6}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Groups style={{ color: '#3B5249' }} />
+                    <Typography variant='body2' style={{ marginLeft: '0.5em' }}>
+                      {`${trip.data.members.length} / ${trip.data.total_people}`}
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item xs={6}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography variant='body2' color='text.secondary'>
+                      THB
+                    </Typography>
+                    <Typography variant='body2' style={{ marginLeft: '0.5em' }}>
+                      {`${trip?.data?.payment?.accumulate_price || 0} / ${
+                        trip?.data?.payment?.full_price * trip.data.total_people
+                      }`}
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item xs={6}>
+                <Chip
+                    label={statusObj[trip.data.status].display}
+                    color={statusObj[trip.data.status].color}
+                    size='small'
+                    sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  {/* Actions Row */}
+                  <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    {' '}
+                    {/* For better spacing */}
+                    <Button
+                      variant='contained'
+                      style={{ color: 'white' }}
+                      onClick={() => props.router.push(`/admin/trip-list/${trip._id}`)}
+                    >
+                      ดูข้อมูล
+                    </Button>
+                    <Button variant='outlined' onClick={() => props.router.push(`/admin/update-trip/${trip._id}`)}>
+                      แก้ไข
+                    </Button>
+                    <RemoveTripPopUp
+                      tripID={trip._id}
+                      onRemove={props.onRemove} // Pass tripID and removal handler down
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  )
+}
+
+export default DashboardCards
