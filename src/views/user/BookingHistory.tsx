@@ -29,10 +29,62 @@ import { useApi } from 'src/@core/services'
 import { Booking } from 'src/@core/types/booking'
 import { Transport } from 'src/@core/types/transport'
 import { bookingStatusObj } from '../admin/BookingList'
+import { CardContent, CardHeader, Grid } from '@mui/material';
 
 interface Props {
   bookings: Booking[]
 }
+
+const BookingHistoryCards = (props: Props) => {
+  const router = useRouter()
+  const { bookings } = props
+
+  return (
+    <Grid container spacing={3}>
+      {bookings.map((booking: Booking) => (
+        <Grid item xs={12} sm={6} md={4} key={booking._id}> {/* Responsive sizing */}
+          <Card>
+            <CardHeader
+              title={booking.trip_data?.data?.title || "Trip Title Unavailable"}
+              subheader={`จองในชื่อ: ${booking.data.seat_name}`}
+            />
+            <CardContent>
+              <Grid container spacing={5}>
+                <Grid item xs={12}>
+                  <Typography variant="body2">
+                     {format(new Date(booking.trip_data?.data?.from_date || 0), 'dd MMM yyyy')} -
+                     {format(new Date(booking.trip_data?.data?.to_date || 0), 'dd MMM yyyy')}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Chip
+                    label={booking.data.status}
+                    color={bookingStatusObj[booking.data.status].color}
+                    size="small"
+                    sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Box style={{ display: 'flex' }}>
+                    <Button
+                      variant='contained'
+                      color='info'
+                      style={{ color: 'white', marginRight: '0.5em' }}
+                      onClick={() => router.push(`/trips/${booking.trip_id}`)}
+                    >
+                      ดูข้อมูลทริป
+                    </Button>
+                    <ViewSeatButton booking={booking} />
+                  </Box>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
 
 const BookingHistoryTable = (props: Props) => {
   const router = useRouter()
@@ -152,4 +204,4 @@ function ViewSeatButton(props: ViewSeatButtonProps) {
   )
 }
 
-export default BookingHistoryTable
+export default BookingHistoryCards

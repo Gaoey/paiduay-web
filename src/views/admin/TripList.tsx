@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
 import { CardContent, CardHeader, Grid } from '@mui/material'
 import Groups from '@mui/icons-material/Groups'
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles'
 
 // ** Types Imports
 import { ThemeColor } from 'src/@core/layouts/types'
@@ -186,8 +186,6 @@ const DashboardCards = ({ ...props }) => {
   }, [isSuccess])
 
   const trips: Trip[] = R.isNil(data) ? [] : (data as Trip[])
-  const theme = useTheme();
-
 
   return (
     <Grid container spacing={3}>
@@ -200,9 +198,9 @@ const DashboardCards = ({ ...props }) => {
                 new Date(trip.data.to_date),
                 'dd/MM/yyyy'
               )}`}
-              color="#fff"
-              style={{ 
-                backgroundColor: "#74B3CE",
+              color='#fff'
+              style={{
+                backgroundColor: '#74B3CE'
               }}
             />
             <CardContent>
@@ -228,7 +226,7 @@ const DashboardCards = ({ ...props }) => {
                   </div>
                 </Grid>
                 <Grid item xs={6}>
-                <Chip
+                  <Chip
                     label={statusObj[trip.data.status].display}
                     color={statusObj[trip.data.status].color}
                     size='small'
@@ -237,17 +235,19 @@ const DashboardCards = ({ ...props }) => {
                 </Grid>
                 <Grid item xs={12}>
                   {/* Actions Row */}
-                  <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    {' '}
-                    {/* For better spacing */}
+                  <Box style={{ display: 'flex' }}>
                     <Button
                       variant='contained'
-                      style={{ color: 'white' }}
-                      onClick={() => props.router.push(`/admin/trip-list/${trip._id}`)}
+                      style={{ color: 'white', marginRight: '1em' }}
+                      onClick={() => router.push(`/admin/trip-list/${trip._id}`)}
                     >
                       ดูข้อมูล
                     </Button>
-                    <Button variant='outlined' onClick={() => props.router.push(`/admin/update-trip/${trip._id}`)}>
+                    <Button
+                      style={{ marginRight: '1em' }}
+                      variant='outlined'
+                      onClick={() => router.push(`/admin/update-trip/${trip._id}`)}
+                    >
                       แก้ไข
                     </Button>
                     <RemoveTripPopUp

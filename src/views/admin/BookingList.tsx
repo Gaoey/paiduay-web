@@ -66,12 +66,12 @@ const BookingCards = ({ bookings, transports, onUpdateBooking, router }) => {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Box style={{ display: 'flex', flexDirection: 'row' }}>
                       <ViewSlipButton slipImg={booking.data.slips} />
                       <Button
                         variant='contained'
                         color='success'
-                        style={{ color: 'white' }}
+                        style={{ color: 'white', marginRight: '0.5em'  }}
                         onClick={() => router.push(`/user/${booking.data.user_id}`)}
                       >
                         View User
