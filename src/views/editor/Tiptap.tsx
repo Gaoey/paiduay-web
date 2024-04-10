@@ -5,15 +5,16 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 
 const Tiptap = ({ onContentChange }) => {
-  const [content, setContent] = useState('<p>Hello World! 🌎️</p>')
+  const [content, setContent] = useState('<p>รายละเอียดทริป เช่น ไปไหนบ้าง พักที่ไหน มีกิจกรรมอะไร ฯลฯ</p>')
 
   const editor = useEditor({
     extensions: [StarterKit],
     content,
     onUpdate: ({ editor }) => {
       const data = JSON.stringify(editor.getJSON())
+      const dataHTML = editor.getHTML()
       setContent(data)
-      onContentChange(data) // Trigger event with updated content
+      onContentChange(dataHTML) // Trigger event with updated content
     }
   })
 
