@@ -197,7 +197,6 @@ function TripForm(props: TripFormProps) {
                 variant='outlined'
                 onClick={() => {
                   appendContact({ contact_type: '', link: '' })
-                  console.log(editorRef)
                 }}
               >
                 เพิ่มวิธีการติดต่อ

@@ -7,6 +7,8 @@ import { toCurrency } from 'src/@core/utils/currency'
 import { trimMessage } from 'src/@core/utils/string'
 import { DefaultCoverTripImage } from '../admin/TripDetail'
 import Link from 'next/link'
+import parse from 'html-react-parser';
+
 
 interface TripCardProps {
   trip: Trip
@@ -20,6 +22,12 @@ export default function TripCard(props: TripCardProps) {
     : trip?.data.cover_images.map(v => v.signed_url)
 
   // ** Hook
+  const htmlString = trip?.data?.description;
+  const parsedHtml = parse(htmlString);
+
+  const DescriptionHTML = () => {
+    return <>{parsedHtml}</>
+  }
 
   return (
     <Card sx={{ minHeight: 600 }}>
@@ -93,9 +101,9 @@ export default function TripCard(props: TripCardProps) {
               )
             })}
 
-            <Typography variant='body2' color='text.secondary' style={{ marginTop: 10 }}>
-              {trimMessage(trip?.data?.description, 200)}
-            </Typography>
+            <div style={{ marginTop: 10, overflowY: 'hidden', maxHeight: '3em' }}>
+              <DescriptionHTML />
+            </div>
           </Grid>
         </Grid>
       </CardContent>
