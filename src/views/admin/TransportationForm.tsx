@@ -13,7 +13,7 @@ import {
 import EventSeat from '@mui/icons-material/EventSeat'
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
-import { Seat, SeatStatus, Transportation } from 'src/@core/types/transport'
+import { Seat, SeatStatus, TransportData, Transportation } from 'src/@core/types/transport'
 
 export function range(start: number, end: number, step = 1): number[] {
   const array = []
@@ -24,8 +24,12 @@ export function range(start: number, end: number, step = 1): number[] {
   return array
 }
 
-export const getDefaultTransport = (totalSeats: number, defaultName: string, transport_by: Transportation) => {
-  const seats = range(1, totalSeats).map(numb => {
+export const getDefaultTransport = (
+  totalSeats: number,
+  defaultName: string,
+  transport_by: Transportation
+): TransportData => {
+  const seats: Seat[] = range(1, totalSeats).map(numb => {
     return {
       name: `#${numb}`,
       seat_number: numb,
@@ -110,8 +114,7 @@ function SeatButton(props: SeatButtonProps) {
   useEffect(() => {
     if (seat.is_lock) {
       setReserveFormLocalStatus('LOCKED')
-    }
-    else if (seat.status === SeatStatus[SeatStatus.RESERVE]) {
+    } else if (seat.status === SeatStatus[SeatStatus.RESERVE]) {
       setReserveFormLocalStatus('RESERVED')
     } else {
       setReserveFormLocalStatus('EMPTY')
@@ -296,16 +299,40 @@ const ReserveForm = ({
               )}
             </Grid>
             <Grid item md={12}>
-              <TextField label='อีเมล' value={seatEmail} onChange={v => setSeatEmail(v.target.value)} defaultValue={seat.email || ''} fullWidth />
+              <TextField
+                label='อีเมล'
+                value={seatEmail}
+                onChange={v => setSeatEmail(v.target.value)}
+                defaultValue={seat.email || ''}
+                fullWidth
+              />
             </Grid>
             <Grid item md={12}>
-              <TextField label='ชื่อผู้จอง' value={seatName} onChange={v => setSeatName(v.target.value)} defaultValue={seat.name || ''} fullWidth />
+              <TextField
+                label='ชื่อผู้จอง'
+                value={seatName}
+                onChange={v => setSeatName(v.target.value)}
+                defaultValue={seat.name || ''}
+                fullWidth
+              />
             </Grid>
             <Grid item md={12}>
-              <TextField label='LINE ID' value={seatLineID} onChange={v => setSeatLineID(v.target.value)} defaultValue={seat.line_id || ''} fullWidth />
+              <TextField
+                label='LINE ID'
+                value={seatLineID}
+                onChange={v => setSeatLineID(v.target.value)}
+                defaultValue={seat.line_id || ''}
+                fullWidth
+              />
             </Grid>
             <Grid item md={12}>
-              <TextField label='เบอร์โทร' value={seatPhone} onChange={v => setSeatPhone(v.target.value)} defaultValue={seat.phone || ''} fullWidth />
+              <TextField
+                label='เบอร์โทร'
+                value={seatPhone}
+                onChange={v => setSeatPhone(v.target.value)}
+                defaultValue={seat.phone || ''}
+                fullWidth
+              />
             </Grid>
           </Grid>
         </DialogContentText>
@@ -329,9 +356,9 @@ const ReserveForm = ({
             variant='outlined'
             color='secondary'
             onClick={() => {
-              onChange({ 
-                ...seat, 
-                name: `#${seat.seat_number}`, 
+              onChange({
+                ...seat,
+                name: `#${seat.seat_number}`,
                 status: SeatStatus[SeatStatus.EMPTY],
                 email: '',
                 line_id: '',
@@ -344,12 +371,16 @@ const ReserveForm = ({
             ยกเลิกการจอง
           </Button>
         )}
-        <Button onClick={() => {
-          handleClose()
-          if (!informationFilled) {
-            setReserveFormLocalStatus('EMPTY')
-          }
-        }}>ปิด</Button>
+        <Button
+          onClick={() => {
+            handleClose()
+            if (!informationFilled) {
+              setReserveFormLocalStatus('EMPTY')
+            }
+          }}
+        >
+          ปิด
+        </Button>
       </DialogActions>
     </>
   )

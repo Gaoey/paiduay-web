@@ -7,11 +7,11 @@ import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import { Paginate } from 'src/@core/types'
 import { Booking, BookingData, BookingFilter } from 'src/@core/types/booking'
-import { Seat, Transport, Transportation } from 'src/@core/types/transport'
+import { Seat, Transport, TransportData, Transportation } from 'src/@core/types/transport'
 import AdminLayout from 'src/layouts/AdminLayout'
 import BookingTable from 'src/views/admin/BookingList'
 import RemoveTripPopUp from 'src/views/admin/RemoveTripPopUp'
-import VanDetail from 'src/views/admin/TransportDetail'
+import VanDetail, { AddTransportButton } from 'src/views/admin/TransportDetail'
 import { TransportationNormalForm } from 'src/views/admin/TransportationForm'
 import TripDetailComponent from 'src/views/admin/TripDetail'
 
@@ -23,7 +23,8 @@ export default function TripDetail() {
 
   const { removeTrip } = tripAPI
   const { findBookings, updateBooking } = bookingAPI
-  const { findTransportByTripID, updateSeatByTransportID, removeTransport } = transportAPI
+  const { findTransportByTripID, updateSeatByTransportID, removeTransport, updateTransport, createTransport } =
+    transportAPI
 
   const { isSuccess: isRemoveTransportSuccess } = removeTransport
   const { isSuccess: isRemoveTripSuccess } = removeTrip
@@ -31,6 +32,8 @@ export default function TripDetail() {
   const { data: findBookingsData } = findBookings
   const { isSuccess } = updateSeatByTransportID
   const { isSuccess: isUpdateBookingSuccess } = updateBooking
+  const { isSuccess: isUpdateTransportSuccess } = updateTransport
+  const { isSuccess: isCreateTransportSuccess } = createTransport
 
   const transports = R.pathOr<Transport[]>([], [], data)
   const bookings = R.pathOr<Booking[]>([], [], findBookingsData)
@@ -58,10 +61,10 @@ export default function TripDetail() {
   }, [])
 
   useEffect(() => {
-    if (isSuccess || isRemoveTransportSuccess) {
+    if (isSuccess || isRemoveTransportSuccess || isUpdateTransportSuccess || isCreateTransportSuccess) {
       findTransportByTripID.mutate(tripID)
     }
-  }, [isSuccess, isRemoveTransportSuccess, tripID])
+  }, [isSuccess, isRemoveTransportSuccess, isUpdateTransportSuccess, isCreateTransportSuccess, tripID])
 
   useEffect(() => {
     if (isRemoveTripSuccess) {
@@ -115,6 +118,26 @@ export default function TripDetail() {
             <Grid item md={12}>
               <Typography variant='h5'>Transports</Typography>
             </Grid>
+            <Grid item md={12}>
+              <Box style={{ display: 'flex', flexDirection: 'row' }}>
+                <AddTransportButton
+                  title={'เพิ่มรถตู้'}
+                  tripID={tripID}
+                  transportBy={Transportation[Transportation.VAN]}
+                  onCreateTransport={(tripID: string, transportData: TransportData) => {
+                    createTransport.mutate({ tripID, transportData: [transportData] })
+                  }}
+                />
+                <AddTransportButton
+                  title={'เพิ่อวิธีการเดินทางแบบอื่น'}
+                  tripID={tripID}
+                  transportBy={Transportation[Transportation.SELF]}
+                  onCreateTransport={(tripID: string, transportData: TransportData) => {
+                    createTransport.mutate({ tripID, transportData: [transportData] })
+                  }}
+                />
+              </Box>
+            </Grid>
 
             <Grid item md={12}>
               {!R.isEmpty(transports) &&
@@ -124,6 +147,9 @@ export default function TripDetail() {
                       <VanDetail
                         item={item}
                         onSetSeat={onSetSeat}
+                        onUpdateTransport={(transportID, transportData) =>
+                          updateTransport.mutate({ tripID, transportID, transportData })
+                        }
                         onRemoveTransport={(tripID: string, transportID: string) =>
                           removeTransport.mutate({ tripID, transportID })
                         }

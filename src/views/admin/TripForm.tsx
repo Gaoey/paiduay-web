@@ -1,7 +1,7 @@
 import { Close } from '@mui/icons-material'
 import { Box, Button, Card, CardContent, CardHeader, Grid, IconButton, TextField, Typography } from '@mui/material'
 import * as R from 'ramda'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
@@ -11,7 +11,6 @@ import { TripPayload, TripStatus } from 'src/@core/types/trip'
 import { TransportationNormalForm, VanForm, getDefaultTransport } from './TransportationForm'
 
 import Tiptap from '../editor/Tiptap'
-import styles from './TripForm.module.css'
 
 interface TripFormProps {
   trip_payload?: TripPayload
@@ -79,10 +78,10 @@ function TripForm(props: TripFormProps) {
 
   const [tiptapContent, setTiptapContent] = useState('')
 
-  const handleTiptapChange = content => {
+  const handleTiptapChange = (content: React.SetStateAction<string>) => {
     setTiptapContent(content)
   }
-  
+
   const {
     register,
     handleSubmit,
@@ -92,10 +91,10 @@ function TripForm(props: TripFormProps) {
     formState: { errors }
   } = useForm({ defaultValues })
 
-  const handleSubmitWithTiptap = handleSubmit((data) => {
-    data.description = tiptapContent; 
-    props.onSubmit(data); 
-  });
+  const handleSubmitWithTiptap = handleSubmit(data => {
+    data.description = tiptapContent
+    props.onSubmit(data)
+  })
 
   const {
     fields: locationFields,
