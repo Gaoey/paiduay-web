@@ -63,9 +63,8 @@ const BookingHistoryCards = (props: Props) => {
                 <Grid item xs={8} sm={6} md={4} style={{ paddingLeft: '2.5em' }}>
                   <Box style={{ display: 'flex' }}>
                     <Button
-                      variant='contained'
-                      color='info'
-                      style={{ color: 'white', marginRight: '0.5em' }}
+                      variant='outlined'
+                      style={{ marginRight: '0.5em' }}
                       onClick={() => router.push(`/trips/${booking.trip_id}`)}
                     >
                       ดูข้อมูลทริป
