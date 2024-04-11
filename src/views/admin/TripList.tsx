@@ -190,74 +190,73 @@ const DashboardCards = ({ ...props }) => {
   return (
     <Grid container spacing={3}>
       {trips.map((trip: Trip) => (
-        <Grid item xs={12} sm={6} md={4} key={trip._id}>
+        <Grid item xs={12} key={trip._id}>
           <Card>
-            <CardHeader
-              title={trip.data.title}
-              subheader={`${format(new Date(trip.data.from_date), 'dd/MM/yyyy')} - ${format(
-                new Date(trip.data.to_date),
-                'dd/MM/yyyy'
-              )}`}
-              color='#fff'
-              style={{
-                backgroundColor: '#74B3CE'
-              }}
-            />
-            <CardContent>
-              <Grid container spacing={5} style={{ paddingTop: '1em' }}>
-                <Grid item xs={6}>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Groups style={{ color: '#3B5249' }} />
-                    <Typography variant='body2' style={{ marginLeft: '0.5em' }}>
-                      {`${trip.data.members.length} / ${trip.data.total_people}`}
-                    </Typography>
-                  </div>
-                </Grid>
-                <Grid item xs={6}>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography variant='body2' color='text.secondary'>
-                      THB
-                    </Typography>
-                    <Typography variant='body2' style={{ marginLeft: '0.5em' }}>
-                      {`${trip?.data?.payment?.accumulate_price || 0} / ${
-                        trip?.data?.payment?.full_price * trip.data.total_people
-                      }`}
-                    </Typography>
-                  </div>
-                </Grid>
-                <Grid item xs={6}>
-                  <Chip
-                    label={statusObj[trip.data.status].display}
-                    color={statusObj[trip.data.status].color}
-                    size='small'
-                    sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  {/* Actions Row */}
-                  <Box style={{ display: 'flex' }}>
-                    <Button
-                      variant='contained'
-                      style={{ color: 'white', marginRight: '1em' }}
-                      onClick={() => router.push(`/admin/trip-list/${trip._id}`)}
-                    >
-                      ดูข้อมูล
-                    </Button>
-                    <Button
-                      style={{ marginRight: '1em' }}
-                      variant='outlined'
-                      onClick={() => router.push(`/admin/update-trip/${trip._id}`)}
-                    >
-                      แก้ไข
-                    </Button>
-                    <RemoveTripPopUp
-                      tripID={trip._id}
-                      onRemove={props.onRemove} // Pass tripID and removal handler down
-                    />
-                  </Box>
-                </Grid>
+            <Grid container spacing={3} columns={12} style={{ alignItems: 'center', padding: '1em' }}>
+              <Grid item xs={12} sm={6} md={4}>
+                {' '}
+                {/* Adjust column widths as needed */}
+                <CardHeader
+                  title={trip.data.title}
+                  subheader={`${format(new Date(trip.data.from_date), 'dd/MM/yyyy')} - ${format(
+                    new Date(trip.data.to_date),
+                    'dd/MM/yyyy'
+                  )}`}
+                />
               </Grid>
-            </CardContent>
+              <Grid item xs={4} sm={3} md={1.5}>
+                <div style={{ display: 'flex', alignItems: 'center', marginLeft: '0.5em' }}>
+                  <Groups style={{ color: '#3B5249' }} />
+                  <Typography variant='body2' style={{ marginLeft: '0.5em' }}>
+                    {`${trip.data.members.length} / ${trip.data.total_people}`}
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={8} sm={3} md={1.5} style={{ paddingLeft: '0.5em' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant='body2' color='text.secondary'>
+                    THB
+                  </Typography>
+                  <Typography variant='body2' style={{ marginLeft: '0.5em' }}>
+                    {`${trip?.data?.payment?.accumulate_price || 0} / ${
+                      trip?.data?.payment?.full_price * trip.data.total_people
+                    }`}
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={4} sm={6} md={1} >
+                <Chip
+                  label={statusObj[trip.data.status].display}
+                  color={statusObj[trip.data.status].color}
+                  size='medium'
+                  sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
+                  style={{ marginLeft: '0.5em' }}
+                />
+              </Grid>
+              <Grid item xs={8} sm={6} md={4} style={{ paddingLeft: '0.5em' }}>
+                {/* Actions Row */}
+                <Box style={{ display: 'flex' }}>
+                  <Button
+                    variant='contained'
+                    style={{ color: 'white', marginRight: '1em' }}
+                    onClick={() => router.push(`/admin/trip-list/${trip._id}`)}
+                  >
+                    ดูข้อมูล
+                  </Button>
+                  <Button
+                    style={{ marginRight: '1em' }}
+                    variant='outlined'
+                    onClick={() => router.push(`/admin/update-trip/${trip._id}`)}
+                  >
+                    แก้ไข
+                  </Button>
+                  <RemoveTripPopUp
+                    tripID={trip._id}
+                    onRemove={props.onRemove} // Pass tripID and removal handler down
+                  />
+                </Box>
+              </Grid>
+            </Grid>
           </Card>
         </Grid>
       ))}
