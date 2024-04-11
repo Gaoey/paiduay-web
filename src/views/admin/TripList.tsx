@@ -198,9 +198,9 @@ const DashboardCards = ({ ...props }) => {
                 {/* Adjust column widths as needed */}
                 <CardHeader
                   title={trip.data.title}
-                  subheader={`${format(new Date(trip.data.from_date), 'dd/MM/yyyy')} - ${format(
+                  subheader={`${format(new Date(trip.data.from_date), 'dd/MM/yy')} - ${format(
                     new Date(trip.data.to_date),
-                    'dd/MM/yyyy'
+                    'dd/MM/yy'
                   )}`}
                 />
               </Grid>
@@ -214,12 +214,9 @@ const DashboardCards = ({ ...props }) => {
               </Grid>
               <Grid item xs={8} sm={3} md={1.5} style={{ paddingLeft: '0.5em' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Typography variant='body2' color='text.secondary'>
-                    THB
-                  </Typography>
-                  <Typography variant='body2' style={{ marginLeft: '0.5em' }}>
-                    {`${trip?.data?.payment?.accumulate_price || 0} / ${
-                      trip?.data?.payment?.full_price * trip.data.total_people
+                  <Typography variant='body2'>
+                    {`${toCurrency(trip?.data?.payment?.accumulate_price || 0)} / ${
+                      toCurrency(trip?.data?.payment?.full_price * trip.data.total_people)
                     }`}
                   </Typography>
                 </div>
