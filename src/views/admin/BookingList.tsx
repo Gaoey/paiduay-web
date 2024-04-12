@@ -181,7 +181,7 @@ const BookingTable = (props: Props) => {
                       <Button
                         variant='outlined'
                         style={{ marginRight: 20 }}
-                        onClick={() => router.push(`/admin/update-trip/${row.trip_id}`)}
+                        onClick={() => router.push(`/admin/update-booking/${row._id}`)}
                       >
                         แก้ไข
                       </Button>

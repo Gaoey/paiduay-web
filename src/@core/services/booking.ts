@@ -22,6 +22,9 @@ const bookingAPI = (authIntance: AxiosInstance) => ({
   findBookings: ({ filters, paginate }: { filters: BookingFilter; paginate: Paginate }): Promise<Booking[]> => {
     return authIntance.post(`/v1/bookings?page_size=${paginate.page_size}&page_number=${paginate.page_number}`, filters)
   },
+  findBookingByID: (id: string): Promise<Booking> => {
+    return authIntance.get(`/v1/bookings/${id}`)
+  },
   findBookingsByUserID: ({ paginate }: { paginate: Paginate }): Promise<Booking[]> => {
     return authIntance.post(`/v1/bookings/user?page_size=${paginate.page_size}&page_number=${paginate.page_number}`, {})
   }
@@ -34,12 +37,14 @@ function useBookingAPI({ authInstance }: InstanceProps) {
   const updateBooking = useMutation(api.updateBooking)
   const findBookings = useMutation(api.findBookings)
   const findBookingsByUserID = useMutation(api.findBookingsByUserID)
+  const findBookingByID = useMutation(api.findBookingByID)
 
   return {
     createBooking,
     findBookings,
     updateBooking,
-    findBookingsByUserID
+    findBookingsByUserID,
+    findBookingByID
   }
 }
 
