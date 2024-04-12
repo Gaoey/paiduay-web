@@ -249,7 +249,7 @@ function SeatButton(props: SeatButtonProps) {
         variant='contained'
         onClick={handleClickOpen}
         color={seat.is_lock ? 'error' : isDefaultName ? 'primary' : 'info'}
-        style={seat.status === SeatStatus[SeatStatus.RESERVE] ? { height: '100%', width: '100%' } : {}}
+        style={seat.status === SeatStatus[SeatStatus.RESERVE] ? { height: '100%', width: '100%', boxShadow: 'none' } : {boxShadow: 'none'}}
       >
         <div style={{ display: 'flex' }}>
           {seat.status === SeatStatus[SeatStatus.RESERVE] ? (

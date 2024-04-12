@@ -1,5 +1,5 @@
 export function toCurrency(numb: number): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('th-TH', {
     style: 'currency',
     currency: 'THB'
   })

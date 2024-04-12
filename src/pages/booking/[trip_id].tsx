@@ -6,7 +6,7 @@ import UserLayout from 'src/layouts/UserLayout'
 import * as R from 'ramda'
 import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
-import { Grid, TextField } from '@mui/material'
+import { Card, Grid, TextField } from '@mui/material'
 import { TransportationNormalBookingForm, VanBookingForm } from 'src/views/trip/TransportationForm'
 
 export default function BookingTrip() {
@@ -31,17 +31,19 @@ export default function BookingTrip() {
             transports.map(item => {
               if (item.data.transport_by === Transportation[Transportation.VAN]) {
                 return (
-                  <Grid container spacing={7} key={item._id} style={{ marginBottom: 40 }}>
-                    <Grid item xs={4}>
-                      <TextField label='Name' defaultValue={item.data.name} fullWidth disabled />
+                  <Card>
+                    <Grid container spacing={7} key={item._id} style={{ marginBottom: 40 }}>
+                      <Grid item xs={4}>
+                        <TextField label='Name' defaultValue={item.data.name} fullWidth disabled />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <TextField label='Transport By' defaultValue={item.data.transport_by} disabled />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <VanBookingForm values={item.data.seats} tripID={tripID} transportID={item._id} />
+                      </Grid>
                     </Grid>
-                    <Grid item xs={4}>
-                      <TextField label='Transport By' defaultValue={item.data.transport_by} disabled />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <VanBookingForm values={item.data.seats} tripID={tripID} transportID={item._id} />
-                    </Grid>
-                  </Grid>
+                  </Card>
                 )
               } else {
                 return <TransportationNormalBookingForm key={item._id} />

@@ -6,7 +6,9 @@ const input = (theme: Theme) => {
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          color: theme.palette.text.secondary
+          color: theme.palette.text.secondary,
+          backgroundColor: theme.palette.background.paper,
+          padding: '0 0.5em',
         }
       }
     },
@@ -37,7 +39,9 @@ const input = (theme: Theme) => {
           },
           '&:hover:not(.Mui-disabled):before': {
             borderBottom: `1px solid rgba(${theme.palette.customColors.main}, 0.32)`
-          }
+          },
+          boxShadow: 'inset 2px 2px 2px rgba(0, 0, 0, 0.1)', 
+
         }
       }
     },
@@ -55,7 +59,9 @@ const input = (theme: Theme) => {
           },
           '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
             borderColor: theme.palette.text.disabled
-          }
+          },
+          boxShadow: 'inset 3px 3px 3px rgba(0, 0, 0, 0.1)', 
+
         }
       }
     }

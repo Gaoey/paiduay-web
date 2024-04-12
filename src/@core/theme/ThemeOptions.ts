@@ -56,11 +56,17 @@ const themeOptions = (settings: Settings): ThemeOptions => {
       secondary: {
         main: '#A71D31'
       },
-      neutral: {
-        main: '#FDECEF'
+      background: {
+        default: '#FDECEF',
+        paper: '#FAFAFA'
       },
       info: {
-        main: '#74B3CE'
+        light: '#C4E3EA',
+        main: '#74B3CE',
+        dark: '#74839E'
+      },
+      error: {
+        main: '#FB8B24'
       }
     }
   })

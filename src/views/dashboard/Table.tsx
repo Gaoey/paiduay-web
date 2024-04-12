@@ -9,6 +9,7 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
+import { CardContent, CardHeader, Grid } from '@mui/material';
 
 // ** Types Imports
 import { ThemeColor } from 'src/@core/layouts/types'
@@ -112,6 +113,53 @@ const statusObj: StatusObj = {
   professional: { color: 'success' }
 }
 
+
+const ResponsiveCards = ({ rows }: { rows: RowType[] }) => {
+  return (
+    <Grid container spacing={3}> {/* Grid for layout */}
+      {rows.map((row) => (
+        <Grid item xs={12} sm={6} md={4} key={row.name}> {/* Responsive sizing */}
+          <Card>
+            <CardHeader
+              title={row.name}
+              subheader={row.designation}
+            />
+            <CardContent>
+              <Grid container spacing={1}>
+                <Grid item xs={6}>
+                  <Typography variant="body2" color="text.secondary">Email:</Typography>
+                  <Typography variant="body2">{row.email}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2" color="text.secondary">Date:</Typography>
+                  <Typography variant="body2">{row.date}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2" color="text.secondary">Salary:</Typography>
+                  <Typography variant="body2">{row.salary}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2" color="text.secondary">Age:</Typography>
+                  <Typography variant="body2">{row.age}</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Chip
+                    label={row.status}
+                    color={statusObj[row.status].color}
+                    size="small"
+                    sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+
+
 const DashboardTable = () => {
   return (
     <Card>
@@ -161,4 +209,4 @@ const DashboardTable = () => {
   )
 }
 
-export default DashboardTable
+export default ResponsiveCards

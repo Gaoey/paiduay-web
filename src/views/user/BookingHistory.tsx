@@ -10,15 +10,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 
 // ** Types Imports
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Typography
-} from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material'
 
 // import { useRouter } from 'next/router'
 import { format } from 'date-fns'
@@ -29,9 +21,64 @@ import { useApi } from 'src/@core/services'
 import { Booking } from 'src/@core/types/booking'
 import { Transport } from 'src/@core/types/transport'
 import { bookingStatusObj } from '../admin/BookingList'
+import { CardHeader, Grid } from '@mui/material'
+
+import styles from './BookingCard.module.css'
 
 interface Props {
   bookings: Booking[]
+}
+
+const BookingHistoryCards = (props: Props) => {
+  const router = useRouter()
+  const { bookings } = props
+
+  return (
+    <div className={styles.bookingTableContainer}>
+      <Grid container spacing={3}>
+        {bookings.map((booking: Booking) => (
+          <Grid item xs={12} key={booking._id}>
+            <Card className={styles.bookingCard}>
+              <Grid container spacing={5} columns={12}>
+                <Grid item xs={6} sm={6} md={3}>
+                  <CardHeader
+                    title={booking.trip_data?.data?.title || 'Trip Title Unavailable'}
+                    subheader={`จองในชื่อ: ${booking.data.seat_name}`}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6} md={3} style={{ paddingLeft: '2.5em' }}>
+                  <Typography variant='body2'>
+                    {format(new Date(booking.trip_data?.data?.from_date || 0), 'dd MMM yyyy')} -
+                    {format(new Date(booking.trip_data?.data?.to_date || 0), 'dd MMM yyyy')}
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} sm={6} md={2} style={{ paddingLeft: '2.5em' }}>
+                  <Chip
+                    label={booking.data.status}
+                    color={bookingStatusObj[booking.data.status].color}
+                    size='medium'
+                    sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
+                  />
+                </Grid>
+                <Grid item xs={8} sm={6} md={4} style={{ paddingLeft: '2.5em' }}>
+                  <Box style={{ display: 'flex' }}>
+                    <Button
+                      variant='outlined'
+                      style={{ marginRight: '0.5em' }}
+                      onClick={() => router.push(`/trips/${booking.trip_id}`)}
+                    >
+                      ดูข้อมูลทริป
+                    </Button>
+                    <ViewSeatButton booking={booking} />
+                  </Box>
+                </Grid>
+              </Grid>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </div>
+  )
 }
 
 const BookingHistoryTable = (props: Props) => {
@@ -82,7 +129,7 @@ const BookingHistoryTable = (props: Props) => {
                     <Box style={{ display: 'flex', flexDirection: 'row' }}>
                       <Button
                         variant='contained'
-                        color='info'
+                        color='secondary'
                         style={{ color: 'white', marginRight: 20 }}
                         onClick={() => router.push(`/trips/${row.trip_id}`)}
                       >
@@ -152,4 +199,4 @@ function ViewSeatButton(props: ViewSeatButtonProps) {
   )
 }
 
-export default BookingHistoryTable
+export default BookingHistoryCards
