@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from '@mui/material'
+import { Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from '@mui/material'
 
 import { useState } from 'react'
 import { Seat, Transport, TransportData, Transportation } from 'src/@core/types/transport'
@@ -17,7 +17,8 @@ export default function VanDetail({ item, onSetSeat, onRemoveTransport, onUpdate
   const [transportName, setTransportName] = useState<string>(item.data.name)
 
   return (
-    <Grid container spacing={2} key={item._id} style={{ marginBottom: 40 }}>
+    <Card sx={{ padding: '2em', marginBottom: '2em' }}>
+    <Grid container spacing={4} key={item._id} >
       <Grid item xs={4}>
         <TextField
           label='Name'
@@ -34,7 +35,7 @@ export default function VanDetail({ item, onSetSeat, onRemoveTransport, onUpdate
       </Grid>
 
       <Grid item xs={4}>
-        <Grid container spacing={2}>
+        <Grid container spacing={4}>
           <Grid item xs={6}>
             {!isEdit ? (
               <Button
@@ -77,6 +78,7 @@ export default function VanDetail({ item, onSetSeat, onRemoveTransport, onUpdate
         <VanForm values={item.data.seats} onChange={(seat: Seat[]) => onSetSeat(seat)} />
       </Grid>
     </Grid>
+    </Card>
   )
 }
 

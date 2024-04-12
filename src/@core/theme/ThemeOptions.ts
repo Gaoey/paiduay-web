@@ -57,7 +57,8 @@ const themeOptions = (settings: Settings): ThemeOptions => {
         main: '#A71D31'
       },
       background: {
-        main: '#FDECEF'
+        default: '#FDECEF',
+        paper: '#FAFAFA'
       },
       info: {
         light: '#C4E3EA',
