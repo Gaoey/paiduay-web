@@ -11,7 +11,17 @@ import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 
 // ** Types Imports
-import { Button, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid } from '@mui/material'
+import {
+  Button,
+  CardContent,
+  CardHeader,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid
+} from '@mui/material'
 
 // import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -41,18 +51,21 @@ interface Props {
   onUpdateBooking: (bookingID: string, params: BookingData) => void
 }
 
+const BookingCards = ({ bookings, transports, onUpdateBooking }: Props) => {
+  const router = useRouter()
 
-const BookingCards = ({ bookings, transports, onUpdateBooking, router }) => {
   return (
     <Grid container spacing={3}>
-      {bookings.map((booking) => {
-        const transport = transports.find((t) => t._id === booking.data.transport_id);
+      {bookings.map(booking => {
+        const transport = transports.find(t => t._id === booking.data.transport_id)
 
         return (
-          <Grid item xs={12} sm={6} md={4} key={booking._id}> {/* Responsive sizing */}
+          <Grid item xs={12} sm={6} md={4} key={booking._id}>
+            {' '}
+            {/* Responsive sizing */}
             <Card>
               <CardHeader
-                title={transport?.data.name || "Transport Info Unavailable"}
+                title={transport?.data.name || 'Transport Info Unavailable'}
                 subheader={`Seat: ${booking.data.seat_name} - ${booking.data.seat_number}`}
               />
               <CardContent>
@@ -61,7 +74,7 @@ const BookingCards = ({ bookings, transports, onUpdateBooking, router }) => {
                     <Chip
                       label={booking.data.status}
                       color={bookingStatusObj[booking.data.status].color}
-                      size="small"
+                      size='small'
                       sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
                     />
                   </Grid>
@@ -71,7 +84,7 @@ const BookingCards = ({ bookings, transports, onUpdateBooking, router }) => {
                       <Button
                         variant='contained'
                         color='success'
-                        style={{ color: 'white', marginRight: '0.5em'  }}
+                        style={{ color: 'white', marginRight: '0.5em' }}
                         onClick={() => router.push(`/user/${booking.data.user_id}`)}
                       >
                         View User
@@ -85,10 +98,7 @@ const BookingCards = ({ bookings, transports, onUpdateBooking, router }) => {
                           onUpdateBooking(booking._id, newBookingData)
                         }}
                       />
-                      <Button
-                        variant='outlined'
-                        onClick={() => router.push(`/admin/update-trip/${booking.trip_id}`)}
-                      >
+                      <Button variant='outlined' onClick={() => router.push(`/admin/update-trip/${booking.trip_id}`)}>
                         Edit Trip
                       </Button>
                     </Box>
@@ -97,14 +107,14 @@ const BookingCards = ({ bookings, transports, onUpdateBooking, router }) => {
               </CardContent>
             </Card>
           </Grid>
-        );
+        )
       })}
     </Grid>
-  );
-};
+  )
+}
 
+// DEPRECATE
 const BookingTable = (props: Props) => {
-  // const router = useRouter()
   const { bookings, transports, onUpdateBooking } = props
   const router = useRouter()
 
@@ -206,7 +216,12 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
 
   return (
     <>
-      <Button variant='contained' color='secondary' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
+      <Button
+        variant='contained'
+        color='secondary'
+        onClick={handleClickOpen}
+        style={{ color: 'white', marginRight: 20 }}
+      >
         เปลี่ยนสถานะ
       </Button>
       <Dialog open={open} onClose={handleClose}>
