@@ -78,7 +78,7 @@ export default function Booking() {
         transport_id: transport_id,
         seat_name: data?.seat_name || `#${seat_number}`,
         seat_number: seat_number,
-        status: BookingStatus[BookingStatus.PAID],
+        status: BookingStatus[BookingStatus.PENDING],
         slips: [newMedias[0]]
       }
 

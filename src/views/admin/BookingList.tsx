@@ -2,13 +2,6 @@
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Chip from '@mui/material/Chip'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import Typography from '@mui/material/Typography'
 
 // ** Types Imports
 import {
@@ -20,17 +13,18 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Grid
+  Grid,
+  TextField
 } from '@mui/material'
 
 // import { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
+import ImageCarousel from 'src/@core/components/image-carousel'
 import { ThemeColor } from 'src/@core/layouts/types'
+import { Media } from 'src/@core/types'
 import { Booking, BookingData, BookingStatus } from 'src/@core/types/booking'
 import { Transport } from 'src/@core/types/transport'
-import { Media } from 'src/@core/types'
-import ImageCarousel from 'src/@core/components/image-carousel'
-import { useRouter } from 'next/router'
 
 interface StatusObj {
   [key: string]: {
@@ -61,8 +55,6 @@ const BookingCards = ({ bookings, transports, onUpdateBooking }: Props) => {
 
         return (
           <Grid item xs={12} sm={6} md={4} key={booking._id}>
-            {' '}
-            {/* Responsive sizing */}
             <Card>
               <CardHeader
                 title={transport?.data.name || 'Transport Info Unavailable'}
@@ -90,17 +82,25 @@ const BookingCards = ({ bookings, transports, onUpdateBooking }: Props) => {
                         View User
                       </Button>
                       <UpdateStatusButton
-                        onChange={status => {
-                          const newBookingData = {
+                        bookingID={booking._id}
+                        onChange={(id, status) => {
+                          const newBookingData: BookingData = {
                             ...booking.data,
                             status
                           }
-                          onUpdateBooking(booking._id, newBookingData)
+                          onUpdateBooking(id, newBookingData)
                         }}
                       />
-                      <Button variant='outlined' onClick={() => router.push(`/admin/update-trip/${booking.trip_id}`)}>
-                        Edit Trip
-                      </Button>
+                      <ChangeBookingNameButton
+                        booking={booking}
+                        onChange={(id, name) => {
+                          const newBookingData: BookingData = {
+                            ...booking.data,
+                            seat_name: name
+                          }
+                          onUpdateBooking(id, newBookingData)
+                        }}
+                      />
                     </Box>
                   </Grid>
                 </Grid>
@@ -113,96 +113,13 @@ const BookingCards = ({ bookings, transports, onUpdateBooking }: Props) => {
   )
 }
 
-// DEPRECATE
-const BookingTable = (props: Props) => {
-  const { bookings, transports, onUpdateBooking } = props
-  const router = useRouter()
-
-  return (
-    <Card>
-      <TableContainer>
-        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
-          <TableHead>
-            <TableRow>
-              <TableCell>วิธีเดินทาง</TableCell>
-              <TableCell>ชื่อที่นั่ง</TableCell>
-              <TableCell>เบอร์ที่นั่ง</TableCell>
-              <TableCell>สถานะการจอง</TableCell>
-              <TableCell>แก้ไข</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {bookings.map((row: Booking, index) => {
-              const transport: Transport = transports.filter(v => v._id === row.data.transport_id)[0]
-
-              return (
-                <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                  <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                      <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
-                        {transport?.data?.name || ''}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell>{row.data.seat_name}</TableCell>
-                  <TableCell>{row.data.seat_number}</TableCell>
-                  <TableCell>
-                    <Chip
-                      label={row.data.status}
-                      color={bookingStatusObj[row.data.status].color}
-                      sx={{
-                        height: 24,
-                        fontSize: '0.75rem',
-                        textTransform: 'capitalize',
-                        '& .MuiChip-label': { fontWeight: 500 }
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Box style={{ display: 'flex', flexDirection: 'row' }}>
-                      <ViewSlipButton slipImg={row.data.slips} />
-                      <Button
-                        variant='contained'
-                        color='success'
-                        style={{ color: 'white', marginRight: 20 }}
-                        onClick={() => router.push(`/user/${row.data.user_id}`)}
-                      >
-                        ดูลูกทริป
-                      </Button>
-                      <UpdateStatusButton
-                        onChange={status => {
-                          const newBooking: BookingData = {
-                            ...row.data,
-                            status
-                          }
-                          onUpdateBooking(row._id, newBooking)
-                        }}
-                      />
-                      <Button
-                        variant='outlined'
-                        style={{ marginRight: 20 }}
-                        onClick={() => router.push(`/admin/update-booking/${row._id}`)}
-                      >
-                        แก้ไข
-                      </Button>
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              )
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Card>
-  )
-}
-
 interface UpdateStatusButtonProps {
-  onChange: (status: BookingStatus | string) => void
+  bookingID: string
+  onChange: (bookingID: string, status: BookingStatus | string) => void
 }
 
 function UpdateStatusButton(props: UpdateStatusButtonProps) {
-  const { onChange } = props
+  const { bookingID, onChange } = props
 
   const [open, setOpen] = useState(false)
 
@@ -230,7 +147,7 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
           <Button
             onClick={() => {
               const status = BookingStatus[BookingStatus.CONFIRM]
-              onChange(status)
+              onChange(bookingID, status)
               handleClose()
             }}
             variant='contained'
@@ -241,7 +158,7 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
           <Button
             onClick={() => {
               const status = BookingStatus[BookingStatus.PENDING]
-              onChange(status)
+              onChange(bookingID, status)
               handleClose()
             }}
             variant='contained'
@@ -252,7 +169,7 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
           <Button
             onClick={() => {
               const status = BookingStatus[BookingStatus.REJECT]
-              onChange(status)
+              onChange(bookingID, status)
               handleClose()
             }}
             variant='contained'
@@ -297,6 +214,59 @@ function ViewSlipButton(props: ViewSlipButtonProps) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  )
+}
+interface ChangeBookingNameButtonProps {
+  booking: Booking
+  onChange: (bookingID: string, name: string) => void
+}
+
+function ChangeBookingNameButton(props: ChangeBookingNameButtonProps) {
+  const { booking, onChange } = props
+
+  const [name, setName] = useState(booking.data.seat_name)
+  const [open, setOpen] = useState(false)
+
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  return (
+    <>
+      <Button variant='outlined' color='secondary' onClick={handleClickOpen} style={{ marginRight: 20 }}>
+        เปลี่ยนชื่อผู้จอง
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{`ต้องการเปลี่ยนชื่อของ "${booking.data.seat_name}" หรือไม่?`}</DialogTitle>
+        <DialogContent>
+          <Box sx={{ padding: 2 }}>
+            <TextField
+              fullWidth
+              label='ชื่อผู้จอง'
+              defaultValue={booking.data.seat_name}
+              onChange={e => setName(e.target.value)}
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              onChange(booking._id, name)
+              handleClose()
+            }}
+            variant='contained'
+            color='secondary'
+          >
+            คอนเฟิร์ม
+          </Button>
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>

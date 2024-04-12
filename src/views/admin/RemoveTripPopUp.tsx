@@ -5,14 +5,16 @@ import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
 
 // import { useRouter } from 'next/router'
 import { useState } from 'react'
+import * as R from 'ramda'
 
 interface RemoveTripPopUpProps {
   tripID: string
+  tripName?: string
   onRemove: (tripID: string) => void
 }
 
 function RemoveTripPopUp(props: RemoveTripPopUpProps) {
-  const { tripID, onRemove } = props
+  const { tripID, onRemove, tripName } = props
 
   const [open, setOpen] = useState(false)
 
@@ -30,7 +32,7 @@ function RemoveTripPopUp(props: RemoveTripPopUpProps) {
         ลบ
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{`ยืนยันการลบไหม?`}</DialogTitle>
+        <DialogTitle>{`ยืนยันการลบทริป${!R.isNil(tripName) ? ` "${tripName}" ` : ''}ไหม?`}</DialogTitle>
         <DialogActions>
           <Button
             onClick={() => {

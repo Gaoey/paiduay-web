@@ -162,12 +162,16 @@ export default function TripDetail() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item md={12}>
-          <Typography variant='h5'>Payments</Typography>
-        </Grid>
-        <Grid item md={12}>
-          <BookingTable bookings={bookings} transports={transports} onUpdateBooking={onUpdateBooking} />
-        </Grid>
+        {!R.isEmpty(bookings) && (
+          <>
+            <Grid item md={12}>
+              <Typography variant='h5'>Payments</Typography>
+            </Grid>
+            <Grid item md={12}>
+              <BookingTable bookings={bookings} transports={transports} onUpdateBooking={onUpdateBooking} />
+            </Grid>
+          </>
+        )}
       </Grid>
     </ApexChartWrapper>
   )
