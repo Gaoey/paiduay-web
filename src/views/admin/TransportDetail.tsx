@@ -198,7 +198,7 @@ export function AddTransportButton(props: AddTransportButtonProps) {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button type='submit' variant='contained' color='info'>
+            <Button type='submit' variant='contained' color='secondary'>
               Confirm
             </Button>
             <Button onClick={handleClose}>Close</Button>

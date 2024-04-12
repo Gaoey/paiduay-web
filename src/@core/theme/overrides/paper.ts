@@ -4,7 +4,7 @@ export default {
     styleOverrides: {
       root: {
         backgroundImage: 'none',
-        boxShadow: `0px 5px 5px #74B3CE`,
+        boxShadow: `0px 2px 4px #3B5249`,
       }
     }
   }

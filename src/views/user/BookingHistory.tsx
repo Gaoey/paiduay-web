@@ -129,7 +129,7 @@ const BookingHistoryTable = (props: Props) => {
                     <Box style={{ display: 'flex', flexDirection: 'row' }}>
                       <Button
                         variant='contained'
-                        color='info'
+                        color='secondary'
                         style={{ color: 'white', marginRight: 20 }}
                         onClick={() => router.push(`/trips/${row.trip_id}`)}
                       >

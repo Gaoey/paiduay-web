@@ -206,7 +206,7 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
 
   return (
     <>
-      <Button variant='contained' color='info' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
+      <Button variant='contained' color='secondary' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
         เปลี่ยนสถานะ
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -219,7 +219,7 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
               handleClose()
             }}
             variant='contained'
-            color='info'
+            color='secondary'
           >
             คอนเฟิร์ม
           </Button>

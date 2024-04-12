@@ -18,11 +18,28 @@ const Button = (theme: Theme) => {
         contained: {
           // boxShadow: theme.shadows[3],
           boxShadow: `5px 5px ${theme.palette.info.main}`, 
-          padding: `${theme.spacing(1.875, 5.5)}`
+          padding: `${theme.spacing(1.875, 5.5)}`,
+          '&:hover': {
+            backgroundColor: theme.palette.secondary.main,
+            boxShadow: `3px 3px ${theme.palette.info.dark}`,
+          },
+          '&:active': { 
+            boxShadow: `none`,
+            transform: 'translateY(2px)' 
+          },
+          
         },
         outlined: {
           boxShadow: `5px 5px ${theme.palette.info.main}`, 
-          padding: `${theme.spacing(1.625, 5.25)}`
+          padding: `${theme.spacing(1.625, 5.25)}`,
+          '&:hover': {
+            boxShadow: `3px 3px ${theme.palette.info.dark}`,
+          },
+          '&:active': { 
+            boxShadow: `none`, 
+            transform: 'translateY(2px)' 
+          },
+          
         },
         sizeSmall: {
           padding: `${theme.spacing(1, 2.25)}`,
