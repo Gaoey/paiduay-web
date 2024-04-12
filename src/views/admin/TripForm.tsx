@@ -150,7 +150,7 @@ function TripForm(props: TripFormProps) {
               <Typography variant='body2' sx={{ fontWeight: 600, paddingBottom: '2em' }}>
                 2. รายละเอียด
               </Typography>
-              <div style={{ border: '1px solid #ccc', borderRadius: '15px', padding: '1em' }}>
+              <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '1em', boxShadow: 'inset 3px 3px 3px rgba(0, 0, 0, 0.1)' }}>
                 <Tiptap onContentChange={handleTiptapChange} />
               </div>
             </Grid>
