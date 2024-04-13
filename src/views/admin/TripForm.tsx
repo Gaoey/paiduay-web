@@ -150,7 +150,14 @@ function TripForm(props: TripFormProps) {
               <Typography variant='body2' sx={{ fontWeight: 600, paddingBottom: '2em' }}>
                 2. รายละเอียด
               </Typography>
-              <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '1em', boxShadow: 'inset 3px 3px 3px rgba(0, 0, 0, 0.1)' }}>
+              <div
+                style={{
+                  border: '1px solid #ccc',
+                  borderRadius: '8px',
+                  padding: '1em',
+                  boxShadow: 'inset 3px 3px 3px rgba(0, 0, 0, 0.1)'
+                }}
+              >
                 <Tiptap onContentChange={handleTiptapChange} />
               </div>
             </Grid>
@@ -414,7 +421,10 @@ function TripForm(props: TripFormProps) {
                             onChange={(data: Seat[]) => setValue(`transport_data.${index}.seats`, data)}
                           />
                         ) : (
-                          <TransportationNormalForm />
+                          <TransportationNormalForm
+                            values={watch(`transport_data.${index}.seats`)}
+                            onChange={(data: Seat[]) => setValue(`transport_data.${index}.seats`, data)}
+                          />
                         )}
                       </Grid>
                       <Grid item xs={2}>

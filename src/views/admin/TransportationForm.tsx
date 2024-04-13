@@ -97,8 +97,42 @@ export function VanForm(props: VanFormProps) {
   )
 }
 
-export function TransportationNormalForm() {
-  return <div />
+interface TransportationNormalFormProps {
+  values: Seat[]
+  onChange?: (seats: Seat[]) => void
+}
+
+export function TransportationNormalForm(props: TransportationNormalFormProps) {
+  const { values, onChange = () => null } = props
+
+  const onChangeSeats = (seat: Seat) => {
+    const res = values.map(v => {
+      if (v.seat_number === seat.seat_number) {
+        return {
+          ...v,
+          ...seat
+        }
+      }
+
+      return v
+    })
+
+    onChange(res)
+  }
+
+  return (
+    <Grid container spacing={2}>
+      {range(1, values.length).map(pos => {
+        return (
+          <Grid item xs={4} key={pos}>
+            <Paper style={{ height: 100, textAlign: 'center', lineHeight: '100px' }}>
+              <SeatButton seat={values[pos - 1]} onChange={s => onChangeSeats(s)} />
+            </Paper>
+          </Grid>
+        )
+      })}
+    </Grid>
+  )
 }
 
 interface SeatButtonProps {
@@ -249,7 +283,11 @@ function SeatButton(props: SeatButtonProps) {
         variant='contained'
         onClick={handleClickOpen}
         color={seat.is_lock ? 'error' : isDefaultName ? 'primary' : 'info'}
-        style={(seat.status === SeatStatus[SeatStatus.RESERVE] || seat.is_lock) ? { height: '100%', width: '100%', boxShadow: 'none' } : {boxShadow: 'none'}}
+        style={
+          seat.status === SeatStatus[SeatStatus.RESERVE] || seat.is_lock
+            ? { height: '100%', width: '100%', boxShadow: 'none' }
+            : { boxShadow: 'none' }
+        }
       >
         <div style={{ display: 'flex' }}>
           {seat.status === SeatStatus[SeatStatus.RESERVE] ? (

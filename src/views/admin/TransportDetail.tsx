@@ -12,72 +12,76 @@ interface Props {
   onUpdateTransport: (transportID: string, transport: TransportData) => void
 }
 
-export default function VanDetail({ item, onSetSeat, onRemoveTransport, onUpdateTransport }: Props) {
+export default function TransportDetail({ item, onSetSeat, onRemoveTransport, onUpdateTransport }: Props) {
   const [isEdit, setIsEdit] = useState(false)
   const [transportName, setTransportName] = useState<string>(item.data.name)
 
   return (
     <Card sx={{ padding: '2em', marginBottom: '2em' }}>
-    <Grid container spacing={4} key={item._id} >
-      <Grid item xs={4}>
-        <TextField
-          label='Name'
-          defaultValue={item.data.name}
-          fullWidth
-          disabled={!isEdit}
-          sx={{ height: 50 }}
-          value={transportName}
-          onChange={e => setTransportName(e.target.value)}
-        />
-      </Grid>
-      <Grid item xs={4}>
-        <TextField label='Transport By' defaultValue={item.data.transport_by} disabled />
-      </Grid>
+      <Grid container spacing={4} key={item._id}>
+        <Grid item xs={4}>
+          <TextField
+            label='Name'
+            defaultValue={item.data.name}
+            fullWidth
+            disabled={!isEdit}
+            sx={{ height: 50 }}
+            value={transportName}
+            onChange={e => setTransportName(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <TextField label='Transport By' defaultValue={item.data.transport_by} disabled />
+        </Grid>
 
-      <Grid item xs={4}>
-        <Grid container spacing={4}>
-          <Grid item xs={6}>
-            {!isEdit ? (
-              <Button
-                variant='contained'
-                onClick={() => {
+        <Grid item xs={4}>
+          <Grid container spacing={4}>
+            <Grid item xs={6}>
+              {!isEdit ? (
+                <Button
+                  variant='contained'
+                  onClick={() => {
+                    setIsEdit(!isEdit)
+                  }}
+                  sx={{ height: 55, width: '100%' }}
+                >
+                  EDIT
+                </Button>
+              ) : (
+                <Button
+                  variant='contained'
+                  color='success'
+                  onClick={() => {
+                    setIsEdit(!isEdit)
+                    const newTransportData: TransportData = { ...item.data, name: transportName }
+                    onUpdateTransport(item._id, newTransportData)
+                  }}
+                  sx={{ height: 55, width: '100%' }}
+                >
+                  SAVE
+                </Button>
+              )}
+            </Grid>
+            <Grid item xs={6}>
+              <RemoveTransportButton
+                transportID={item._id}
+                onRemove={(transportID: string) => {
+                  onRemoveTransport(item.trip_id, transportID)
                   setIsEdit(!isEdit)
                 }}
-                sx={{ height: 55, width: '100%' }}
-              >
-                EDIT
-              </Button>
-            ) : (
-              <Button
-                variant='contained'
-                color='success'
-                onClick={() => {
-                  setIsEdit(!isEdit)
-                  const newTransportData: TransportData = { ...item.data, name: transportName }
-                  onUpdateTransport(item._id, newTransportData)
-                }}
-                sx={{ height: 55, width: '100%' }}
-              >
-                SAVE
-              </Button>
-            )}
-          </Grid>
-          <Grid item xs={6}>
-            <RemoveTransportButton
-              transportID={item._id}
-              onRemove={(transportID: string) => {
-                onRemoveTransport(item.trip_id, transportID)
-                setIsEdit(!isEdit)
-              }}
-            />
+              />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
 
-      <Grid item xs={12}>
-        <VanForm values={item.data.seats} onChange={(seat: Seat[]) => onSetSeat(seat)} />
+        <Grid item xs={12}>
+          {item.data.transport_by === Transportation[Transportation.VAN] ? (
+            <VanForm values={item.data.seats} onChange={(seat: Seat[]) => onSetSeat(seat)} />
+          ) : (
+            <TransportationNormalForm values={item.data.seats} onChange={(seat: Seat[]) => onSetSeat(seat)} />
+          )}
+        </Grid>
       </Grid>
-    </Grid>
     </Card>
   )
 }
@@ -153,7 +157,6 @@ export function AddTransportButton(props: AddTransportButtonProps) {
   const { register, handleSubmit, setValue, watch } = useForm({ defaultValues })
 
   const handleSubmitTransportForm = handleSubmit(data => {
-    console.log({ data })
     onCreateTransport(tripID, data)
     handleClose()
   })
@@ -194,7 +197,10 @@ export function AddTransportButton(props: AddTransportButtonProps) {
                 {transportBy === Transportation[Transportation.VAN] ? (
                   <VanForm values={watch(`seats`)} onChange={(data: Seat[]) => setValue(`seats`, data)} />
                 ) : (
-                  <TransportationNormalForm />
+                  <TransportationNormalForm
+                    values={watch(`seats`)}
+                    onChange={(data: Seat[]) => setValue(`seats`, data)}
+                  />
                 )}
               </Grid>
             </Grid>

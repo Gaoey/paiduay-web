@@ -11,8 +11,7 @@ import { Seat, Transport, TransportData, Transportation } from 'src/@core/types/
 import AdminLayout from 'src/layouts/AdminLayout'
 import BookingTable from 'src/views/admin/BookingList'
 import RemoveTripPopUp from 'src/views/admin/RemoveTripPopUp'
-import VanDetail, { AddTransportButton } from 'src/views/admin/TransportDetail'
-import { TransportationNormalForm } from 'src/views/admin/TransportationForm'
+import TransportDetail, { AddTransportButton } from 'src/views/admin/TransportDetail'
 import TripDetailComponent from 'src/views/admin/TripDetail'
 
 export default function TripDetail() {
@@ -142,22 +141,19 @@ export default function TripDetail() {
             <Grid item md={12}>
               {!R.isEmpty(transports) &&
                 transports.map(item => {
-                  if (item.data.transport_by === Transportation[Transportation.VAN]) {
-                    return (
-                      <VanDetail
-                        item={item}
-                        onSetSeat={onSetSeat}
-                        onUpdateTransport={(transportID, transportData) =>
-                          updateTransport.mutate({ tripID, transportID, transportData })
-                        }
-                        onRemoveTransport={(tripID: string, transportID: string) =>
-                          removeTransport.mutate({ tripID, transportID })
-                        }
-                      />
-                    )
-                  } else {
-                    return <TransportationNormalForm key={item._id} />
-                  }
+                  return (
+                    <TransportDetail
+                      key={item._id}
+                      item={item}
+                      onSetSeat={onSetSeat}
+                      onUpdateTransport={(transportID, transportData) =>
+                        updateTransport.mutate({ tripID, transportID, transportData })
+                      }
+                      onRemoveTransport={(tripID: string, transportID: string) =>
+                        removeTransport.mutate({ tripID, transportID })
+                      }
+                    />
+                  )
                 })}
             </Grid>
           </Grid>
