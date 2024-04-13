@@ -9,7 +9,7 @@ import { Paginate } from 'src/@core/types'
 import { Booking, BookingData, BookingFilter } from 'src/@core/types/booking'
 import { Seat, Transport, TransportData, Transportation } from 'src/@core/types/transport'
 import AdminLayout from 'src/layouts/AdminLayout'
-import BookingTable from 'src/views/admin/BookingList'
+import BookingCard from 'src/views/admin/BookingList'
 import RemoveTripPopUp from 'src/views/admin/RemoveTripPopUp'
 import TransportDetail, { AddTransportButton } from 'src/views/admin/TransportDetail'
 import TripDetailComponent from 'src/views/admin/TripDetail'
@@ -63,7 +63,7 @@ export default function TripDetail() {
     if (isSuccess || isRemoveTransportSuccess || isUpdateTransportSuccess || isCreateTransportSuccess) {
       findTransportByTripID.mutate(tripID)
     }
-  }, [isSuccess, isRemoveTransportSuccess, isUpdateTransportSuccess, isCreateTransportSuccess, tripID])
+  }, [isSuccess, isRemoveTransportSuccess, isUpdateTransportSuccess, isCreateTransportSuccess, tripID, findTransportByTripID])
 
   useEffect(() => {
     if (isRemoveTripSuccess) {
@@ -164,7 +164,7 @@ export default function TripDetail() {
               <Typography variant='h5'>Payments</Typography>
             </Grid>
             <Grid item md={12}>
-              <BookingTable bookings={bookings} transports={transports} onUpdateBooking={onUpdateBooking} />
+              <BookingCard bookings={bookings} transports={transports} onUpdateBooking={onUpdateBooking} />
             </Grid>
           </>
         )}
