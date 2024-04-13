@@ -12,13 +12,16 @@ import { BookingData, BookingStatus } from 'src/@core/types/booking'
 import { Profiler } from 'src/@core/types/profiler'
 import { Trip } from 'src/@core/types/trip'
 import UserLayout from 'src/layouts/UserLayout'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { toCurrency } from 'src/@core/utils/currency'
 
 export const SlipImgStyled = styled('img')(({ theme }) => ({
-  width: 200,
+  width: 'auto',
   height: 200,
   marginRight: theme.spacing(6.25),
   borderRadius: theme.shape.borderRadius
 }))
+
 export default function Booking() {
   const router = useRouter()
 
@@ -92,25 +95,48 @@ export default function Booking() {
     }
   }, [isSuccess, router, tripID])
 
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1
+  })
+
+  const totalPrice = trip?.data?.payment?.full_price
+  const depositPrice = trip?.data?.payment?.deposit_price
+
   return (
     <ApexChartWrapper>
       <BasicLoadingComponent isLoading={R.isNil(trip) && R.isNil(profiler)} error={createBookingError}>
         <Grid container spacing={7}>
           <Grid item xs={12}>
-            <Typography variant='h4' gutterBottom>
-              Payment
+            <Typography variant='h4' gutterBottom sx={{ textAlign: 'center' }}>
+              ชำระเงิน
             </Typography>
           </Grid>
           <Grid item xs={12} md={6}>
+            {!R.isNil(totalPrice) && (
+              <Card sx={{ marginBottom: '1em'}}>
+                <CardContent>
+                  <Typography variant='h6'>ราคาเต็ม: {toCurrency(totalPrice)}</Typography>
+                  {depositPrice ? <Typography variant='body1'>ค่าจอง: {toCurrency(depositPrice)}</Typography> : ''}
+                </CardContent>
+              </Card>
+            )}
             {!R.isNil(profiler) &&
               profiler?.data?.bank_accounts.map(v => {
                 return (
                   <Card key={v?.account_number}>
                     <CardContent>
-                      <Typography variant='h6'>Bank Account Details:</Typography>
-                      <Typography variant='body1'>Bank Name: {v.bank_title}</Typography>
-                      <Typography variant='body1'>Account Number: {v.account_number}</Typography>
-                      <Typography variant='body1'>Account Name: {v.account_name}</Typography>
+                      <Typography variant='h6'>บัญชีปลายทาง:</Typography>
+                      <Typography variant='body1'>ธนาคาร: {v.bank_title}</Typography>
+                      <Typography variant='body1'>เลขบัญชี: {v.account_number}</Typography>
+                      <Typography variant='body1'>ชื่อ: {v.account_name}</Typography>
                     </CardContent>
                   </Card>
                 )
@@ -121,11 +147,11 @@ export default function Booking() {
               <Grid item xs={12}>
                 <Card>
                   <CardContent>
-                    <Grid container spacing={7}>
+                    <Grid container spacing={4}>
                       <Grid item xs={12}>
                         <TextField
                           {...register('seat_name', { required: true })}
-                          label='Your seat name'
+                          label='ใส่ชื่อจองของคุณ'
                           variant='outlined'
                           fullWidth
                           error={!R.isNil(errors.seat_name)}
@@ -133,26 +159,30 @@ export default function Booking() {
                         />
                       </Grid>
                       <Grid item xs={12}>
-                        <Grid item xs={12}>
-                          <Typography variant='h6'>Upload Payment Slip:</Typography>
+                        <Grid item xs={12} sx={{ paddingBottom: '0.5em' }}>
+                          <Typography variant='h6'>หลักฐานการโอนเงิน:</Typography>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} sx={{ paddingBottom: '0.5em' }}>
                           {!R.isNil(slipImage?.file) && (
                             <SlipImgStyled src={URL.createObjectURL(slipImage?.file)} alt='Profile Pic' />
                           )}
                         </Grid>
                         <Grid item xs={12}>
-                          <input
-                            {...register('slip_image')}
-                            type='file'
-                            accept='image/*'
-                            onChange={handleImageChange}
-                          />
+                          <Button
+                            component='label'
+                            role={undefined}
+                            variant='outlined'
+                            tabIndex={-1}
+                            startIcon={<CloudUploadIcon />}
+                          >
+                            อัพโหลด bank slip
+                            <VisuallyHiddenInput type='file' onChange={handleImageChange} />
+                          </Button>
                         </Grid>
                       </Grid>
                       <Grid item xs={12}>
                         <Button type='submit' variant='contained' color='primary'>
-                          Submit Payment
+                          ดำเนินการจอง
                         </Button>
                       </Grid>
                     </Grid>

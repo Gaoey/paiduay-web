@@ -1,12 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react'
-import Head from 'next/head'
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import Grid from '@mui/material/Grid'
-import Button from '@mui/material/Button'
-import Link from 'next/link'
 import HeroSection from './components/HeroSection'
 import HowItWorksTripLeader from './components/HowItWorksTripLeader' // Assuming that's your path
 import HowItWorksTraveller from './components/HowItWorksTraveller'
@@ -32,6 +24,7 @@ const PathBackground = () => {
     }
 
     window.addEventListener('scroll', updateScrollProgress)
+    
     return () => window.removeEventListener('scroll', updateScrollProgress)
   }, [])
 
@@ -44,7 +37,6 @@ const PathBackground = () => {
         height: 'auto',
         width: '100vw',
         display: 'flex'
-        // backgroundColor: 'black'
       }}
     >
       <svg id='Layer_1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940.23 351.95' style={{ width: '100%' }}>

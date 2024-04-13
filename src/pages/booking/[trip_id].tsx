@@ -6,7 +6,7 @@ import UserLayout from 'src/layouts/UserLayout'
 import * as R from 'ramda'
 import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
-import { Card, Grid, TextField } from '@mui/material'
+import { Card, Grid, TextField, Typography } from '@mui/material'
 import { TransportationNormalBookingForm, VanBookingForm } from 'src/views/trip/TransportationForm'
 
 export default function BookingTrip() {
@@ -27,12 +27,15 @@ export default function BookingTrip() {
     <ApexChartWrapper>
       <Grid container spacing={7}>
         <Grid item md={12}>
+          <Typography variant='h4' sx={{ textAlign: 'center' }}>จองที่นั่งเดินทาง</Typography>
+        </Grid>
+        <Grid item md={12}>
           {!R.isEmpty(transports) &&
             transports.map(item => {
               if (item.data.transport_by === Transportation[Transportation.VAN]) {
                 return (
-                  <Card>
-                    <Grid container spacing={7} key={item._id} style={{ marginBottom: 40 }}>
+                  <Card style={{ padding: '1.5em', marginBottom: 40 }} key={item.trip_id}>
+                    <Grid container spacing={7} key={item._id}>
                       <Grid item xs={4}>
                         <TextField label='Name' defaultValue={item.data.name} fullWidth disabled />
                       </Grid>

@@ -9,6 +9,7 @@ import Box, { BoxProps } from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
+import { useApi } from 'src/@core/services'
 
 // ** Layout Import
 
@@ -47,20 +48,25 @@ const TreeIllustration = styled('img')(({ theme }) => ({
 }))
 
 const Success = () => {
+  const { userAPI } = useApi()
+  const { user } = userAPI
+  const { data: userData } = user
+  console.log('userData', userData)
+
   return (
     <Box className='content-center'>
       <Box sx={{ p: 5, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
         <BoxWrapper>
-          <Typography variant='h1'>THANK YOU</Typography>
+          <Typography variant='h3'>ดีใจด้วย!</Typography>
           <Typography variant='h5' sx={{ mb: 1, fontSize: '1.5rem !important' }}>
-            Your booking was success
+            การจองของกำลังดำเนินการอยู่
           </Typography>
-          <Typography variant='body2'>you can check your booking in your profile</Typography>
+          <Typography variant='body2'>โปรดรอทางทริปลีดเดอร์ของคุณคอนเฟิร์มในหน้าโปรไฟล์ของคุณ</Typography>
         </BoxWrapper>
         <Img height='487' alt='error-illustration' src='/images/pages/404.png' />
-        <Link passHref href='/'>
+        <Link passHref href={`/user/${userData?._id}/`}>
           <Button component='a' variant='contained' sx={{ px: 5.5 }}>
-            Back to Home
+            กลับหน้าหลัก
           </Button>
         </Link>
       </Box>

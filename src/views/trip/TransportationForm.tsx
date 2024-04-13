@@ -40,9 +40,9 @@ export function VanBookingForm(props: VanBookingForm) {
       </Grid>
       <Grid item xs={8} key={'driver'}>
         <Paper
-          style={{ height: 100, textAlign: 'center', lineHeight: '100px', backgroundColor: 'grey', color: 'white' }}
+          style={{ height: 100, textAlign: 'center', lineHeight: '100px', backgroundColor: '#74B3CE', color: 'white' }}
         >
-          DRIVER
+          คนขับ
         </Paper>
       </Grid>
       {[2, 3, 4, 5, 6, 7, 8, 9, 10].map(pos => {
@@ -82,21 +82,25 @@ function SeatButton(props: SeatButtonProps) {
     setOpen(false)
   }
 
+  const bgColor = seat.is_lock ? 'error' : seat ? 'primary' : 'info'
+
   return (
     <>
       <Button
         variant='contained'
         onClick={handleClickOpen}
-        color={seat.is_lock ? 'error' : 'primary'}
+        color={bgColor}
         disabled={seat.is_lock || seat.status != SeatStatus[SeatStatus.EMPTY]}
+        style={
+          seat.status === SeatStatus[SeatStatus.RESERVE] || seat.is_lock
+            ? { height: '100%', width: '100%', boxShadow: 'none', backgroundColor: bgColor }
+            : { boxShadow: 'none' }
+        }
       >
         {showSeatText(seat)}
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{`Confirm Booking Seat #${seat.seat_number}`}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>this seat are available</DialogContentText>
-        </DialogContent>
+        <DialogTitle>{`จองที่นั่งที่ #${seat.seat_number}?`}</DialogTitle>
         <DialogActions>
           <Button
             variant='contained'
@@ -104,9 +108,9 @@ function SeatButton(props: SeatButtonProps) {
               router.push(`/trips/${tripID}/booking?transport_id=${transportID}&seat_number=${seat.seat_number}`)
             }
           >
-            Confirm
+            จองเลย
           </Button>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleClose}>ปิด</Button>
         </DialogActions>
       </Dialog>
     </>
