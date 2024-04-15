@@ -27,31 +27,18 @@ const UserLayout = ({ children, isContentWrap = true }: Props) => {
     <div>
       <Head>
         <title>Headache-Free Trip Manager</title>
-        {/* Add meta tags for description, SEO, etc. */}
       </Head>
 
-      {/* (1) Top Menu Bar */}
-
-      <MainContentWrapper className='layout-content-wrapper'>
-        {/* AppBar Component */}
-        <AppBar>
-          <div style={{ backgroundColor: '#3B534A', width: '100vw', padding: '0 2em 0 2em', overflow: 'hidden' }}>
+      <MainContentWrapper className='layout-content-wrapper' >
+        <AppBar sx={{ boxShadow: 'none' }}>
+          <div style={{ backgroundColor: '#FDECEF', width: '100vw', padding: '0 2em 0 2em', overflow: 'hidden', maxHeight: '4em'}}>
             <Toolbar disableGutters>
-              {/* Logo */}
               <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
                 <Link href='/' passHref>
-                  <StyledLink sx={{ color: 'white', fontFamily: 'Itim' }}>{themeConfig.templateName}</StyledLink>
+                  <StyledLink sx={{ color: '#3B5249', fontFamily: 'Itim' }}>{themeConfig.templateName}</StyledLink>
                 </Link>
               </Typography>
 
-              {/* Navigation Links */}
-              <nav>
-                {/* <Link href='/trip-leader' passHref>
-            <Button color='inherit'>Trip Leader</Button>
-          </Link> */}
-              </nav>
-
-              {/* Login Button (Right Aligned) */}
               {isLogin ? (
                 <UserDropdown />
               ) : (

@@ -1,12 +1,12 @@
+import { Box, Grid, Tab, Tabs, Typography } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { ReactNode, useEffect, useState } from 'react'
-import { Transport, Transportation } from 'src/@core/types/transport'
-import UserLayout from 'src/layouts/UserLayout'
 import * as R from 'ramda'
+import { ReactNode, useEffect, useState } from 'react'
 import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
-import { Box, Card, Grid, Tab, Tabs, TextField, Typography } from '@mui/material'
+import { Transport, Transportation } from 'src/@core/types/transport'
+import UserLayout from 'src/layouts/UserLayout'
 import { TransportationNormalBookingForm, VanBookingForm } from 'src/views/user/TransportationForm'
 
 interface TabPanelProps {
@@ -72,6 +72,11 @@ export default function BookingTrip() {
         </Tabs>
       </Box>
       <Grid container spacing={7}>
+        <Grid item md={12}>
+          <Typography variant='h4' sx={{ textAlign: 'center' }}>
+            จองที่นั่งเดินทาง
+          </Typography>
+        </Grid>
         <Grid item md={12}>
           {!R.isEmpty(transports) &&
             transports.map((item, index) => {
