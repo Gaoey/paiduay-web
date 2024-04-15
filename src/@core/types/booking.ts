@@ -8,12 +8,21 @@ export enum BookingStatus {
   CONFIRM = 'CONFIRM',
   REJECT = 'REJECT'
 }
-
+export enum PaymentType {
+  NONE = 'NONE',
+  FULL = 'FULL',
+  DEPOSIT = 'DEPOSIT'
+}
+export interface SimplySeatData {
+  seat_name: string
+  seat_number: number
+}
 export interface BookingData {
   user_id: string
   transport_id: string
-  seat_name: string
-  seat_number: number
+  seats: SimplySeatData[]
+  payment_type: PaymentType | string
+  payment_price: number
   status: BookingStatus | string
   slips: Media[]
   user_info?: UserProfile

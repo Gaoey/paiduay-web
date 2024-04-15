@@ -23,8 +23,9 @@ import { useState } from 'react'
 import ImageCarousel from 'src/@core/components/image-carousel'
 import { ThemeColor } from 'src/@core/layouts/types'
 import { Media } from 'src/@core/types'
-import { Booking, BookingData, BookingStatus } from 'src/@core/types/booking'
+import { Booking, BookingData, BookingStatus, SimplySeatData } from 'src/@core/types/booking'
 import { Transport } from 'src/@core/types/transport'
+import { useFieldArray, useForm } from 'react-hook-form'
 
 interface StatusObj {
   [key: string]: {
@@ -52,14 +53,19 @@ const BookingCards = ({ bookings, transports, onUpdateBooking }: Props) => {
     <Grid container spacing={3}>
       {bookings.map(booking => {
         const transport = transports.find(t => t._id === booking.data.transport_id)
+        const subheader = booking.data.seats.reduce((prev, curr, index) => {
+          const format = `#${curr.seat_number} ${curr.seat_name} `
+          if (index === 0) {
+            return format
+          } else {
+            return prev + ', ' + format
+          }
+        }, '')
 
         return (
           <Grid item xs={12} sm={6} md={4} key={booking._id}>
             <Card>
-              <CardHeader
-                title={transport?.data.name || 'Transport Info Unavailable'}
-                subheader={`Seat: ${booking.data.seat_name} - ${booking.data.seat_number}`}
-              />
+              <CardHeader title={subheader} subheader={transport?.data.name || 'Transport Info Unavailable'} />
               <CardContent>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
@@ -93,10 +99,10 @@ const BookingCards = ({ bookings, transports, onUpdateBooking }: Props) => {
                       />
                       <ChangeBookingNameButton
                         booking={booking}
-                        onChange={(id, name) => {
+                        onChange={(id, seats) => {
                           const newBookingData: BookingData = {
                             ...booking.data,
-                            seat_name: name
+                            seats: seats
                           }
                           onUpdateBooking(id, newBookingData)
                         }}
@@ -222,13 +228,21 @@ function ViewSlipButton(props: ViewSlipButtonProps) {
 }
 interface ChangeBookingNameButtonProps {
   booking: Booking
-  onChange: (bookingID: string, name: string) => void
+  onChange: (bookingID: string, seats: SimplySeatData[]) => void
 }
 
 function ChangeBookingNameButton(props: ChangeBookingNameButtonProps) {
   const { booking, onChange } = props
 
-  const [name, setName] = useState(booking.data.seat_name)
+  const title = booking.data.seats.reduce((prev, curr, index) => {
+    const format = `${curr.seat_name} `
+    if (index === 0) {
+      return format
+    } else {
+      return prev + ', ' + format
+    }
+  }, '')
+
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
@@ -239,37 +253,49 @@ function ChangeBookingNameButton(props: ChangeBookingNameButtonProps) {
     setOpen(false)
   }
 
+  const defaultValues = {
+    seats: booking.data.seats
+  }
+
+  const { register, handleSubmit, control } = useForm({ defaultValues })
+
+  const handleSubmitChangeName = handleSubmit(data => {
+    onChange(booking._id, data.seats)
+    handleClose()
+  })
+
+  const { fields } = useFieldArray({
+    control,
+    name: 'seats'
+  })
+
   return (
     <>
       <Button variant='outlined' color='secondary' onClick={handleClickOpen} style={{ marginRight: 20 }}>
         เปลี่ยนชื่อผู้จอง
       </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{`ต้องการเปลี่ยนชื่อของ "${booking.data.seat_name}" หรือไม่?`}</DialogTitle>
-        <DialogContent>
-          <Box sx={{ padding: 2 }}>
-            <TextField
-              fullWidth
-              label='ชื่อผู้จอง'
-              defaultValue={booking.data.seat_name}
-              onChange={e => setName(e.target.value)}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => {
-              onChange(booking._id, name)
-              handleClose()
-            }}
-            variant='contained'
-            color='secondary'
-          >
-            คอนเฟิร์ม
-          </Button>
-          <Button onClick={handleClose}>Close</Button>
-        </DialogActions>
-      </Dialog>
+      <form onSubmit={handleSubmitChangeName}>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>{`ต้องการเปลี่ยนชื่อของ "${title}" หรือไม่?`}</DialogTitle>
+          <DialogContent>
+            {fields.map((item, index) => (
+              <Box key={item.id} sx={{ padding: 2 }}>
+                <TextField
+                  {...register(`seats.${index}.seat_name`)}
+                  label={`ขื่อผู้จอง #${index}`}
+                  defaultValue={item.seat_name}
+                />
+              </Box>
+            ))}
+          </DialogContent>
+          <DialogActions>
+            <Button type='submit' variant='contained' color='secondary'>
+              คอนเฟิร์ม
+            </Button>
+            <Button onClick={handleClose}>Close</Button>
+          </DialogActions>
+        </Dialog>
+      </form>
     </>
   )
 }
