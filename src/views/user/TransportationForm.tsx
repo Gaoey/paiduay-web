@@ -44,9 +44,9 @@ export function VanBookingForm(props: VanBookingForm) {
       </Grid>
       <Grid item xs={8} key={'driver'}>
         <Paper
-          style={{ height: 100, textAlign: 'center', lineHeight: '100px', backgroundColor: 'grey', color: 'white' }}
+          style={{ height: 100, textAlign: 'center', lineHeight: '100px', backgroundColor: '#74B3CE', color: 'white' }}
         >
-          DRIVER
+          คนขับ
         </Paper>
       </Grid>
       {[2, 3, 4, 5, 6, 7, 8, 9, 10].map(pos => {
@@ -118,10 +118,12 @@ function SeatButton(props: SeatButtonProps) {
   const { seat, seats, onSetSeat } = props
   const isHasSeat = seats.filter(v => seat.seat_number === v.seat_number).length > 0
 
+  const bgColor = seat.is_lock ? 'error' : isHasSeat ? 'success' : 'primary'
+
   return (
     <Button
       variant='contained'
-      color={seat.is_lock ? 'error' : isHasSeat ? 'success' : 'primary'}
+      color={bgColor}
       disabled={seat.is_lock || seat.status != SeatStatus[SeatStatus.EMPTY]}
       onClick={() => onSetSeat(seat)}
     >
@@ -166,9 +168,9 @@ function ConfirmSeatButton(props: ConfirmSeatButtonProps) {
             variant='contained'
             onClick={() => router.push(`/trips/${tripID}/booking?transport_id=${transportID}&${query}`)}
           >
-            Confirm
+            จองเลย
           </Button>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleClose}>ปิด</Button>
         </DialogActions>
       </Dialog>
     </>

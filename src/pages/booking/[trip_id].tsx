@@ -63,19 +63,21 @@ export default function BookingTrip() {
 
   return (
     <ApexChartWrapper>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={tab} onChange={handleChange} aria-label='select transport tab'>
-          {!R.isEmpty(transports) &&
-            transports.map((item, index) => {
-              return <Tab key={index} label={item.data.name} {...a11yProps(0)} />
-            })}
-        </Tabs>
-      </Box>
       <Grid container spacing={7}>
-        <Grid item md={12}>
+        <Grid item md={12} xs={12}>
           <Typography variant='h4' sx={{ textAlign: 'center' }}>
             จองที่นั่งเดินทาง
           </Typography>
+        </Grid>
+        <Grid item md={12}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={tab} onChange={handleChange} aria-label='select transport tab'>
+              {!R.isEmpty(transports) &&
+                transports.map((item, index) => {
+                  return <Tab key={index} label={item.data.name} {...a11yProps(0)} />
+                })}
+            </Tabs>
+          </Box>
         </Grid>
         <Grid item md={12}>
           {!R.isEmpty(transports) &&

@@ -145,7 +145,6 @@ export default function Booking() {
   })
 
   const totalPrice = trip?.data?.payment?.full_price
-  const depositPrice = trip?.data?.payment?.deposit_price
 
   return (
     <ApexChartWrapper>
@@ -160,8 +159,18 @@ export default function Booking() {
             {!R.isNil(totalPrice) && (
               <Card sx={{ marginBottom: '1em' }}>
                 <CardContent>
-                  <Typography variant='h6'>ราคาเต็ม: {toCurrency(totalPrice)}</Typography>
-                  {depositPrice ? <Typography variant='body1'>ค่าจอง: {toCurrency(depositPrice)}</Typography> : ''}
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      {!R.isNil(trip) && <PaymentTypeRadioGroup trip={trip} onChange={setPaymentType} />}
+                    </Grid>
+                    <Grid item xs={12}>
+                      {!R.isNil(trip?.data?.payment) && (
+                        <Typography variant='h6'>
+                          จำนวนเงิน: {toCurrency(getPaymentPrice(trip?.data?.payment, simplySeats.length, paymentType))}
+                        </Typography>
+                      )}
+                    </Grid>
+                  </Grid>
                 </CardContent>
               </Card>
             )}
@@ -182,22 +191,6 @@ export default function Booking() {
           <Grid item xs={12} md={6}>
             <Card>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Box sx={{ padding: 5 }}>
-                      {!R.isNil(trip) && <PaymentTypeRadioGroup trip={trip} onChange={setPaymentType} />}
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12}>
-                    {!R.isNil(trip?.data?.payment) && (
-                      <Box sx={{ paddingLeft: 5 }}>
-                        <Typography variant='h6'>
-                          จำนวนเงิน: {toCurrency(getPaymentPrice(trip?.data?.payment, simplySeats.length, paymentType))}
-                        </Typography>
-                      </Box>
-                    )}
-                  </Grid>
-                </Grid>
                 <Grid item xs={12}>
                   <CardContent>
                     <Grid container spacing={4}>
