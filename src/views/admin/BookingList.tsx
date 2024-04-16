@@ -65,12 +65,12 @@ const BookingCards = ({ bookings, transports, onUpdateBooking }: Props) => {
         }, '')
 
         return (
-          <Grid item xs={12} sm={6} md={4} key={booking._id}>
+          <Grid item xs={12} key={booking._id}>
             <Card>
               <CardHeader title={subheader} subheader={transport?.data.name || 'Transport Info Unavailable'} />
               <CardContent>
                 <Grid container spacing={1}>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} md={3}>
                     <Chip
                       label={bookingStatusObj[booking.data.status].label}
                       color={bookingStatusObj[booking.data.status].color}
@@ -78,7 +78,7 @@ const BookingCards = ({ bookings, transports, onUpdateBooking }: Props) => {
                       sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} md={9}>
                     <Box style={{ display: 'flex', flexDirection: 'row' }}>
                       <ViewSlipButton slipImg={booking.data.slips} />
                       <Button
@@ -281,13 +281,13 @@ function ChangeBookingNameButton(props: ChangeBookingNameButtonProps) {
           <DialogTitle>{`ต้องการเปลี่ยนชื่อของ "${title}" หรือไม่?`}</DialogTitle>
           <DialogContent>
             {fields.map((item, index) => (
-              <Box key={item.id} sx={{ padding: 2 }}>
                 <TextField
+                  key={item.id} 
+                  sx={{ margin: 2 }}
                   {...register(`seats.${index}.seat_name`)}
                   label={`ขื่อผู้จอง #${index}`}
                   defaultValue={item.seat_name}
                 />
-              </Box>
             ))}
           </DialogContent>
           <DialogActions>
