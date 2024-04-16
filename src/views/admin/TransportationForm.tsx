@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import EventSeat from '@mui/icons-material/EventSeat'
 
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Seat, SeatStatus, TransportData, Transportation } from 'src/@core/types/transport'
 
 export function range(start: number, end: number, step = 1): number[] {
@@ -149,7 +149,9 @@ function SeatButton(props: SeatButtonProps) {
     if (seat.is_lock) {
       setReserveFormLocalStatus('LOCKED')
     } else if (seat.status === SeatStatus[SeatStatus.RESERVE]) {
-      setReserveFormLocalStatus('RESERVED')
+      setReserveFormLocalStatus('RESERVE')
+    } else if (seat.status === SeatStatus[SeatStatus.PENDING]) {
+      setReserveFormLocalStatus('PENDING')
     } else {
       setReserveFormLocalStatus('EMPTY')
     }
@@ -163,19 +165,16 @@ function SeatButton(props: SeatButtonProps) {
     setOpen(false)
   }
 
-  const handleOnReserve = useCallback(
-    (seatName: any, seatEmail: any, seatLineID: any, seatPhone: any) => {
-      onChange({
-        ...seat,
-        name: seatName,
-        status: SeatStatus[SeatStatus.RESERVE],
-        email: seatEmail,
-        line_id: seatLineID,
-        phone: seatPhone
-      })
-    },
-    [onChange, seat]
-  )
+  const handleOnReserve = (seatName: any, seatEmail: any, seatLineID: any, seatPhone: any) => {
+    onChange({
+      ...seat,
+      name: seatName,
+      status: SeatStatus[SeatStatus.RESERVE],
+      email: seatEmail,
+      line_id: seatLineID,
+      phone: seatPhone
+    })
+  }
 
   const regexPattern = /^#\d+$/
   const isDefaultName = regexPattern.test(seat.name || '#1')
@@ -208,7 +207,7 @@ function SeatButton(props: SeatButtonProps) {
           <Button
             variant='contained'
             onClick={() => {
-              setReserveFormLocalStatus('RESERVED')
+              setReserveFormLocalStatus('RESERVE')
             }}
           >
             จองแทนลูกทัวร์
@@ -220,43 +219,51 @@ function SeatButton(props: SeatButtonProps) {
     [onChange, seat]
   )
 
-  const LockForm = useCallback(
-    () => (
-      <>
-        <DialogContent>
-          <DialogContentText>
-            <Grid container spacing={2}>
-              <Grid item md={12}>
-                <Typography variant='subtitle2' sx={{ mt: 1 }} color='red'>
-                  {`คุณกำลังจะปลดล็อกที่นั่ง! โปรดตรวจสอบว่าถูกต้องแล้ว`}
-                </Typography>
-              </Grid>
+  const LockForm = () => (
+    <>
+      <DialogContent>
+        <DialogContentText>
+          <Grid container spacing={2}>
+            <Grid item md={12}>
+              <Typography variant='subtitle2' sx={{ mt: 1 }} color='red'>
+                {`คุณกำลังจะปลดล็อกที่นั่ง! โปรดตรวจสอบว่าถูกต้องแล้ว`}
+              </Typography>
             </Grid>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant='contained'
-            color='error'
-            onClick={() => {
-              onChange({ ...seat, is_lock: false })
-              handleClose()
-              setReserveFormLocalStatus('EMPTY')
-            }}
-          >
-            ปลดล็อก
-          </Button>
-          <Button onClick={handleClose}>ปิด</Button>
-        </DialogActions>
-      </>
-    ),
-    [onChange, seat]
+          </Grid>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          variant='contained'
+          color='error'
+          onClick={() => {
+            onChange({ ...seat, is_lock: false })
+            handleClose()
+            setReserveFormLocalStatus('EMPTY')
+          }}
+        >
+          ปลดล็อก
+        </Button>
+        <Button onClick={handleClose}>ปิด</Button>
+      </DialogActions>
+    </>
   )
 
-  const formToRender = useMemo(() => {
+  const formToRender = () => {
     const renderSwitch = (seatFormStatus: string) => {
       switch (seatFormStatus) {
-        case 'RESERVED':
+        case 'RESERVE':
+          return (
+            <ReserveForm
+              isDefaultName={isDefaultName}
+              seat={seat}
+              handleClose={handleClose}
+              setReserveFormLocalStatus={setReserveFormLocalStatus}
+              onChange={onChange}
+              handleOnReserve={handleOnReserve}
+            />
+          )
+        case 'PENDING':
           return (
             <ReserveForm
               isDefaultName={isDefaultName}
@@ -275,7 +282,7 @@ function SeatButton(props: SeatButtonProps) {
     }
 
     return renderSwitch(reserveFormLocalStatus)
-  }, [ChooseActionForm, LockForm, handleOnReserve, isDefaultName, onChange, reserveFormLocalStatus, seat])
+  }
 
   return (
     <>
@@ -284,13 +291,15 @@ function SeatButton(props: SeatButtonProps) {
         onClick={handleClickOpen}
         color={seat.is_lock ? 'error' : isDefaultName ? 'primary' : 'info'}
         style={
-          seat.status === SeatStatus[SeatStatus.RESERVE] || seat.is_lock
+          seat.status === SeatStatus[SeatStatus.RESERVE] ||
+          seat.is_lock ||
+          seat.status === SeatStatus[SeatStatus.PENDING]
             ? { height: '100%', width: '100%', boxShadow: 'none' }
             : { boxShadow: 'none' }
         }
       >
         <div style={{ display: 'flex' }}>
-          {seat.status === SeatStatus[SeatStatus.RESERVE] ? (
+          {seat.status === SeatStatus[SeatStatus.RESERVE] || seat.status === SeatStatus[SeatStatus.PENDING] ? (
             ''
           ) : (
             <div style={{ paddingRight: '5px' }}>
@@ -303,7 +312,7 @@ function SeatButton(props: SeatButtonProps) {
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{`เปลี่ยนสถานะที่นั่ง #${seat.seat_number}`}</DialogTitle>
-        {formToRender}
+        {formToRender()}
       </Dialog>
     </>
   )
@@ -384,7 +393,7 @@ const ReserveForm = ({
             }
             handleOnReserve(seatName, seatEmail, seatLineID, seatPhone)
             handleClose()
-            setReserveFormLocalStatus('RESERVED')
+            setReserveFormLocalStatus('RESERVE')
           }}
         >
           คอนเฟิร์ม
@@ -411,10 +420,10 @@ const ReserveForm = ({
         )}
         <Button
           onClick={() => {
-            handleClose()
             if (!informationFilled) {
               setReserveFormLocalStatus('EMPTY')
             }
+            handleClose()
           }}
         >
           ปิด

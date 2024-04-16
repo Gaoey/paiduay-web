@@ -7,12 +7,12 @@ const TermsAndConditions: React.FC = () => {
   return (
     <Box sx={{ margin: '20px', maxWidth: '1600px' }}>
       <Typography variant='h4' gutterBottom>
-        เงื่อนไขและข้อตกลงสำหรับ https://thortrip.com
+        เงื่อนไขและข้อตกลงสำหรับ https://paiduay.com
       </Typography>
       <Typography paragraph>
-        ยินดีต้อนรับสู่ https://thortrip.com
+        ยินดีต้อนรับสู่ https://paiduay.com
         เงื่อนไขและข้อตกลงเหล่านี้กำหนดกฎเกณฑ์และข้อบังคับสำหรับการใช้งานเว็บไซต์ของ LOG21RUBY CO., LTD. ซึ่งตั้งอยู่ที่
-        https://thortrip.com
+        https://paiduay.com
       </Typography>
       <Typography paragraph>
         การเข้าถึงเว็บไซต์นี้ถือว่าคุณยอมรับเงื่อนไขและข้อตกลงเหล่านี้อย่างเต็มที่
@@ -32,7 +32,7 @@ const TermsAndConditions: React.FC = () => {
         2. คุกกี้
       </Typography>
       <Typography paragraph>
-        เราใช้คุกกี้ในการเสริมสร้างประสบการณ์ของผู้ใช้งานบนเว็บไซต์ของเรา การใช้งานเว็บไซต์ https://thortrip.com
+        เราใช้คุกกี้ในการเสริมสร้างประสบการณ์ของผู้ใช้งานบนเว็บไซต์ของเรา การใช้งานเว็บไซต์ https://paiduay.com
         ถือว่าคุณยินยอมให้มีการใช้คุกกี้ตามนโยบายความเป็นส่วนตัวของเรา
       </Typography>
 
@@ -41,8 +41,8 @@ const TermsAndConditions: React.FC = () => {
       </Typography>
       <Typography paragraph>
         เว้นแต่จะระบุไว้เป็นอย่างอื่น, LOG21RUBY CO., LTD.
-        และ/หรือผู้ให้ใบอนุญาตของเราเป็นเจ้าของสิทธิ์ในทรัพย์สินทางปัญญาสำหรับเนื้อหาทั้งหมดบน https://thortrip.com
-        สิทธิ์ในทรัพย์สินทางปัญญาทั้งหมดได้รับการสงวนไว้ คุณสามารถดูและ/หรือพิมพ์หน้าจาก https://thortrip.com
+        และ/หรือผู้ให้ใบอนุญาตของเราเป็นเจ้าของสิทธิ์ในทรัพย์สินทางปัญญาสำหรับเนื้อหาทั้งหมดบน https://paiduay.com
+        สิทธิ์ในทรัพย์สินทางปัญญาทั้งหมดได้รับการสงวนไว้ คุณสามารถดูและ/หรือพิมพ์หน้าจาก https://paiduay.com
         เพื่อการใช้งานส่วนตัวของคุณเองภายใต้ข้อจำกัดที่กำหนดไว้ในเงื่อนไขและข้อตกลงเหล่านี้
       </Typography>
 

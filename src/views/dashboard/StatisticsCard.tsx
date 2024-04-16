@@ -93,10 +93,10 @@ const StatisticsCard = () => {
         }
         subheader={
           <Typography variant='body2'>
-            <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
-              Total 48.5% growth
-            </Box>{' '}
-            😎 this month
+            <Box component='span' sx={{ fontWeight: 600, color: 'text.primary', marginRight: '1em' }}>
+              Coming soon! 
+            </Box>
+            สรุปยอด การใช้งาน และ รวบรวมข้อมูลต่างๆไว้ในที่เดียว
           </Typography>
         }
         titleTypographyProps={{
@@ -109,7 +109,7 @@ const StatisticsCard = () => {
       />
       <CardContent sx={{ pt: theme => `${theme.spacing(3)} !important` }}>
         <Grid container spacing={[5, 0]}>
-          {renderStats()}
+          {/* {renderStats()} */}
         </Grid>
       </CardContent>
     </Card>
