@@ -2,31 +2,27 @@
 import Grid from '@mui/material/Grid'
 
 // ** Icons Imports
-import BriefcaseVariantOutline from 'mdi-material-ui/BriefcaseVariantOutline'
-import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
-import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import Poll from 'mdi-material-ui/Poll'
 
 // ** Custom Components Imports
-import CardStatisticsVerticalComponent from 'src/@core/components/card-statistics/card-stats-vertical'
 
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
 import { getSession } from 'next-auth/react'
+import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
+import { useApi } from 'src/@core/services'
+import { Profiler } from 'src/@core/types/profiler'
 import AdminLayout from 'src/layouts/AdminLayout'
 import TripList from 'src/views/admin/TripList'
 import Profile from 'src/views/dashboard/Profile'
 import StatisticsCard from 'src/views/dashboard/StatisticsCard'
-import TotalEarning from 'src/views/dashboard/TotalEarning'
-import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
-import { useApi } from 'src/@core/services'
-import * as R from 'ramda'
-import { Profiler } from 'src/@core/types/profiler'
+import { useAdminAccount } from 'src/@core/layouts/components/shared-components/UserDropdown'
+import { useRouter } from 'next/router'
 
 const Dashboard = () => {
+  const router = useRouter()
   const { profilerAPI, userAPI } = useApi()
 
   const { getUser } = userAPI
@@ -42,7 +38,14 @@ const Dashboard = () => {
 
   const profiler: Profiler | null = R.pathOr<Profiler | null>(null, [0], data)
 
-  console.log('data', data)
+  const { isSuccess, isAdmin } = useAdminAccount()
+
+  // ** Effects
+  useEffect(() => {
+    if (isSuccess && !isAdmin) {
+      router.push('/admin/create-profiler')
+    }
+  }, [isAdmin, isSuccess, router])
 
   return (
     <ApexChartWrapper>

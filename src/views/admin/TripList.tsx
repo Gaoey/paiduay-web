@@ -96,11 +96,7 @@ const DashboardCards = ({ ...props }) => {
               </Grid>
               <Grid item xs={8} sm={3} md={1.5} style={{ paddingLeft: '0.5em' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Typography variant='body2'>
-                    {`${toCurrency(trip?.data?.payment?.accumulate_price || 0)} / ${toCurrency(
-                      trip?.data?.payment?.full_price || 0.0 * trip.data.total_people
-                    )}`}
-                  </Typography>
+                  <Typography variant='body2'>{`${toCurrency(trip?.data?.payment?.accumulate_price || 0)}`}</Typography>
                 </div>
               </Grid>
               <Grid item xs={4} sm={6} md={1}>

@@ -8,9 +8,9 @@ import UserDropdown from 'src/@core/layouts/components/shared-components/UserDro
 import { useApi } from 'src/@core/services'
 
 import Link from 'next/link'
-import { StyledLink } from 'src/@core/layouts/components/vertical/navigation/VerticalNavHeader'
-import themeConfig from 'src/configs/themeConfig'
 import { ContentWrapper, MainContentWrapper } from 'src/@core/layouts/VerticalLayout'
+import themeConfig from 'src/configs/themeConfig'
+import Footer from 'src/pages/pages/landing/components/pageSeven'
 
 interface Props {
   children: ReactNode
@@ -29,13 +29,21 @@ const UserLayout = ({ children, isContentWrap = true }: Props) => {
         <title>Headache-Free Trip Manager</title>
       </Head>
 
-      <MainContentWrapper className='layout-content-wrapper' >
+      <MainContentWrapper className='layout-content-wrapper'>
         <AppBar sx={{ boxShadow: 'none' }}>
-          <div style={{ backgroundColor: '#FDECEF', width: '100vw', padding: '0 2em 0 1em', overflow: 'hidden', maxHeight: '4em'}}>
+          <div
+            style={{
+              backgroundColor: '#FDECEF',
+              width: '100vw',
+              padding: '0 2em 0 1em',
+              overflow: 'hidden',
+              maxHeight: '4em'
+            }}
+          >
             <Toolbar disableGutters>
               <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
                 <Link href='/' passHref>
-                <img src='/images/logo-horizontal.png' alt={themeConfig.templateName} style={{ height: '40px' }} /> 
+                  <img src='/images/logo-horizontal.png' alt={themeConfig.templateName} style={{ height: '40px' }} />
                 </Link>
               </Typography>
 
@@ -58,6 +66,7 @@ const UserLayout = ({ children, isContentWrap = true }: Props) => {
         ) : (
           <>{children}</>
         )}
+        <Footer />
       </MainContentWrapper>
     </div>
   )

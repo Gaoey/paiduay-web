@@ -1,6 +1,9 @@
-import { Button, Grid, Paper, TextField, Typography } from '@mui/material'
+import { LoadingButton } from '@mui/lab'
+import { Grid, Paper, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useApi } from 'src/@core/services'
 import { User, UserProfile } from 'src/@core/types/user'
 
 interface Props {
@@ -10,6 +13,11 @@ interface Props {
 export default function UpdateProfileForm(props: Props) {
   const { user } = props
   const router = useRouter()
+
+  const { userAPI } = useApi()
+  const { updateProfile } = userAPI
+
+  const { isSuccess, isLoading } = updateProfile
 
   const defaultValues = {
     first_name: user?.profile?.first_name || '',
@@ -27,9 +35,20 @@ export default function UpdateProfileForm(props: Props) {
     defaultValues
   })
 
-  const onSubmit: SubmitHandler<any> = (data: UserProfile) => {
-    router.push(`/user/${user?._id}`)
+  const onSubmit: SubmitHandler<any> = data => {
+    const profile: UserProfile = {
+      ...user?.profile,
+      ...data
+    }
+
+    updateProfile.mutate(profile)
   }
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push(`/user/${user?._id}`)
+    }
+  }, [isSuccess])
 
   return (
     <Paper elevation={3} style={{ padding: 20 }}>
@@ -59,9 +78,9 @@ export default function UpdateProfileForm(props: Props) {
             <TextField label='Line ID' fullWidth {...register('line_contacts')} />
           </Grid>
           <Grid item xs={12}>
-            <Button type='submit' variant='contained' color='primary'>
+            <LoadingButton type='submit' variant='contained' color='primary' loading={isLoading}>
               UPDATE
-            </Button>
+            </LoadingButton>
           </Grid>
         </Grid>
       </form>

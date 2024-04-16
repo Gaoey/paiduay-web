@@ -6,7 +6,6 @@ import Chip from '@mui/material/Chip'
 // ** Types Imports
 import {
   Button,
-  CardContent,
   CardHeader,
   Dialog,
   DialogActions,
@@ -20,12 +19,12 @@ import {
 // import { useRouter } from 'next/router'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { useFieldArray, useForm } from 'react-hook-form'
 import ImageCarousel from 'src/@core/components/image-carousel'
 import { ThemeColor } from 'src/@core/layouts/types'
 import { Media } from 'src/@core/types'
 import { Booking, BookingData, BookingStatus, SimplySeatData } from 'src/@core/types/booking'
 import { Transport } from 'src/@core/types/transport'
-import { useFieldArray, useForm } from 'react-hook-form'
 
 interface StatusObj {
   [key: string]: {
@@ -79,7 +78,7 @@ const BookingCards = ({ bookings, transports, onUpdateBooking }: Props) => {
                     sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
                   />
                 </Grid>
-                <Grid item xs={12} sm={12}  md={6}>
+                <Grid item xs={12} sm={12} md={6}>
                   <Box style={{ display: 'flex', flexDirection: 'row' }}>
                     <ViewSlipButton slipImg={booking.data.slips} />
                     <Button

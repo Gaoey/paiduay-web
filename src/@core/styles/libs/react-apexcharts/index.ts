@@ -97,7 +97,8 @@ const ApexChartWrapper = styled('div')(({ theme }) => ({
     '& .apexcharts-radar-series line': {
       stroke: theme.palette.divider
     }
-  }
+  },
+  minHeight: 1000
 }))
 
 export default ApexChartWrapper

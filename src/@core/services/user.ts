@@ -13,7 +13,7 @@ const userAPI = (authIntance: AxiosInstance) => ({
     return authIntance.get(`/v1/user`)
   },
   updateProfile: (body: UserProfile): Promise<boolean> => {
-    return authIntance.put(`/v1/user`, body)
+    return authIntance.put(`/v1/user/profile`, body)
   }
 })
 

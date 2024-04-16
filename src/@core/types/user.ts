@@ -26,7 +26,7 @@ export interface UserProfile {
   citizen_card_image?: Media | null
   passport_id?: string | null
   passport_card_image?: Media | null
-  address: string
+  address?: string | null
   telephone_number: string
   line_contacts: string
   beneficiary_name?: string | null

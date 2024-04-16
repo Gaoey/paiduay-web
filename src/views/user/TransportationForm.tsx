@@ -1,8 +1,24 @@
-import { Box, Button, Dialog, DialogActions, DialogTitle, Grid, Paper } from '@mui/material'
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Paper,
+  TextField
+} from '@mui/material'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import * as R from 'ramda'
+import { useCallback, useEffect, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { useApi } from 'src/@core/services'
 import { Seat, SeatStatus } from 'src/@core/types/transport'
+import { UserProfile } from 'src/@core/types/user'
 import { range } from '../admin/TransportationForm'
+import { LoadingButton } from '@mui/lab'
 
 interface VanBookingForm {
   values: Seat[]
@@ -140,6 +156,17 @@ interface ConfirmSeatButtonProps {
 
 function ConfirmSeatButton(props: ConfirmSeatButtonProps) {
   const router = useRouter()
+  const { userAPI } = useApi()
+  const { user, updateProfile } = userAPI
+
+  const { data: userData } = user
+  const { isLoading, isSuccess } = updateProfile
+  useEffect(() => {
+    user.mutate()
+  }, [])
+
+  const hasUserData = !R.isNil(userData?.profile) && !R.isEmpty(userData?.profile.line_contacts)
+
   const { seats, tripID, transportID } = props
 
   const [open, setOpen] = useState(false)
@@ -152,26 +179,83 @@ function ConfirmSeatButton(props: ConfirmSeatButtonProps) {
     setOpen(false)
   }
 
-  const query = seats.reduce((prev, curr) => {
-    return `${prev}&seat_number=${curr.seat_number}`
-  }, '')
+  const defaultValues = {
+    first_name: '',
+    last_name: '',
+    telephone_number: '',
+    line_contacts: ''
+  }
+
+  const { register, handleSubmit } = useForm<UserProfile>({ defaultValues })
+
+  const onSubmit: SubmitHandler<any> = data => {
+    const profile: UserProfile = {
+      ...userData?.profile,
+      ...data
+    }
+    updateProfile.mutate(profile)
+  }
+
+  const linkto = useCallback(() => {
+    const query = seats.reduce((prev, curr) => {
+      return `${prev}&seat_number=${curr.seat_number}`
+    }, '')
+    console.log({ seats })
+    router.push(`/trips/${tripID}/booking?transport_id=${transportID}&${query}`)
+  }, [])
+
+  useEffect(() => {
+    if (isSuccess) {
+      linkto()
+    }
+  }, [isSuccess, linkto])
 
   return (
     <>
-      <Button variant='contained' onClick={handleClickOpen} color='info'>
+      <Button variant='contained' onClick={handleClickOpen} color='info' disabled={seats.length === 0}>
         จองเลย
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{`ยืนยันการจองใช่ใหม?`}</DialogTitle>
-        <DialogActions>
-          <Button
-            variant='contained'
-            onClick={() => router.push(`/trips/${tripID}/booking?transport_id=${transportID}&${query}`)}
-          >
-            จองเลย
-          </Button>
-          <Button onClick={handleClose}>ปิด</Button>
-        </DialogActions>
+        <DialogTitle>{hasUserData ? `ยืนยันการจองใช่ใหม?` : 'เพิ่มข้อมูลส่วนตัว'}</DialogTitle>
+        {!hasUserData ? (
+          <>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <DialogContent>
+                <DialogContentText sx={{ marginBottom: 10 }}>
+                  โปรดใส่ข้อมูลส่วนตัวเพื่อให้เจ้าของทริปติดต่อคุณได้ง่ายขึ้น
+                </DialogContentText>
+                <Grid container spacing={5}>
+                  <Grid item xs={12}>
+                    <TextField label='First Name' fullWidth {...register('first_name')} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField label='Last Name' fullWidth {...register('last_name')} />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField label='Telephone Number' fullWidth {...register('telephone_number')} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField label='Line ID' fullWidth {...register('line_contacts')} />
+                  </Grid>
+                </Grid>
+              </DialogContent>
+              <DialogActions>
+                <LoadingButton variant='contained' type='submit' loading={isLoading}>
+                  SUBMIT
+                </LoadingButton>
+                <Button onClick={handleClose}>ปิด</Button>
+              </DialogActions>
+            </form>
+          </>
+        ) : (
+          <DialogActions>
+            <Button variant='contained' onClick={() => linkto()}>
+              จองเลย
+            </Button>
+            <Button onClick={handleClose}>ปิด</Button>
+          </DialogActions>
+        )}
       </Dialog>
     </>
   )

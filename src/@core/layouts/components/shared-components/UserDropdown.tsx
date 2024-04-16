@@ -64,14 +64,7 @@ const UserDropdown = () => {
   // ** Hooks
   const router = useRouter()
 
-  const { user, isSuccess, isAdmin } = useAdminAccount()
-
-  // ** Effects
-  useEffect(() => {
-    if (isSuccess && !isAdmin) {
-      router.push('/admin/create-profiler')
-    }
-  }, [isAdmin, isSuccess, router])
+  const { user, isAdmin } = useAdminAccount()
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget)
@@ -193,7 +186,7 @@ const UserDropdown = () => {
             FAQ
           </Box>
         </MenuItem>
-        <MenuItem sx={{ p: 0 }}  onClick={() => router.push('/terms-and-conditions')}>
+        <MenuItem sx={{ p: 0 }} onClick={() => router.push('/terms-and-conditions')}>
           <Box sx={styles}>
             <GavelOutlined sx={{ marginRight: 2 }} />
             Term & Conditions

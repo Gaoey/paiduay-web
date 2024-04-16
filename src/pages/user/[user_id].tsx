@@ -15,10 +15,12 @@ export default function UserProfileDetail() {
   const router = useRouter()
   const userID = router.query.user_id as string
 
-  const { bookingAPI } = useApi()
+  const { bookingAPI, userAPI } = useApi()
 
+  const { user } = userAPI
   const { findBookingsByUserID } = bookingAPI
 
+  const { data: userData } = user
   const { data } = findBookingsByUserID
   const bookings: Booking[] = R.pathOr<Booking[]>([], [], data)
 
@@ -28,6 +30,7 @@ export default function UserProfileDetail() {
       page_number: 1
     }
     findBookingsByUserID.mutate({ paginate })
+    user.mutate()
   }, [])
 
   return (
@@ -36,14 +39,18 @@ export default function UserProfileDetail() {
         <Grid item md={12}>
           <UserProfileForm userID={userID} />
         </Grid>
-        <Grid item md={12}>
-          <Typography variant='h6' color='text.secondary'>
-            ประวัติการจอง
-          </Typography>
-        </Grid>
-        <Grid item md={12}>
-          <BookingHistoryTable bookings={bookings} />
-        </Grid>
+        {userData?._id === userID && (
+          <>
+            <Grid item md={12}>
+              <Typography variant='h6' color='text.secondary'>
+                ประวัติการจอง
+              </Typography>
+            </Grid>
+            <Grid item md={12}>
+              <BookingHistoryTable bookings={bookings} />
+            </Grid>
+          </>
+        )}
       </Grid>
     </ApexChartWrapper>
   )

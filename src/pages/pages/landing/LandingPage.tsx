@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react'
 import HeroSection from './components/HeroSection'
 import HowItWorksTripLeader from './components/HowItWorksTripLeader' // Assuming that's your path
 import HowItWorksTraveller from './components/HowItWorksTraveller'
-import Footer from './components/pageSeven/index'
 
 interface LandingPageState {
   selectedDate: Date | null
@@ -95,7 +94,6 @@ function LandingPage() {
       <PathBackground />
       <HowItWorksTripLeader />
       <HowItWorksTraveller />
-      <Footer />
     </div>
   )
 }

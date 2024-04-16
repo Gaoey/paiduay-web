@@ -40,6 +40,7 @@ export default function Booking() {
     findProfilerByTripID.mutate(tripID)
   }, [])
 
+  console.log({ seat_numbers })
   const simplySeats = (): SimplySeatData[] => {
     if (typeof seat_numbers === 'string') {
       return [
