@@ -7,9 +7,8 @@ import Typography from '@mui/material/Typography'
 import { styled, useTheme } from '@mui/material/styles'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useEffect } from 'react'
-import { useApi } from 'src/@core/services'
 import { Profiler } from 'src/@core/types/profiler'
+import { User } from 'src/@core/types/user'
 
 // Styled component for the triangle shaped background image
 const TriangleImg = styled('img')({
@@ -27,24 +26,18 @@ const ProfileImg = styled('img')({
   position: 'absolute'
 })
 
-const Profile = () => {
+interface ProfileProps {
+  profiler: Profiler | null
+  isLoading: boolean
+  currentUser: User
+}
+
+const Profile = (props: ProfileProps) => {
   // ** Hook
   const theme = useTheme()
   const router = useRouter()
-  const { profilerAPI, userAPI } = useApi()
 
-  const { getUser } = userAPI
-  const { findProfiler } = profilerAPI
-
-  const currentUser = getUser
-
-  const { data, isLoading } = findProfiler
-
-  useEffect(() => {
-    findProfiler.mutate()
-  }, [])
-
-  const profiler: Profiler | null = R.pathOr<Profiler | null>(null, [0], data)
+  const { isLoading, profiler, currentUser } = props
 
   const imageSrc = theme.palette.mode === 'light' ? 'triangle-light.png' : 'triangle-dark.png'
 

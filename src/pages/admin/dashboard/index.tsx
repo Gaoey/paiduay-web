@@ -15,20 +15,38 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
 import { getSession } from 'next-auth/react'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import AdminLayout from 'src/layouts/AdminLayout'
 import TripList from 'src/views/admin/TripList'
 import Profile from 'src/views/dashboard/Profile'
 import StatisticsCard from 'src/views/dashboard/StatisticsCard'
 import TotalEarning from 'src/views/dashboard/TotalEarning'
 import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
+import { useApi } from 'src/@core/services'
+import * as R from 'ramda'
+import { Profiler } from 'src/@core/types/profiler'
 
 const Dashboard = () => {
+  const { profilerAPI, userAPI } = useApi()
+
+  const { getUser } = userAPI
+  const { findProfiler } = profilerAPI
+
+  const currentUser = getUser
+
+  const { data, isLoading } = findProfiler
+
+  useEffect(() => {
+    findProfiler.mutate()
+  }, [])
+
+  const profiler: Profiler | null = R.pathOr<Profiler | null>(null, [0], data)
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12} md={4}>
-          <Profile />
+          <Profile profiler={profiler} isLoading={isLoading} currentUser={currentUser} />
         </Grid>
         <Grid item xs={12} md={8}>
           <StatisticsCard />
