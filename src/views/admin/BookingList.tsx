@@ -67,52 +67,52 @@ const BookingCards = ({ bookings, transports, onUpdateBooking }: Props) => {
         return (
           <Grid item xs={12} key={booking._id}>
             <Card>
-              <CardHeader title={subheader} subheader={transport?.data.name || 'Transport Info Unavailable'} />
-              <CardContent>
-                <Grid container spacing={1}>
-                  <Grid item xs={12} md={3}>
-                    <Chip
-                      label={bookingStatusObj[booking.data.status].label}
-                      color={bookingStatusObj[booking.data.status].color}
-                      size='small'
-                      sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={9}>
-                    <Box style={{ display: 'flex', flexDirection: 'row' }}>
-                      <ViewSlipButton slipImg={booking.data.slips} />
-                      <Button
-                        variant='contained'
-                        color='success'
-                        style={{ color: 'white', marginRight: '0.5em' }}
-                        onClick={() => router.push(`/user/${booking.data.user_id}`)}
-                      >
-                        View User
-                      </Button>
-                      <UpdateStatusButton
-                        bookingID={booking._id}
-                        onChange={(id, status) => {
-                          const newBookingData: BookingData = {
-                            ...booking.data,
-                            status
-                          }
-                          onUpdateBooking(id, newBookingData)
-                        }}
-                      />
-                      <ChangeBookingNameButton
-                        booking={booking}
-                        onChange={(id, seats) => {
-                          const newBookingData: BookingData = {
-                            ...booking.data,
-                            seats: seats
-                          }
-                          onUpdateBooking(id, newBookingData)
-                        }}
-                      />
-                    </Box>
-                  </Grid>
+              <Grid container spacing={3} columns={12} style={{ alignItems: 'center', padding: '1em' }}>
+                <Grid item xs={12} sm={6} md={3}>
+                  <CardHeader title={subheader} subheader={transport?.data.name || 'Transport Info Unavailable'} />
                 </Grid>
-              </CardContent>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Chip
+                    label={bookingStatusObj[booking.data.status].label}
+                    color={bookingStatusObj[booking.data.status].color}
+                    size='small'
+                    sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}  md={6}>
+                  <Box style={{ display: 'flex', flexDirection: 'row' }}>
+                    <ViewSlipButton slipImg={booking.data.slips} />
+                    <Button
+                      variant='contained'
+                      color='success'
+                      style={{ color: 'white', marginRight: '0.5em' }}
+                      onClick={() => router.push(`/user/${booking.data.user_id}`)}
+                    >
+                      View User
+                    </Button>
+                    <UpdateStatusButton
+                      bookingID={booking._id}
+                      onChange={(id, status) => {
+                        const newBookingData: BookingData = {
+                          ...booking.data,
+                          status
+                        }
+                        onUpdateBooking(id, newBookingData)
+                      }}
+                    />
+                    <ChangeBookingNameButton
+                      booking={booking}
+                      onChange={(id, seats) => {
+                        const newBookingData: BookingData = {
+                          ...booking.data,
+                          seats: seats
+                        }
+                        onUpdateBooking(id, newBookingData)
+                      }}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
             </Card>
           </Grid>
         )
@@ -281,13 +281,13 @@ function ChangeBookingNameButton(props: ChangeBookingNameButtonProps) {
           <DialogTitle>{`ต้องการเปลี่ยนชื่อของ "${title}" หรือไม่?`}</DialogTitle>
           <DialogContent>
             {fields.map((item, index) => (
-                <TextField
-                  key={item.id} 
-                  sx={{ margin: 2 }}
-                  {...register(`seats.${index}.seat_name`)}
-                  label={`ขื่อผู้จอง #${index}`}
-                  defaultValue={item.seat_name}
-                />
+              <TextField
+                key={item.id}
+                sx={{ margin: 2 }}
+                {...register(`seats.${index}.seat_name`)}
+                label={`ขื่อผู้จอง #${index}`}
+                defaultValue={item.seat_name}
+              />
             ))}
           </DialogContent>
           <DialogActions>
