@@ -30,8 +30,6 @@ export default function UserProfileDetail() {
     findBookingsByUserID.mutate({ paginate })
   }, [])
 
-  console.log({ data })
-
   return (
     <ApexChartWrapper>
       <Grid container spacing={5}>

@@ -13,7 +13,7 @@ import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useEffect, useState } from 'react'
 import { useApi } from 'src/@core/services'
-import { Booking, PaymentType } from 'src/@core/types/booking'
+import { Booking, BookingStatus, PaymentType } from 'src/@core/types/booking'
 import { Transport } from 'src/@core/types/transport'
 import { bookingStatusObj } from '../admin/BookingList'
 
@@ -31,15 +31,6 @@ const BookingHistoryCards = (props: Props) => {
     <div className={styles.bookingTableContainer}>
       <Grid container spacing={3}>
         {bookings.map((booking: Booking) => {
-          const subheader = booking.data.seats.reduce((prev, curr, index) => {
-            const format = `${curr.seat_name} `
-            if (index === 0) {
-              return format
-            } else {
-              return prev + ', ' + format
-            }
-          }, '')
-
           return (
             <Grid item xs={12} key={booking._id}>
               <Card className={styles.bookingCard}>
@@ -47,7 +38,7 @@ const BookingHistoryCards = (props: Props) => {
                   <Grid item xs={6} sm={6} md={3}>
                     <CardHeader
                       title={booking.trip_data?.data?.title || 'Trip Title Unavailable'}
-                      subheader={`จองในชื่อ: ${subheader}`}
+                      subheader={`created at: ${format(new Date(booking.created_at || 0), 'dd MMM yyyy')}`}
                     />
                   </Grid>
                   <Grid item xs={6} sm={6} md={3}>
@@ -59,23 +50,17 @@ const BookingHistoryCards = (props: Props) => {
                       sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
                     />
                   </Grid>
-                  <Grid item xs={6} sm={6} md={2}>
+                  <Grid item xs={3} sm={6} md={2}>
                     <Box style={{ display: 'flex', marginLeft: 10 }}>
                       <Chip
-                        label={booking.data.status}
+                        label={bookingStatusObj[booking.data.status].label}
                         color={bookingStatusObj[booking.data.status].color}
-                        size='medium'
-                        sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
-                      />
-                      <Chip
-                        label={booking.data.payment_type === PaymentType[PaymentType.FULL] ? 'แบบจ่ายเต็ม' : 'แบบมัดจำ'}
-                        color='warning'
                         size='medium'
                         sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
                       />
                     </Box>
                   </Grid>
-                  <Grid item xs={6} sm={6} md={4}>
+                  <Grid item xs={9} sm={6} md={4}>
                     <Box style={{ display: 'flex' }}>
                       <Button
                         variant='outlined'
@@ -85,6 +70,17 @@ const BookingHistoryCards = (props: Props) => {
                         ดูข้อมูลทริป
                       </Button>
                       <ViewSeatButton booking={booking} />
+                      {booking.data.payment_type === PaymentType[PaymentType.DEPOSIT] &&
+                        booking.data.status !== BookingStatus[BookingStatus.REJECT] && (
+                          <Button
+                            variant='contained'
+                            style={{ marginRight: '0.5em' }}
+                            color='warning'
+                            onClick={() => router.push(`/trips/${booking.trip_id}/booking/${booking._id}`)}
+                          >
+                            จ่ายเต็ม
+                          </Button>
+                        )}
                     </Box>
                   </Grid>
                 </Grid>
@@ -127,7 +123,7 @@ function ViewSeatButton(props: ViewSeatButtonProps) {
   const transport = transports.filter(v => v._id === booking.data.transport_id)[0] || null
 
   const seat_numbers = booking.data.seats.reduce((prev, curr, index) => {
-    const format = `#${curr.seat_number} `
+    const format = `${curr.seat_name} (#${curr.seat_number})`
     if (index === 0) {
       return format
     } else {
@@ -145,7 +141,7 @@ function ViewSeatButton(props: ViewSeatButtonProps) {
         <DialogContent style={{ width: 400 }}>
           <DialogContentText>
             <Typography variant='body2' color='text.secondary'>
-              {`${transport?.data.name}, ที่นั่ง #${seat_numbers}`}
+              {`รถชื่อ "${transport?.data.name}", ที่นั่ง ${seat_numbers}`}
             </Typography>
           </DialogContentText>
         </DialogContent>

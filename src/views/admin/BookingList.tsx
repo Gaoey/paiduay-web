@@ -30,14 +30,16 @@ import { useFieldArray, useForm } from 'react-hook-form'
 interface StatusObj {
   [key: string]: {
     color: ThemeColor
+    label: string
   }
 }
 
 export const bookingStatusObj: StatusObj = {
-  [BookingStatus[BookingStatus.CONFIRM]]: { color: 'success' },
-  [BookingStatus[BookingStatus.PENDING]]: { color: 'primary' },
-  [BookingStatus[BookingStatus.NONE]]: { color: 'error' },
-  [BookingStatus[BookingStatus.REJECT]]: { color: 'error' }
+  [BookingStatus[BookingStatus.CONFIRM]]: { color: 'success', label: 'สำเร็จ' },
+  [BookingStatus[BookingStatus.DEPOSIT]]: { color: 'warning', label: 'มัดจำอยู่' },
+  [BookingStatus[BookingStatus.PENDING]]: { color: 'primary', label: 'รอการตรวจสอบ' },
+  [BookingStatus[BookingStatus.NONE]]: { color: 'error', label: 'มีปัญหา' },
+  [BookingStatus[BookingStatus.REJECT]]: { color: 'error', label: 'ถูกปฎิเสธ' }
 }
 
 interface Props {
@@ -70,7 +72,7 @@ const BookingCards = ({ bookings, transports, onUpdateBooking }: Props) => {
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
                     <Chip
-                      label={booking.data.status}
+                      label={bookingStatusObj[booking.data.status].label}
                       color={bookingStatusObj[booking.data.status].color}
                       size='small'
                       sx={{ '& .MuiChip-label': { fontWeight: 500 } }}

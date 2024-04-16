@@ -5,6 +5,7 @@ import { UserProfile } from './user'
 export enum BookingStatus {
   NONE = 'NONE',
   PENDING = 'PENDING',
+  DEPOSIT = 'DEPOSIT',
   CONFIRM = 'CONFIRM',
   REJECT = 'REJECT'
 }
