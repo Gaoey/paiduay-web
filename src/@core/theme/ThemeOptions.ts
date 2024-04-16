@@ -10,7 +10,6 @@ import palette from './palette'
 import spacing from './spacing'
 import shadows from './shadows'
 import breakpoints from './breakpoints'
-// import { Itim } from 'next/font/google'
 
 const themeOptions = (settings: Settings): ThemeOptions => {
   // ** Vars

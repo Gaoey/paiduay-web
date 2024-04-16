@@ -31,11 +31,11 @@ const UserLayout = ({ children, isContentWrap = true }: Props) => {
 
       <MainContentWrapper className='layout-content-wrapper' >
         <AppBar sx={{ boxShadow: 'none' }}>
-          <div style={{ backgroundColor: '#FDECEF', width: '100vw', padding: '0 2em 0 2em', overflow: 'hidden', maxHeight: '4em'}}>
+          <div style={{ backgroundColor: '#FDECEF', width: '100vw', padding: '0 2em 0 1em', overflow: 'hidden', maxHeight: '4em'}}>
             <Toolbar disableGutters>
               <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
                 <Link href='/' passHref>
-                  <StyledLink sx={{ color: '#3B5249', fontFamily: 'Itim' }}>{themeConfig.templateName}</StyledLink>
+                <img src='/images/logo-horizontal.png' alt={themeConfig.templateName} style={{ height: '40px' }} /> 
                 </Link>
               </Typography>
 
