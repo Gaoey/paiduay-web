@@ -106,12 +106,21 @@ export default function BookingForm(props: BookingFormProps) {
             <CardContent>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  {!R.isNil(trip) && <PaymentTypeRadioGroup trip={trip} onChange={t => setValue('payment_type', t)} />}
+                  {!R.isNil(trip) && (
+                    <PaymentTypeRadioGroup
+                      trip={trip}
+                      onChange={t => setValue('payment_type', t)}
+                      isDeposit={isDeposit}
+                    />
+                  )}
                 </Grid>
                 <Grid item xs={12}>
                   {!R.isNil(trip?.data?.payment) && (
                     <Typography variant='h6'>
-                      จำนวนเงิน: {toCurrency(getPaymentPrice(trip?.data?.payment, seats.length, watch('payment_type')))}
+                      จำนวนเงิน:
+                      {isDeposit
+                        ? toCurrency(trip?.data?.payment.full_price - (booking?.data.payment_price || 0.0))
+                        : toCurrency(getPaymentPrice(trip?.data?.payment, seats.length, watch('payment_type')))}
                     </Typography>
                   )}
                 </Grid>
@@ -193,10 +202,11 @@ export default function BookingForm(props: BookingFormProps) {
 interface PaymentTypeRadioGroup {
   trip: Trip
   onChange: (paymentType: string) => void
+  isDeposit: boolean
 }
 
 export function PaymentTypeRadioGroup(props: PaymentTypeRadioGroup) {
-  const { trip, onChange } = props
+  const { trip, onChange, isDeposit } = props
 
   const [value, setValue] = useState<string>(PaymentType[PaymentType.FULL])
 
@@ -216,12 +226,12 @@ export function PaymentTypeRadioGroup(props: PaymentTypeRadioGroup) {
         value={value}
         onChange={handleChange}
       >
-        <FormControlLabel value={PaymentType[PaymentType.FULL]} control={<Radio />} label='จ่ายแบบเต็ม' />
+        <FormControlLabel value={PaymentType[PaymentType.FULL]} control={<Radio />} label='จ่ายเต็มจำนวน' />
         <FormControlLabel
           value={PaymentType[PaymentType.DEPOSIT]}
           control={<Radio />}
           label='จ่ายแบบมัดจำ'
-          disabled={(trip.data.payment?.deposit_price || 0.0) === 0.0}
+          disabled={(trip.data.payment?.deposit_price || 0.0) === 0.0 || isDeposit}
         />
       </RadioGroup>
     </FormControl>

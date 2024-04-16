@@ -35,8 +35,8 @@ interface StatusObj {
 }
 
 export const bookingStatusObj: StatusObj = {
-  [BookingStatus[BookingStatus.CONFIRM]]: { color: 'success', label: 'สำเร็จ' },
-  [BookingStatus[BookingStatus.DEPOSIT]]: { color: 'warning', label: 'มัดจำอยู่' },
+  [BookingStatus[BookingStatus.CONFIRM]]: { color: 'success', label: 'ชำระสำเร็จ' },
+  [BookingStatus[BookingStatus.DEPOSIT]]: { color: 'warning', label: 'ยังชำระไม่ครบ' },
   [BookingStatus[BookingStatus.PENDING]]: { color: 'primary', label: 'รอการตรวจสอบ' },
   [BookingStatus[BookingStatus.NONE]]: { color: 'error', label: 'มีปัญหา' },
   [BookingStatus[BookingStatus.REJECT]]: { color: 'error', label: 'ถูกปฎิเสธ' }
@@ -159,9 +159,20 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
               handleClose()
             }}
             variant='contained'
-            color='secondary'
+            color='success'
           >
-            คอนเฟิร์ม
+            ชำระสำเร็จ
+          </Button>
+          <Button
+            onClick={() => {
+              const status = BookingStatus[BookingStatus.DEPOSIT]
+              onChange(bookingID, status)
+              handleClose()
+            }}
+            variant='contained'
+            color='warning'
+          >
+            ชำระไม่ครบ
           </Button>
           <Button
             onClick={() => {
@@ -172,7 +183,7 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
             variant='contained'
             color='primary'
           >
-            รอรับเงินอยู่
+            กำลังตรวจสอบ
           </Button>
           <Button
             onClick={() => {
@@ -216,7 +227,7 @@ function ViewSlipButton(props: ViewSlipButtonProps) {
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>สลิป</DialogTitle>
-        <DialogContent style={{ width: 400 }}>
+        <DialogContent>
           <DialogContentText>
             <ImageCarousel medias={slipImg} />
           </DialogContentText>
