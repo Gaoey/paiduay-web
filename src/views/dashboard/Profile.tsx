@@ -48,12 +48,9 @@ const Profile = (props: ProfileProps) => {
           <CircularProgress color='secondary' />
         ) : (
           <>
-            <Typography variant='h6'>Hello {currentUser?.name}! 🥳</Typography>
-            <Typography variant='body2' sx={{ letterSpacing: '0.25px' }}>
-              Update your trip profile here
-            </Typography>
-            <Typography variant='h5' sx={{ my: 4, color: 'primary.main' }}>
-              {profiler?.data.name}
+            <Typography variant='h6'>หวัดดีเพื่อน {currentUser?.name}! 🥳</Typography>
+            <Typography variant='body2' sx={{ letterSpacing: '0.25px', marginBottom: '2em' }}>
+              คำแนะนำตัวของคุณ
             </Typography>
             <Button size='small' variant='contained' onClick={() => router.push('/admin/profiler-settings')}>
               UPDATE

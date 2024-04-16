@@ -42,6 +42,8 @@ const Dashboard = () => {
 
   const profiler: Profiler | null = R.pathOr<Profiler | null>(null, [0], data)
 
+  console.log('data', data)
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
@@ -51,13 +53,13 @@ const Dashboard = () => {
         <Grid item xs={12} md={8}>
           <StatisticsCard />
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        {/* <Grid item xs={12} md={6} lg={4}>
           <WeeklyOverview />
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <TotalEarning />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        </Grid> */}
+        {/* <Grid item xs={12} md={6} lg={4}>
           <Grid container spacing={6}>
             <Grid item xs={6}>
               <CardStatisticsVerticalComponent
@@ -102,7 +104,7 @@ const Dashboard = () => {
               />
             </Grid>
           </Grid>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12}>
           <TripList />
         </Grid>
