@@ -1,5 +1,5 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -51,7 +51,10 @@ const Success = () => {
   const { userAPI } = useApi()
   const { user } = userAPI
   const { data: userData } = user
-  console.log('userData', userData)
+
+  useEffect(() => {
+    user.mutate()
+  }, [])
 
   return (
     <Box className='content-center'>

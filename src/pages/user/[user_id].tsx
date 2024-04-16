@@ -36,16 +36,11 @@ export default function UserProfileDetail() {
     <ApexChartWrapper>
       <Grid container spacing={5}>
         <Grid item md={12}>
-          <Typography variant='h6' color='text.secondary'>
-            Accounts
-          </Typography>
-        </Grid>
-        <Grid item md={12}>
           <UserProfileForm userID={userID} />
         </Grid>
         <Grid item md={12}>
           <Typography variant='h6' color='text.secondary'>
-            Booking History
+            ประวัติการจอง
           </Typography>
         </Grid>
         <Grid item md={12}>

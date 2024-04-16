@@ -49,7 +49,7 @@ export default function Booking() {
 
   const tripID = router.query.id as string
   const transport_id = router.query.transport_id as string
-  const seat_numbers = router.query.seat_number as string[]
+  const seat_numbers = router.query.seat_number as string[] | string
 
   const { tripAPI, profilerAPI, bookingAPI, userAPI, mediaAPI } = useApi()
   const { uploadMedias } = mediaAPI
@@ -75,15 +75,26 @@ export default function Booking() {
 
   const [slipImage, setSlipImage] = useState<Media | null>(null)
 
-  const simplySeats: SimplySeatData[] = seat_numbers.map(v => {
-    return {
-      seat_number: Number(v),
-      seat_name: ''
+  const simplySeats = (): SimplySeatData[] => {
+    if (typeof seat_numbers === 'string') {
+      return [
+        {
+          seat_number: Number(seat_numbers),
+          seat_name: ''
+        }
+      ]
+    } else {
+      return seat_numbers.map(v => {
+        return {
+          seat_number: Number(v),
+          seat_name: ''
+        }
+      })
     }
-  })
+  }
 
   const defaultValues = {
-    seats: simplySeats,
+    seats: simplySeats(),
     slip_image: []
   }
 
@@ -166,7 +177,8 @@ export default function Booking() {
                     <Grid item xs={12}>
                       {!R.isNil(trip?.data?.payment) && (
                         <Typography variant='h6'>
-                          จำนวนเงิน: {toCurrency(getPaymentPrice(trip?.data?.payment, simplySeats.length, paymentType))}
+                          จำนวนเงิน:{' '}
+                          {toCurrency(getPaymentPrice(trip?.data?.payment, simplySeats().length, paymentType))}
                         </Typography>
                       )}
                     </Grid>

@@ -13,7 +13,7 @@ import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { useEffect, useState } from 'react'
 import { useApi } from 'src/@core/services'
-import { Booking } from 'src/@core/types/booking'
+import { Booking, PaymentType } from 'src/@core/types/booking'
 import { Transport } from 'src/@core/types/transport'
 import { bookingStatusObj } from '../admin/BookingList'
 
@@ -50,21 +50,32 @@ const BookingHistoryCards = (props: Props) => {
                       subheader={`จองในชื่อ: ${subheader}`}
                     />
                   </Grid>
-                  <Grid item xs={6} sm={6} md={3} style={{ paddingLeft: '2.5em' }}>
-                    <Typography variant='body2'>
-                      {format(new Date(booking.trip_data?.data?.from_date || 0), 'dd MMM yyyy')} -
-                      {format(new Date(booking.trip_data?.data?.to_date || 0), 'dd MMM yyyy')}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={4} sm={6} md={2} style={{ paddingLeft: '2.5em' }}>
+                  <Grid item xs={6} sm={6} md={3}>
                     <Chip
-                      label={booking.data.status}
-                      color={bookingStatusObj[booking.data.status].color}
+                      label={`  ${format(new Date(booking.trip_data?.data?.from_date || 0), 'dd MMM yyyy')} >
+                      ${format(new Date(booking.trip_data?.data?.to_date || 0), 'dd MMM yyyy')}`}
+                      color='primary'
                       size='medium'
                       sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
                     />
                   </Grid>
-                  <Grid item xs={8} sm={6} md={4} style={{ paddingLeft: '2.5em' }}>
+                  <Grid item xs={6} sm={6} md={2}>
+                    <Box style={{ display: 'flex', marginLeft: 10 }}>
+                      <Chip
+                        label={booking.data.status}
+                        color={bookingStatusObj[booking.data.status].color}
+                        size='medium'
+                        sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
+                      />
+                      <Chip
+                        label={booking.data.payment_type === PaymentType[PaymentType.FULL] ? 'แบบจ่ายเต็ม' : 'แบบมัดจำ'}
+                        color='warning'
+                        size='medium'
+                        sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={4}>
                     <Box style={{ display: 'flex' }}>
                       <Button
                         variant='outlined'
