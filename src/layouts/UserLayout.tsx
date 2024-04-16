@@ -42,7 +42,7 @@ const UserLayout = ({ children, isContentWrap = true }: Props) => {
               {isLogin ? (
                 <UserDropdown />
               ) : (
-                <Button color='inherit' sx={{ ml: 'auto' }} onClick={() => router.push('/pages/login')}>
+                <Button color='primary' sx={{ ml: 'auto' }} onClick={() => router.push('/pages/login')}>
                   Login
                 </Button>
               )}

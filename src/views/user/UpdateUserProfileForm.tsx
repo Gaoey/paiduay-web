@@ -28,7 +28,6 @@ export default function UpdateProfileForm(props: Props) {
   })
 
   const onSubmit: SubmitHandler<any> = (data: UserProfile) => {
-    console.log(data) // Handle form submission
     router.push(`/user/${user?._id}`)
   }
 
