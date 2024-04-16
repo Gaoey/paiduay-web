@@ -24,7 +24,7 @@ const PathBackground = () => {
     }
 
     window.addEventListener('scroll', updateScrollProgress)
-    
+
     return () => window.removeEventListener('scroll', updateScrollProgress)
   }, [])
 
@@ -82,8 +82,6 @@ function LandingPage() {
         overflow: 'hidden'
       }}
     >
-
-      {/* (2) Hero Section */}
       <section
         style={{ backgroundColor: '#3B534A', backgroundSize: 'cover', overflow: 'hidden', position: 'relative' }}
       >
@@ -94,16 +92,9 @@ function LandingPage() {
           onPriceChange={setPriceRange}
         />
       </section>
-
       <PathBackground />
-
-      {/* (5) How it works: traveller */}
       <HowItWorksTripLeader />
-
-      {/* (5) How it works: trip leader */}
       <HowItWorksTraveller />
-
-      {/* (6) Footer */}
       <Footer />
     </div>
   )

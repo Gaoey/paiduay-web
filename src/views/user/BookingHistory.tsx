@@ -26,15 +26,21 @@ interface Props {
 const BookingHistoryCards = (props: Props) => {
   const router = useRouter()
   const { bookings } = props
+  const currentDate = new Date().getTime()
 
   return (
     <div className={styles.bookingTableContainer}>
       <Grid container spacing={3}>
         {bookings.map((booking: Booking) => {
+          const dateString = booking?.trip_data?.data?.to_date
+          const bookingLastDate = new Date(dateString as Date).getTime()
+          const datePassed = currentDate > bookingLastDate
+          const opacity = datePassed ? 0.35 : 1
+
           return (
             <Grid item xs={12} key={booking._id}>
               <Card className={styles.bookingCard}>
-                <Grid container spacing={5} columns={12}>
+                <Grid container spacing={5} columns={12} sx={{ opacity }}>
                   <Grid item xs={6} sm={6} md={3}>
                     <CardHeader
                       title={booking.trip_data?.data?.title || 'Trip Title Unavailable'}

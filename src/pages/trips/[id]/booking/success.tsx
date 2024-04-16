@@ -62,7 +62,7 @@ const Success = () => {
         <BoxWrapper>
           <Typography variant='h3'>ดีใจด้วย!</Typography>
           <Typography variant='h5' sx={{ mb: 1, fontSize: '1.5rem !important' }}>
-            การจองของกำลังดำเนินการอยู่
+            การจองของคุณกำลังดำเนินการอยู่
           </Typography>
           <Typography variant='body2'>โปรดรอทางทริปลีดเดอร์ของคุณคอนเฟิร์มในหน้าโปรไฟล์ของคุณ</Typography>
         </BoxWrapper>
