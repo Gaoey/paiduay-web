@@ -63,7 +63,14 @@ export default function TripDetail() {
     if (isSuccess || isRemoveTransportSuccess || isUpdateTransportSuccess || isCreateTransportSuccess) {
       findTransportByTripID.mutate(tripID)
     }
-  }, [isSuccess, isRemoveTransportSuccess, isUpdateTransportSuccess, isCreateTransportSuccess, tripID, findTransportByTripID])
+  }, [
+    isSuccess,
+    isRemoveTransportSuccess,
+    isUpdateTransportSuccess,
+    isCreateTransportSuccess,
+    tripID,
+    findTransportByTripID
+  ])
 
   useEffect(() => {
     if (isRemoveTripSuccess) {
@@ -108,7 +115,7 @@ export default function TripDetail() {
               </Box>
             </Grid>
             <Grid item md={12}>
-              <TripDetailComponent tripID={tripID} />
+              <TripDetailComponent tripID={tripID} isShortDescription />
             </Grid>
           </Grid>
         </Grid>

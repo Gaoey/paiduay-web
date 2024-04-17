@@ -22,7 +22,6 @@ export default function TransportDetail({ item, onSetSeat, onRemoveTransport, on
         <Grid item xs={4}>
           <TextField
             label='Name'
-            defaultValue={item.data.name}
             fullWidth
             disabled={!isEdit}
             sx={{ height: 50 }}

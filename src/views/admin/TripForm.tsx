@@ -130,12 +130,6 @@ function TripForm(props: TripFormProps) {
         <form onSubmit={handleSubmitWithTiptap}>
           <Grid container spacing={7}>
             <Grid item xs={12}>
-              <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                1. รายละเอียดทริป
-              </Typography>
-            </Grid>
-
-            <Grid item xs={12}>
               <TextField
                 {...register('title', { required: true })}
                 label='หัวข้อ'
@@ -148,7 +142,7 @@ function TripForm(props: TripFormProps) {
 
             <Grid item xs={12}>
               <Typography variant='body2' sx={{ fontWeight: 600, paddingBottom: '2em' }}>
-                2. รายละเอียด
+                รายละเอียด
               </Typography>
               <div
                 style={{
@@ -158,7 +152,7 @@ function TripForm(props: TripFormProps) {
                   boxShadow: 'inset 3px 3px 3px rgba(0, 0, 0, 0.1)'
                 }}
               >
-                <Tiptap onContentChange={handleTiptapChange} />
+                <Tiptap defaultValue={p?.trip_data.description || ''} onChange={handleTiptapChange} />
               </div>
             </Grid>
 
@@ -310,7 +304,7 @@ function TripForm(props: TripFormProps) {
             </Grid>
             <Grid item xs={12}>
               <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                2. วิธีการรับเงิน
+                วิธีการรับเงิน
               </Typography>
             </Grid>
 
