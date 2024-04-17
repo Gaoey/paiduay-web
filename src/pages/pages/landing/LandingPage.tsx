@@ -3,10 +3,10 @@ import HeroSection from './components/HeroSection'
 import HowItWorksTripLeader from './components/HowItWorksTripLeader' // Assuming that's your path
 import HowItWorksTraveller from './components/HowItWorksTraveller'
 
-interface LandingPageState {
-  selectedDate: Date | null
-  selectedPriceRange: [number, number]
-}
+// interface LandingPageState {
+//   selectedDate: Date | null
+//   selectedPriceRange: [number, number]
+// }
 
 const PathBackground = () => {
   const pathRef = useRef<any>(null)
@@ -61,18 +61,18 @@ const PathBackground = () => {
 }
 
 function LandingPage() {
-  const [state, setState] = React.useState<LandingPageState>({
-    selectedDate: null,
-    selectedPriceRange: [0, 100000]
-  })
+  // const [state, setState] = React.useState<LandingPageState>({
+  //   selectedDate: null,
+  //   selectedPriceRange: [0, 100000]
+  // })
 
-  const handleDateChange = (newValue: Date | null) => {
-    setState({ ...state, selectedDate: newValue })
-  }
+  // const handleDateChange = (newValue: Date | null) => {
+  //   setState({ ...state, selectedDate: newValue })
+  // }
 
-  const setPriceRange = (priceRange: [number, number]) => {
-    setState({ ...state, selectedPriceRange: priceRange })
-  }
+  // const setPriceRange = (priceRange: [number, number]) => {
+  //   setState({ ...state, selectedPriceRange: priceRange })
+  // }
 
   return (
     <div
@@ -84,12 +84,7 @@ function LandingPage() {
       <section
         style={{ backgroundColor: '#3B534A', backgroundSize: 'cover', overflow: 'hidden', position: 'relative' }}
       >
-        <HeroSection
-          selectedDate={state.selectedDate}
-          selectedPriceRange={state.selectedPriceRange}
-          onDateChange={handleDateChange}
-          onPriceChange={setPriceRange}
-        />
+        <HeroSection  />
       </section>
       <PathBackground />
       <HowItWorksTripLeader />

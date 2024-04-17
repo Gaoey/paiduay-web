@@ -103,6 +103,8 @@ function ProfilerForm(props: ProfilerFormProps) {
     }
   }
 
+  const imageURL = props?.profiler?.data?.logo_image?.signed_url || "/images/logo-square.png"
+
   return (
     <Card>
       <CardHeader title={props.title} titleTypographyProps={{ variant: 'h6' }} />
@@ -115,7 +117,7 @@ function ProfilerForm(props: ProfilerFormProps) {
                   {selectedFile ? (
                     <ImgStyled src={URL.createObjectURL(selectedFile)} alt='Profile Pic' />
                   ) : !R.isNil(props?.profiler?.data?.logo_image?.signed_url) ? (
-                    <ImgStyled src={props?.profiler?.data?.logo_image.signed_url} alt='Profile Pic' />
+                    <ImgStyled src={ imageURL } alt='Profile Pic' />
                   ) : (
                     <Avatar sx={{ width: 100, height: 100, marginRight: 10 }}>
                       <CloudUploadIcon />

@@ -29,6 +29,7 @@ const UpdateProfiler = () => {
 
   useEffect(() => {
     getCurrentProfilerMutation.mutate()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onSubmit: SubmitHandler<any> = async data => {

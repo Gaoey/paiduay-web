@@ -42,23 +42,27 @@ export default function UpdateBooking() {
     findBookingByID.mutate(bookingID)
     findTripByID.mutate(tripID)
     findProfilerByTripID.mutate(tripID)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onSubmit: SubmitHandler<any> = async data => {
     if (!R.isNil(data?.slip_image) && !R.isNil(userData?._id) && !R.isNil(trip?.data?.payment) && !R.isNil(booking)) {
       const newMedias: Media[] = await uploadMedias.mutateAsync(data?.slip_image)
-      const bookingData: BookingData = {
-        ...booking.data,
-        payment_type: data?.payment_type,
-        payment_price: getPaymentPrice(trip?.data?.payment, data?.seats.length, data?.payment_type),
-        status:
+      
+      if (trip?.data?.payment.full_price && trip?.data?.payment.payment_date) {
+        const bookingData: BookingData = {
+          ...booking.data,
+          payment_type: data?.payment_type,
+          payment_price: getPaymentPrice(trip?.data?.payment, data?.seats.length, data?.payment_type),
+          status:
           data?.payment_type === PaymentType[PaymentType.DEPOSIT]
-            ? BookingStatus[BookingStatus.DEPOSIT]
-            : BookingStatus[BookingStatus.PENDING],
-        slips: [...booking.data.slips, newMedias[0]]
+          ? BookingStatus[BookingStatus.DEPOSIT]
+          : BookingStatus[BookingStatus.PENDING],
+          slips: [...booking.data.slips, newMedias[0]]
+        }
+        
+        updateBooking.mutate({ bookingID, tripID, params: bookingData })
       }
-
-      updateBooking.mutate({ bookingID, tripID, params: bookingData })
     }
   }
 

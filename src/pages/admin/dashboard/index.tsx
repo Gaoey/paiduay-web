@@ -34,6 +34,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     findProfiler.mutate()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const profiler: Profiler | null = R.pathOr<Profiler | null>(null, [0], data)

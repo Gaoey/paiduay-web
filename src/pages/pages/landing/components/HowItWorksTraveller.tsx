@@ -13,11 +13,11 @@ const HowItWorksTraveller = () => {
 
   useEffect(() => {
     const calculateDimensions = () => {
-      // Logic to calculate the desired image width. Example:
-      const containerWidth = imageContainerRef.current.offsetWidth
-      const newImageWidth = containerWidth < 1000 ? Math.min(containerWidth, 500) : containerWidth / 3
-
-      setImageDimensions({ width: newImageWidth, height: newImageWidth })
+      if (imageContainerRef.current) {
+        const containerWidth = (imageContainerRef.current as HTMLElement).offsetWidth;
+        const newImageWidth = containerWidth < 1000 ? Math.min(containerWidth, 500) : containerWidth / 3
+        setImageDimensions({ width: newImageWidth, height: newImageWidth })
+      }
     }
 
     calculateDimensions()
@@ -47,7 +47,7 @@ const HowItWorksTraveller = () => {
         maxWidth: '100vw',
         width: '100vw',
         alignItems: 'center',
-        padding: '8em 0 8em 0',
+        padding: '8em 0 8em 0'
       }}
     >
       <Grid container spacing={4} justifyContent='center' alignItems='center' style={{ height: '100%' }}>
@@ -115,7 +115,6 @@ const HowItWorksTraveller = () => {
                 <Typography paragraph align='center' color='#FDECEF'>
                   จองที่นั่งรถ ใส่ข้อมูล cancel ทริป ทำง่ายๆผ่าน dashboard ของเรา
                 </Typography>
-                
               </div>
             </Parallax>
           </Grid>
@@ -144,7 +143,9 @@ const HowItWorksTraveller = () => {
                 <Typography paragraph align='center' color='#FDECEF'>
                   หาเพื่อน เจอคนใหม่ๆ สร้างความสัมพันธ์ในโลกของนักท่องเที่ยว
                 </Typography>
-                <Button variant="contained" color="secondary">จองทริปเลย!</Button>
+                <Button variant='contained' color='secondary'>
+                  จองทริปเลย!
+                </Button>
               </div>
             </Parallax>
           </Grid>

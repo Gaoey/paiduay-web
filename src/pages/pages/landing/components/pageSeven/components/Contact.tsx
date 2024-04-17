@@ -1,9 +1,8 @@
-import { motion, useViewportScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Image from 'next/image'
 import IconButton from '@mui/material/IconButton'
-import { CONTACT_SLIDE } from '../../../animationConfig'
 
 type props = {
   text: string
@@ -35,8 +34,6 @@ const TextBody = ({ text, style }: props) => {
 }
 
 const Contact = () => {
-  const { scrollYProgress } = useViewportScroll()
-
   return (
     <div
       style={{

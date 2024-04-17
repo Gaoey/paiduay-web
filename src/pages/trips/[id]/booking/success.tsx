@@ -1,50 +1,17 @@
-// ** React Imports
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import gsap from 'gsap';
-
-// ** Next Import
 import Link from 'next/link'
-
-// ** MUI Components
 import Box, { BoxProps } from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 import { useApi } from 'src/@core/services'
 
-// ** Layout Import
-
-// ** Demo Imports
 import UserLayout from 'src/layouts/UserLayout'
-import FooterIllustrations from 'src/views/pages/misc/FooterIllustrations'
 
-// ** Styled Components
 const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     width: '90vw'
-  }
-}))
-
-const Img = styled('img')(({ theme }) => ({
-  marginBottom: theme.spacing(10),
-  [theme.breakpoints.down('lg')]: {
-    height: 450,
-    marginTop: theme.spacing(10)
-  },
-  [theme.breakpoints.down('md')]: {
-    height: 400
-  },
-  [theme.breakpoints.up('lg')]: {
-    marginTop: theme.spacing(13)
-  }
-}))
-
-const TreeIllustration = styled('img')(({ theme }) => ({
-  left: 0,
-  bottom: '5rem',
-  position: 'absolute',
-  [theme.breakpoints.down('lg')]: {
-    bottom: 0
   }
 }))
 
@@ -109,6 +76,7 @@ const Success = () => {
 
   useEffect(() => {
     user.mutate()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

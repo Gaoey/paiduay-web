@@ -163,6 +163,7 @@ function ConfirmSeatButton(props: ConfirmSeatButtonProps) {
   const { isLoading, isSuccess } = updateProfile
   useEffect(() => {
     user.mutate()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const hasUserData = !R.isNil(userData?.profile) && !R.isEmpty(userData?.profile.line_contacts)
@@ -202,7 +203,7 @@ function ConfirmSeatButton(props: ConfirmSeatButtonProps) {
     }, '')
     console.log({ seats })
     router.push(`/trips/${tripID}/booking?transport_id=${transportID}&${query}`)
-  }, [])
+  }, [router, seats, transportID, tripID])
 
   useEffect(() => {
     if (isSuccess) {

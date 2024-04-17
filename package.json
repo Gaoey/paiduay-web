@@ -1,5 +1,5 @@
 {
-  "name": "thortrip-web",
+  "name": "pai-duay-web",
   "description": "🚀",
   "license": "MIT",
   "version": "1.0.0",
@@ -75,7 +75,8 @@
     "react-perfect-scrollbar": "^1.5.8",
     "react-popper": "^2.2.5",
     "react-query": "^3.39.3",
-    "react-scroll-parallax": "^3.4.5"
+    "react-scroll-parallax": "^3.4.5",
+    "sharp": "^0.33.3"
   },
   "devDependencies": {
     "@types/node": "16.11.11",
