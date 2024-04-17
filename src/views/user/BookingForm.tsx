@@ -168,7 +168,7 @@ export default function BookingForm(props: BookingFormProps) {
                     </Grid>
                     <Grid item xs={12} sx={{ paddingBottom: '0.5em' }}>
                       {!R.isNil(slipImage?.file) && (
-                        <SlipImgStyled src={URL.createObjectURL(slipImage?.file)} alt='Profile Pic' />
+                        <SlipImgStyled src={URL.createObjectURL(slipImage?.file as File)} alt='Profile Pic' />
                       )}
                     </Grid>
                     <Grid item xs={12}>

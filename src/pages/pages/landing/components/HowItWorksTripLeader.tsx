@@ -14,18 +14,18 @@ const HowItWorksTripLeader = () => {
 
   useEffect(() => {
     const calculateDimensions = () => {
-        // Logic to calculate the desired image width. Example:
-        const containerWidth = imageContainerRef.current.offsetWidth; 
-        const newImageWidth = containerWidth < 1000 ? Math.min(containerWidth, 500) : containerWidth / 3;
+      if (imageContainerRef.current) {
+        const containerWidth = (imageContainerRef.current as HTMLElement).offsetWidth;
+        const newImageWidth = containerWidth < 1000 ? Math.min(containerWidth, 500) : containerWidth / 3
+        setImageDimensions({ width: newImageWidth, height: newImageWidth })
+      }
+    }
 
-        setImageDimensions({ width: newImageWidth, height: newImageWidth });
-    };
+    calculateDimensions()
+    window.addEventListener('resize', calculateDimensions)
 
-      calculateDimensions();
-      window.addEventListener('resize', calculateDimensions);
-
-      return () => window.removeEventListener('resize', calculateDimensions);
-  }, []);
+    return () => window.removeEventListener('resize', calculateDimensions)
+  }, [])
 
   useEffect(() => {
     const imageContainers = document.querySelectorAll('.image-container') // Replace with the correct selector

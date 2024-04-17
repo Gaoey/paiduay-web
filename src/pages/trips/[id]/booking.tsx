@@ -62,20 +62,23 @@ export default function Booking() {
   const onSubmit: SubmitHandler<any> = async data => {
     if (!R.isNil(data?.slip_image) && !R.isNil(userData?._id) && !R.isNil(trip?.data?.payment)) {
       const newMedias: Media[] = await uploadMedias.mutateAsync(data?.slip_image)
-      const bookingData: BookingData = {
-        user_id: userData._id,
-        transport_id: transport_id,
-        seats: data?.seats || [],
-        payment_type: data?.payment_type,
-        payment_price: getPaymentPrice(trip?.data?.payment, data?.seats.length, data?.payment_type),
-        status:
-          data?.payment_type === PaymentType[PaymentType.DEPOSIT]
-            ? BookingStatus[BookingStatus.DEPOSIT]
-            : BookingStatus[BookingStatus.PENDING],
-        slips: [newMedias[0]]
-      }
 
-      createBooking.mutate({ tripID, params: bookingData })
+      if (trip?.data?.payment.full_price && trip?.data?.payment.payment_date) {
+        const bookingData: BookingData = {
+          user_id: userData?._id as string,
+          transport_id: transport_id,
+          seats: data?.seats || [],
+          payment_type: data?.payment_type,
+          payment_price: getPaymentPrice(trip?.data?.payment, data?.seats.length, data?.payment_type),
+          status:
+            data?.payment_type === PaymentType[PaymentType.DEPOSIT]
+              ? BookingStatus[BookingStatus.DEPOSIT]
+              : BookingStatus[BookingStatus.PENDING],
+          slips: [newMedias[0]]
+        }
+
+        createBooking.mutate({ tripID, params: bookingData })
+      }
     }
   }
 

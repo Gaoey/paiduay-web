@@ -1,6 +1,6 @@
 import { motion, useViewportScroll, useTransform } from 'framer-motion'
 import Typography from '@mui/material/Typography'
-import { POLICY_SLIDE } from '../../../animationConfig'
+import { POLICY_SLIDE } from '../../../../../../configs/animationConfig'
 
 const Policy = () => {
   const { scrollYProgress } = useViewportScroll()
