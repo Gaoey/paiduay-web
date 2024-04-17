@@ -356,7 +356,7 @@ function TripForm(props: TripFormProps) {
               <>
                 <Grid item xs={12}>
                   <Typography variant='body2' sx={{ fontWeight: 600 }}>
-                    3. วิธีการเดินทาง
+                    วิธีการเดินทาง
                   </Typography>
                 </Grid>
 

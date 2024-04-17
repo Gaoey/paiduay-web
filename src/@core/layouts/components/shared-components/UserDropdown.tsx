@@ -46,7 +46,7 @@ export function useAdminAccount() {
     if (!R.isEmpty(accessToken)) {
       user.mutate()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken])
 
   const isAdmin = R.pathOr(false, ['profile', 'trip_maker_role'], currentUser)

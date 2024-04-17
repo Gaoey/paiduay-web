@@ -20,6 +20,7 @@ import Profile from 'src/views/dashboard/Profile'
 import StatisticsCard from 'src/views/dashboard/StatisticsCard'
 import { useAdminAccount } from 'src/@core/layouts/components/shared-components/UserDropdown'
 import { useRouter } from 'next/router'
+import { BasicLoadingComponent } from 'src/@core/components/loading'
 
 const Dashboard = () => {
   const router = useRouter()
@@ -32,14 +33,14 @@ const Dashboard = () => {
 
   const { data, isLoading } = findProfiler
 
-  useEffect(() => {
-    findProfiler.mutate()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const profiler: Profiler | null = R.pathOr<Profiler | null>(null, [0], data)
 
-  const { isSuccess, isAdmin } = useAdminAccount()
+  useEffect(() => {
+    findProfiler.mutate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const { isSuccess, isLoading: isAdminLoading, isAdmin } = useAdminAccount()
 
   // ** Effects
   useEffect(() => {
@@ -49,21 +50,22 @@ const Dashboard = () => {
   }, [isAdmin, isSuccess, router])
 
   return (
-    <ApexChartWrapper>
-      <Grid container spacing={6}>
-        <Grid item xs={12} md={4}>
-          <Profile profiler={profiler} isLoading={isLoading} currentUser={currentUser} />
-        </Grid>
-        <Grid item xs={12} md={8}>
-          <StatisticsCard />
-        </Grid>
-        {/* <Grid item xs={12} md={6} lg={4}>
+    <BasicLoadingComponent isLoading={isAdminLoading}>
+      <ApexChartWrapper>
+        <Grid container spacing={6}>
+          <Grid item xs={12} md={4}>
+            <Profile profiler={profiler} isLoading={isLoading} currentUser={currentUser} />
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <StatisticsCard />
+          </Grid>
+          {/* <Grid item xs={12} md={6} lg={4}>
           <WeeklyOverview />
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <TotalEarning />
         </Grid> */}
-        {/* <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
           <Grid container spacing={6}>
             <Grid item xs={6}>
               <CardStatisticsVerticalComponent
@@ -109,11 +111,12 @@ const Dashboard = () => {
             </Grid>
           </Grid>
         </Grid> */}
-        <Grid item xs={12}>
-          <TripList />
+          <Grid item xs={12}>
+            <TripList />
+          </Grid>
         </Grid>
-      </Grid>
-    </ApexChartWrapper>
+      </ApexChartWrapper>
+    </BasicLoadingComponent>
   )
 }
 

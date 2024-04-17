@@ -39,7 +39,7 @@ export default function UserProfileDetail() {
         <Grid item md={12}>
           <UserProfileForm userID={userID} />
         </Grid>
-        {userData?._id === userID && (
+        {userData?._id === userID && !R.isEmpty(bookings) && (
           <>
             <Grid item md={12}>
               <Typography variant='h6' color='text.secondary'>

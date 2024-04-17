@@ -29,7 +29,7 @@ const UpdateProfiler = () => {
 
   useEffect(() => {
     getCurrentProfilerMutation.mutate()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onSubmit: SubmitHandler<any> = async data => {
@@ -57,13 +57,11 @@ const UpdateProfiler = () => {
   }
 
   return (
-    <Card>
-      <ProfilerForm
-        onSubmit={onSubmit}
-        title='ตั้งค่าโปรไฟล์ของคุณ'
-        profiler={!R.isNil(currentProfilerData) ? currentProfilerData[0] : undefined}
-      />
-    </Card>
+    <ProfilerForm
+      onSubmit={onSubmit}
+      title='ตั้งค่าโปรไฟล์ของคุณ'
+      profiler={!R.isNil(currentProfilerData) ? currentProfilerData[0] : undefined}
+    />
   )
 }
 

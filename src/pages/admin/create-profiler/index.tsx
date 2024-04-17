@@ -5,7 +5,6 @@ import { ReactNode, useEffect } from 'react'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
-import { styled } from '@mui/material/styles'
 
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
@@ -19,17 +18,7 @@ import { useAdminAccount } from 'src/@core/layouts/components/shared-components/
 import { useApi } from 'src/@core/services'
 import { Media } from 'src/@core/types'
 import { ProfilerData } from 'src/@core/types/profiler'
-import FooterIllustrations from 'src/views/pages/misc/FooterIllustrations'
 import ProfilerForm from 'src/views/admin/ProfilerForm'
-
-const TreeIllustration = styled('img')(({ theme }) => ({
-  left: 0,
-  bottom: '5rem',
-  position: 'absolute',
-  [theme.breakpoints.down('lg')]: {
-    bottom: 0
-  }
-}))
 
 const CreateProfiler = () => {
   // ** Hooks
@@ -76,10 +65,10 @@ const CreateProfiler = () => {
 
   return (
     <Box className='content-center'>
-      <Box sx={{ p: 5, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-        <ProfilerForm onSubmit={onSubmit} title={'Create Profiler'} />
+      <Box sx={{ p: 5 }}>
+        <ProfilerForm onSubmit={onSubmit} title={'สร้างทริปของคุณ'} />
       </Box>
-      <FooterIllustrations image={<TreeIllustration alt='tree' src='/images/pages/tree.png' />} />
+      {/* <FooterIllustrations image={<TreeIllustration alt='tree' src='/images/pages/tree.png' />} /> */}
     </Box>
   )
 }

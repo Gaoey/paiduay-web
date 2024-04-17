@@ -22,7 +22,7 @@ const TriangleImg = styled('img')({
 const ProfileImg = styled('img')({
   right: 36,
   bottom: 20,
-  height: 98,
+  height: 50,
   position: 'absolute'
 })
 

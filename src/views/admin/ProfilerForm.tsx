@@ -103,11 +103,11 @@ function ProfilerForm(props: ProfilerFormProps) {
     }
   }
 
-  const imageURL = props?.profiler?.data?.logo_image?.signed_url || "/images/logo-square.png"
+  const imageURL = props?.profiler?.data?.logo_image?.signed_url || '/images/logo-square.png'
 
   return (
-    <Card>
-      <CardHeader title={props.title} titleTypographyProps={{ variant: 'h6' }} />
+    <Card sx={{ maxWidth: 1200 }}>
+      <CardHeader title={props.title} />
       <CardContent>
         <form onSubmit={handleSubmit(props.onSubmit)}>
           <Grid container spacing={5}>
@@ -117,7 +117,7 @@ function ProfilerForm(props: ProfilerFormProps) {
                   {selectedFile ? (
                     <ImgStyled src={URL.createObjectURL(selectedFile)} alt='Profile Pic' />
                   ) : !R.isNil(props?.profiler?.data?.logo_image?.signed_url) ? (
-                    <ImgStyled src={ imageURL } alt='Profile Pic' />
+                    <ImgStyled src={imageURL} alt='Profile Pic' />
                   ) : (
                     <Avatar sx={{ width: 100, height: 100, marginRight: 10 }}>
                       <CloudUploadIcon />
@@ -203,39 +203,52 @@ function ProfilerForm(props: ProfilerFormProps) {
             </Grid>
 
             <Grid item xs={12}>
-              {bankAccountsField.map((item, index) => (
-                <Box key={item.id}>
-                  <TextField
-                    {...register(`bank_accounts.${index}.bank_title`)}
-                    label='ชื่อธนาคาร'
-                    defaultValue={item.bank_title}
-                  />
-                  <TextField
-                    {...register(`bank_accounts.${index}.account_name`)}
-                    label='ชื่อบัญชี'
-                    defaultValue={item.account_name}
-                    style={{ marginLeft: 10 }}
-                  />
-                  <TextField
-                    {...register(`bank_accounts.${index}.account_number`)}
-                    label='เลขบัญชี'
-                    defaultValue={item.account_number}
-                    style={{ marginLeft: 10 }}
-                  />
-                  <IconButton
-                    size='large'
-                    aria-label='remove-bank-account'
-                    onClick={() => removeBankAccount(index)}
-                    style={{ color: 'darkgrey' }}
-                  >
-                    <Close />
-                  </IconButton>
-                </Box>
-              ))}
+              <Grid container spacing={5}>
+                {bankAccountsField.map((item, index) => (
+                  <>
+                    <Grid item xs={4} key={item.id}>
+                      <TextField
+                        {...register(`bank_accounts.${index}.bank_title`)}
+                        label='ชื่อธนาคาร'
+                        fullWidth
+                        defaultValue={item.bank_title}
+                      />
+                    </Grid>
+                    <Grid item xs={4} key={item.id}>
+                      <TextField
+                        {...register(`bank_accounts.${index}.account_name`)}
+                        label='ชื่อบัญชี'
+                        defaultValue={item.account_name}
+                        fullWidth
+                        style={{ marginLeft: 10 }}
+                      />
+                    </Grid>
+                    <Grid item xs={3} key={item.id}>
+                      <TextField
+                        {...register(`bank_accounts.${index}.account_number`)}
+                        label='เลขบัญชี'
+                        defaultValue={item.account_number}
+                        fullWidth
+                        style={{ marginLeft: 10 }}
+                      />
+                    </Grid>
+                    <Grid item xs={1} key={item.id}>
+                      <IconButton
+                        size='large'
+                        aria-label='remove-bank-account'
+                        onClick={() => removeBankAccount(index)}
+                        style={{ color: 'darkgrey' }}
+                      >
+                        <Close />
+                      </IconButton>
+                    </Grid>
+                  </>
+                ))}
+              </Grid>
               <Button
                 type='button'
                 variant='outlined'
-                style={{ marginTop: '1em'}}
+                style={{ marginTop: '1em' }}
                 onClick={() => appendBankAccount({ bank_title: '', account_name: '', account_number: '' })}
               >
                 เพิ่มบัญชีธนาคาร
