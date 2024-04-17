@@ -76,6 +76,7 @@ const Success = () => {
 
   useEffect(() => {
     user.mutate()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

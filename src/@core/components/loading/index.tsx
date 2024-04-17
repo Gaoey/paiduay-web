@@ -40,7 +40,7 @@ export function BasicLoadingComponent(props: BasicProps) {
     if (!R.isNil(props.error) && R.isNil(error)) {
       setError(props.error)
     }
-  }, [props.error])
+  }, [error, props.error])
 
   useEffect(() => {
     if (!R.isNil(error) && !open) {

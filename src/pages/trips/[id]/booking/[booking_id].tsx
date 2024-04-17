@@ -42,6 +42,7 @@ export default function UpdateBooking() {
     findBookingByID.mutate(bookingID)
     findTripByID.mutate(tripID)
     findProfilerByTripID.mutate(tripID)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onSubmit: SubmitHandler<any> = async data => {

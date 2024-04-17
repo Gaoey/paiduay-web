@@ -59,12 +59,13 @@ const DashboardCards = ({ ...props }) => {
 
   useEffect(() => {
     getTripsList()
-  }, [])
+  })
 
   useEffect(() => {
     if (isSuccess) {
       getTripsList()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess])
 
   const trips: Trip[] = R.isNil(data) ? [] : (data as Trip[])

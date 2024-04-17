@@ -123,7 +123,7 @@ function ViewSeatButton(props: ViewSeatButtonProps) {
     if (open && R.isNil(data)) {
       findTransportByTripID.mutate(booking.trip_id)
     }
-  }, [open])
+  }, [booking.trip_id, data, findTransportByTripID, open])
 
   const transports: Transport[] = R.pathOr<Transport[]>([], [], data)
   const transport = transports.filter(v => v._id === booking.data.transport_id)[0] || null

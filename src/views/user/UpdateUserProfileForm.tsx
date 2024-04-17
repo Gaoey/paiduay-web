@@ -18,6 +18,7 @@ export default function UpdateProfileForm(props: Props) {
   const { updateProfile } = userAPI
 
   const { isSuccess, isLoading } = updateProfile
+  const linkToUser = `/user/${user?._id}`
 
   const defaultValues = {
     first_name: user?.profile?.first_name || '',
@@ -46,9 +47,9 @@ export default function UpdateProfileForm(props: Props) {
 
   useEffect(() => {
     if (isSuccess) {
-      router.push(`/user/${user?._id}`)
+      router.push(linkToUser)
     }
-  }, [isSuccess])
+  }, [isSuccess, linkToUser, router])
 
   return (
     <Paper elevation={3} style={{ padding: 20 }}>
