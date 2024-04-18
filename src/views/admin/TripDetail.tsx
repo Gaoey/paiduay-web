@@ -165,10 +165,6 @@ export default function TripDetailComponent({ tripID, isShortDescription = false
                 </div>
               )
             })}
-
-            {/* <Typography variant='body2' color='text.secondary' style={{ marginTop: 10 }}>
-              {trimMessage(trip?.data?.description, 1000)}
-            </Typography> */}
             <div style={{ marginTop: 10 }}>
               <DescriptionHTML />
             </div>
