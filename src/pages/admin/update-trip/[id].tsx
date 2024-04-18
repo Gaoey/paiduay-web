@@ -65,7 +65,7 @@ export default function UpdateTrip() {
     if (isSuccess) {
       router.push(`/admin/trip-list/${tripID}`)
     }
-  }, [isSuccess, router])
+  }, [isSuccess])
 
   if (R.isNil(trip) || R.isEmpty(transports) || isLoading) {
     return <CircularProgress color='secondary' />

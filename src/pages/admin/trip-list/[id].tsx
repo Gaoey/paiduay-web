@@ -57,20 +57,13 @@ export default function TripDetail() {
       page_number: 1
     }
     findBookings.mutate({ filters, paginate })
-  }, [findBookings, findTransportByTripID, tripID])
+  }, [])
 
   useEffect(() => {
     if (isSuccess || isRemoveTransportSuccess || isUpdateTransportSuccess || isCreateTransportSuccess) {
       findTransportByTripID.mutate(tripID)
     }
-  }, [
-    isSuccess,
-    isRemoveTransportSuccess,
-    isUpdateTransportSuccess,
-    isCreateTransportSuccess,
-    tripID,
-    findTransportByTripID
-  ])
+  }, [isSuccess, isRemoveTransportSuccess, isUpdateTransportSuccess, isCreateTransportSuccess, findTransportByTripID])
 
   useEffect(() => {
     if (isRemoveTripSuccess) {

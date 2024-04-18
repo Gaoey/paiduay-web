@@ -8,7 +8,7 @@ import { ReactNode, useEffect } from 'react'
 // ** Layout Import
 
 // ** Demo Imports
-import { Card, CircularProgress } from '@mui/material'
+import { CircularProgress } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import * as R from 'ramda'
 import { SubmitHandler } from 'react-hook-form'

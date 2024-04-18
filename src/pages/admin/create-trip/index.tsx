@@ -34,7 +34,6 @@ const CreateTrip = () => {
   const { isSuccess, data } = createTrip
 
   const onSubmit: SubmitHandler<any> = async data => {
-    
     const profiler: Profiler[] = await getCurrentProfiler()
     if (!R.isEmpty(profiler)) {
       const currentProfiler: Profiler = profiler[0]
@@ -85,7 +84,7 @@ const CreateTrip = () => {
     if (isSuccess) {
       router.push(`/admin/trip-list/${data?._id}`)
     }
-  }, [data?._id, isSuccess, router])
+  }, [isSuccess, router])
 
   return (
     <DatePickerWrapper>
