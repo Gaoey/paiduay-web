@@ -7,7 +7,7 @@ export enum NotificationType {
 }
 
 export interface NotificationData {
-  type: NotificationType
+  type: NotificationType | string
   user_id: string
   customer_id?: string
   trip_id?: string
@@ -17,8 +17,8 @@ export interface NotificationData {
   is_read: boolean
 }
 
-export interface Notification {
-  id: string
+export interface INotification {
+  _id: string
   data: NotificationData
   created_at: Date
   updated_at: Date

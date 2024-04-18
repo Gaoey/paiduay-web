@@ -1,9 +1,8 @@
 import { AxiosInstance } from 'axios'
 import { useMutation } from 'react-query'
 import { InstanceProps } from '../context/apiContext'
-import { NotificationData } from '../theme/notification'
+import { INotification, NotificationData } from '../theme/notification'
 import { Paginate } from '../types'
-import { Booking } from '../types/booking'
 
 const notificationAPI = (authIntance: AxiosInstance) => ({
   updateNotification: ({
@@ -12,11 +11,11 @@ const notificationAPI = (authIntance: AxiosInstance) => ({
   }: {
     notificationID: string
     params: NotificationData
-  }): Promise<Booking> => {
+  }): Promise<boolean> => {
     return authIntance.put(`/v1/notifications/${notificationID}}`, params)
   },
 
-  getNotifications: ({ paginate }: { paginate: Paginate }): Promise<Booking[]> => {
+  getNotifications: ({ paginate }: { paginate: Paginate }): Promise<INotification[]> => {
     return authIntance.post(`/v1/notifications?page_size=${paginate.page_size}&page_number=${paginate.page_number}`, {})
   }
 })
