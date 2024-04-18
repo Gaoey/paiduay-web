@@ -47,9 +47,9 @@ export default function UpdateProfileForm(props: Props) {
 
   useEffect(() => {
     if (isSuccess) {
-      router.push(linkToUser)
+      router.push(`/user/${user?._id}`)
     }
-  }, [isSuccess, linkToUser, router])
+  }, [isSuccess])
 
   return (
     <Paper elevation={3} style={{ padding: 20 }}>
