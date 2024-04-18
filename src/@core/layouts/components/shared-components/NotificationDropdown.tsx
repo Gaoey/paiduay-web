@@ -22,6 +22,7 @@ import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 import { useApi } from 'src/@core/services'
 import { INotification, NotificationType } from 'src/@core/theme/notification'
 import { Paginate } from 'src/@core/types'
+import { useRouter } from 'next/router'
 
 // ** Styled Menu component
 const Menu = styled(MuiMenu)<MenuProps>(({ theme }) => ({
@@ -86,33 +87,39 @@ const MenuItemSubtitle = styled(Typography)<TypographyProps>({
 interface NotificationMsg {
   title: string
   description: string
+  linkto: string | null
 }
 
 function getNotificationMsg(notification: INotification): NotificationMsg {
   if (notification.data.type === NotificationType[NotificationType.Booking]) {
     return {
       title: 'มีคนจองเข้ามา! 🎉',
-      description: notification.data.message
+      description: notification.data.message,
+      linkto: `/admin/trip-list/${notification.data.trip_id}`
     }
   } else if (notification.data.type === NotificationType[NotificationType.UpdateBooking]) {
     return {
       title: 'มีคนแก้ไขการจอง',
-      description: notification.data.message
+      description: notification.data.message,
+      linkto: `/admin/trip-list/${notification.data.trip_id}`
     }
   } else if (notification.data.type === NotificationType[NotificationType.NewTrip]) {
     return {
       title: 'มีทริปใหม่มาแล้ว',
-      description: notification.data.message
+      description: notification.data.message,
+      linkto: `/trip/${notification.data.trip_id}`
     }
   } else {
     return {
       title: 'สวัสดีจ้า! 🎉',
-      description: notification.data.message
+      description: notification.data.message,
+      linkto: null
     }
   }
 }
 
 const NotificationDropdown = () => {
+  const router = useRouter()
   const { notificationAPI } = useApi()
   const { getNotifications } = notificationAPI
 
@@ -139,9 +146,11 @@ const NotificationDropdown = () => {
 
   const notifications: INotification[] = R.pathOr<INotification[]>([], [], data)
 
-  const onClickNotification = (notification: INotification) => {
-    console.log({ notification })
+  const onClickNotification = (notification: INotification, msg: NotificationMsg) => {
     handleDropdownClose()
+    if (!R.isNil(msg.linkto)) {
+      router.push(msg.linkto)
+    }
   }
 
   const ScrollWrapper = ({ children }: { children: ReactNode }) => {
@@ -193,7 +202,7 @@ const NotificationDropdown = () => {
               const msg = getNotificationMsg(n)
 
               return (
-                <MenuItem onClick={() => onClickNotification(n)} key={n._id}>
+                <MenuItem onClick={() => onClickNotification(n, msg)} key={n._id}>
                   <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
                     <Avatar alt='Flora' src='/images/avatars/4.png' />
                     <Box sx={{ mx: 4, flex: '1 1', display: 'flex', overflow: 'hidden', flexDirection: 'column' }}>
