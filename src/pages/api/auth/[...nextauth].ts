@@ -19,6 +19,7 @@ const nextAuthOption: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
       clientSecret: process.env.GOOGLE_SECRET as string,
+      checks: ['none'],
       idToken: true,
       userinfo: {
         request: async (props): Promise<any> =>

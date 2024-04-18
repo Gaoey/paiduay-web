@@ -44,18 +44,22 @@ export default function TripDetailComponent({ tripID, isShortDescription = false
   const { tripAPI, profilerAPI } = useApi()
 
   const { findTripByID } = tripAPI
-  const { getCurrentProfilerMutation } = profilerAPI
+  // const { getCurrentProfilerMutation } = profilerAPI
 
-  const { data: profilerData } = getCurrentProfilerMutation
+  // const { data: profilerData } = getCurrentProfilerMutation
   const { data } = findTripByID
 
   useEffect(() => {
     findTripByID.mutate(tripID)
-    getCurrentProfilerMutation.mutate()
+    // getCurrentProfilerMutation.mutate()
   }, [])
 
-  const profiler = R.pathOr<ProfilerData | null>(null, ['0', 'data'], profilerData)
+
   const trip = data as Trip | undefined
+  const profiler = trip?.profiler
+
+  console.log('profiler', profiler)
+  console.log('trip', trip)
 
   if (R.isNil(trip) || R.isNil(profiler)) {
     return <CircularProgress color='secondary' />
@@ -78,13 +82,13 @@ export default function TripDetailComponent({ tripID, isShortDescription = false
     <Card style={{ margin: 0, maxWidth: 1200 }}>
       <CardHeader
         avatar={
-          R.isNil(profiler?.logo_image?.signed_url) ? (
-            <Avatar src={profiler?.logo_image?.signed_url || ''} />
+          R.isNil(profiler?.data?.logo_image?.signed_url) ? (
+            <Avatar src={profiler?.data?.logo_image?.signed_url || ''} />
           ) : (
-            <Avatar>{profiler?.name[0]}</Avatar>
+            <Avatar>{profiler?.data?.name[0]}</Avatar>
           )
         }
-        title={profiler?.name}
+        title={profiler?.data?.name}
       />
 
       {imgSrc.length === 1 ? (
