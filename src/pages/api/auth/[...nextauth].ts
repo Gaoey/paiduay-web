@@ -60,6 +60,15 @@ const nextAuthOption: NextAuthOptions = {
       }
 
       return { accessToken: token?.accessToken, id: token?.sub }
+    },
+    async signIn({ user, account, profile, email, credentials }) {
+      const isAllowedToSignIn = true // Add any custom sign-in logic if needed
+      if (isAllowedToSignIn) {
+        return true // Redirect to callbackUrl if provided, else to the default page
+      } else {
+        // Return false to deny access
+        return false 
+      }
     }
   }
 }
