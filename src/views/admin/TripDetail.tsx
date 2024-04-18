@@ -23,13 +23,12 @@ import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/css/image-gallery.css'
 
 import { format } from 'date-fns'
+import parse from 'html-react-parser'
 import * as R from 'ramda'
 import { useEffect } from 'react'
 import { useApi } from 'src/@core/services'
-import { ProfilerData } from 'src/@core/types/profiler'
 import { Trip } from 'src/@core/types/trip'
 import { toCurrency } from 'src/@core/utils/currency'
-import parse from 'html-react-parser'
 import { trimMessage } from 'src/@core/utils/string'
 
 export const DefaultCoverTripImage =
@@ -41,25 +40,17 @@ interface TripDetailsProps {
 }
 
 export default function TripDetailComponent({ tripID, isShortDescription = false }: TripDetailsProps) {
-  const { tripAPI, profilerAPI } = useApi()
+  const { tripAPI } = useApi()
 
   const { findTripByID } = tripAPI
-  // const { getCurrentProfilerMutation } = profilerAPI
-
-  // const { data: profilerData } = getCurrentProfilerMutation
   const { data } = findTripByID
 
   useEffect(() => {
     findTripByID.mutate(tripID)
-    // getCurrentProfilerMutation.mutate()
   }, [])
-
 
   const trip = data as Trip | undefined
   const profiler = trip?.profiler
-
-  console.log('profiler', profiler)
-  console.log('trip', trip)
 
   if (R.isNil(trip) || R.isNil(profiler)) {
     return <CircularProgress color='secondary' />
