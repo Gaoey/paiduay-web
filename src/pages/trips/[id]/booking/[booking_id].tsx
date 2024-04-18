@@ -72,7 +72,7 @@ export default function UpdateBooking() {
     if (isSuccess) {
       router.push(`/trips/${tripID}/booking/success`)
     }
-  }, [isSuccess, router, tripID])
+  }, [isSuccess])
 
   return (
     <ApexChartWrapper>

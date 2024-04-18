@@ -84,7 +84,7 @@ const CreateTrip = () => {
     if (isSuccess) {
       router.push(`/admin/trip-list/${data?._id}`)
     }
-  }, [isSuccess, router])
+  }, [isSuccess])
 
   return (
     <DatePickerWrapper>

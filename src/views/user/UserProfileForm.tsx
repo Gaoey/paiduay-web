@@ -25,7 +25,7 @@ export default function UserProfileForm(props: Props) {
   useEffect(() => {
     getUser.mutate()
     getUserById.mutate(userID)
-  }, [userID])
+  }, [])
 
   return (
     <Card sx={{ padding: 10 }}>
