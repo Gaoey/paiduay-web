@@ -40,8 +40,7 @@ export default function Booking() {
     findProfilerByTripID.mutate(tripID)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  console.log({ seat_numbers })
+  
   const simplySeats = (): SimplySeatData[] => {
     if (typeof seat_numbers === 'string') {
       return [
@@ -87,7 +86,7 @@ export default function Booking() {
     if (isSuccess) {
       router.push(`/trips/${tripID}/booking/success`)
     }
-  }, [isSuccess, router, tripID])
+  }, [isSuccess])
 
   const totalPrice = trip?.data?.payment?.full_price || 0.0
 
