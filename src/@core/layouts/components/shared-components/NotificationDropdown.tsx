@@ -20,7 +20,7 @@ import { formatDistance } from 'date-fns'
 import * as R from 'ramda'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 import { useApi } from 'src/@core/services'
-import { INotification, NotificationType } from 'src/@core/theme/notification'
+import { INotification, NotificationData, NotificationType } from 'src/@core/theme/notification'
 import { Paginate } from 'src/@core/types'
 import { useRouter } from 'next/router'
 
@@ -121,7 +121,7 @@ function getNotificationMsg(notification: INotification): NotificationMsg {
 const NotificationDropdown = () => {
   const router = useRouter()
   const { notificationAPI } = useApi()
-  const { getNotifications } = notificationAPI
+  const { getNotifications, updateNotification } = notificationAPI
 
   const { data, isLoading } = getNotifications
 
@@ -148,6 +148,11 @@ const NotificationDropdown = () => {
 
   const onClickNotification = (notification: INotification, msg: NotificationMsg) => {
     handleDropdownClose()
+    const newNotification: NotificationData = {
+      ...notification.data,
+      is_read: true
+    }
+    updateNotification.mutateAsync({ notificationID: notification._id, params: newNotification })
     if (!R.isNil(msg.linkto)) {
       router.push(msg.linkto)
     }
@@ -202,7 +207,11 @@ const NotificationDropdown = () => {
               const msg = getNotificationMsg(n)
 
               return (
-                <MenuItem onClick={() => onClickNotification(n, msg)} key={n._id}>
+                <MenuItem
+                  onClick={() => onClickNotification(n, msg)}
+                  key={n._id}
+                  sx={{ backgroundColor: !n.data.is_read ? '#74B3CE' : null }}
+                >
                   <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
                     <Avatar alt='Flora' src='/images/avatars/4.png' />
                     <Box sx={{ mx: 4, flex: '1 1', display: 'flex', overflow: 'hidden', flexDirection: 'column' }}>
