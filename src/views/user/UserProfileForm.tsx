@@ -58,37 +58,37 @@ export default function UserProfileForm(props: Props) {
             <Grid item xs={6}>
               <Typography variant='subtitle2'>ชื่อ:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.first_name || 'ชื่อจริง'}
+                {user?.profile?.first_name || '-'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant='subtitle2'>นามสกุล:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.last_name || 'นามสกุล'}
+                {user?.profile?.last_name || '-'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant='subtitle2'>เลขบัตรประชาชน:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.citizen_id || 'เลขบัตรประชาชน'}
+                {user?.profile?.citizen_id || 'เลข 13 หลัก'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant='subtitle2'>ที่อยู่:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.address || 'ที่อยู่'}
+                {user?.profile?.address || 'ที่อยู่ปัจจุบันที่ติดต่อได้'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant='subtitle2'>เบอร์ติดต่อ:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.telephone_number || 'เบอร์ติดต่อ'}
+                {user?.profile?.telephone_number || 'โปรดใส่เบอร์ติดต่อ'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant='subtitle2'>LINE ID:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.line_contacts || 'LINE ID'}
+                {user?.profile?.line_contacts || 'ใส่ LINE ID หรือเบอร์โทรที่ add line ได้'}
               </Typography>
             </Grid>
             {currUser?._id === user?._id && (
