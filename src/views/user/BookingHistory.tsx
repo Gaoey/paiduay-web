@@ -44,13 +44,13 @@ const BookingHistoryCards = (props: Props) => {
                   <Grid item xs={6} sm={6} md={3}>
                     <CardHeader
                       title={booking.trip_data?.data?.title || 'Trip Title Unavailable'}
-                      subheader={`created at: ${format(new Date(booking.created_at || 0), 'dd MMM yyyy')}`}
+                      subheader={`สร้างทริป: ${format(new Date(booking.created_at || 0), 'dd MMM yyyy')}`}
                     />
                   </Grid>
                   <Grid item xs={6} sm={6} md={3}>
                     <Chip
-                      label={`  ${format(new Date(booking.trip_data?.data?.from_date || 0), 'dd MMM yyyy')} >
-                      ${format(new Date(booking.trip_data?.data?.to_date || 0), 'dd MMM yyyy')}`}
+                      label={`${format(new Date(booking.trip_data?.data?.from_date || 0), 'dd MMM yy')} -
+                      ${format(new Date(booking.trip_data?.data?.to_date || 0), 'dd MMM yy')}`}
                       color='primary'
                       size='medium'
                       sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
@@ -71,7 +71,7 @@ const BookingHistoryCards = (props: Props) => {
                       <Button
                         variant='outlined'
                         style={{ marginRight: '0.5em' }}
-                        onClick={() => router.push(`/trips/${booking.trip_id}`)}
+                        onClick={() => router.push(`/trips/${booking.trip_id}?hideElement=true`)}
                       >
                         ดูข้อมูลทริป
                       </Button>

@@ -44,7 +44,8 @@ const PathBackground = () => {
         bottom: '0em',
         margin: '0',
         width: '100vw',
-        display: 'flex'
+        display: 'flex',
+        zIndex: '-1'
       }}
     >
       <svg id='Layer_1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940.23 351.95' style={{ width: '100%' }}>
@@ -80,8 +81,8 @@ const Success = () => {
   }, [])
 
   return (
-    <Box className='content-center' >
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center'}}>
+    <Box className='content-center' sx={{ height: '100vh'}}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', zIndex: 10 }}>
         <BoxWrapper sx={{ padding: '4em 1em' }}>
           <Typography variant='h3' sx={{ mb: 4 }}>ดีใจด้วย!</Typography>
           <Typography variant='h5' sx={{ mb: 1, fontSize: '1.5rem !important' }}>

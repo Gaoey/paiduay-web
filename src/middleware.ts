@@ -21,10 +21,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(getAbsoluteURL(`/pages/login?callback=${encodeURIComponent(url.pathname)}`));
   }
 
-  if (req.nextUrl.pathname.startsWith('/booking') && !session) { 
-    console.log('protected', url.pathname)
-    console.log('href', url.href)
-
+  if (req.nextUrl.pathname.startsWith('/booking') && !session) {
     return NextResponse.redirect(getAbsoluteURL(`/pages/login?callback=${encodeURIComponent(url.pathname)}`));
   }
 

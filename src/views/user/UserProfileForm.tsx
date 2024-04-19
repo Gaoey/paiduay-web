@@ -56,39 +56,39 @@ export default function UserProfileForm(props: Props) {
         <Grid item md={12}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <Typography variant='subtitle2'>First Name:</Typography>
+              <Typography variant='subtitle2'>ชื่อ:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.first_name || 'N/A'}
+                {user?.profile?.first_name || 'ชื่อจริง'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant='subtitle2'>Last Name:</Typography>
+              <Typography variant='subtitle2'>นามสกุล:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.last_name || 'N/A'}
+                {user?.profile?.last_name || 'นามสกุล'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant='subtitle2'>Citizen ID:</Typography>
+              <Typography variant='subtitle2'>เลขบัตรประชาชน:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.citizen_id || 'N/A'}
+                {user?.profile?.citizen_id || 'เลขบัตรประชาชน'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant='subtitle2'>Address:</Typography>
+              <Typography variant='subtitle2'>ที่อยู่:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.address || 'N/A'}
+                {user?.profile?.address || 'ที่อยู่'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant='subtitle2'>Telephone Number:</Typography>
+              <Typography variant='subtitle2'>เบอร์ติดต่อ:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.telephone_number || 'N/A'}
+                {user?.profile?.telephone_number || 'เบอร์ติดต่อ'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant='subtitle2'>LINE ID:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.line_contacts || 'N/A'}
+                {user?.profile?.line_contacts || 'LINE ID'}
               </Typography>
             </Grid>
             {currUser?._id === user?._id && (
@@ -98,7 +98,7 @@ export default function UserProfileForm(props: Props) {
                   color='primary'
                   onClick={() => router.push(`/user/${currUser?._id}/update_profile`)}
                 >
-                  Update profile
+                  แก้ไข
                 </Button>
               </Grid>
             )}

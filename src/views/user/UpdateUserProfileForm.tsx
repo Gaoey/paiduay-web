@@ -61,26 +61,26 @@ export default function UpdateProfileForm(props: Props) {
             </Typography>
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='First Name' fullWidth {...register('first_name')} />
+            <TextField label='ชื่อ' fullWidth {...register('first_name')} />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='Last Name' fullWidth {...register('last_name')} />
+            <TextField label='นามสกุล' fullWidth {...register('last_name')} />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='Citizen ID' fullWidth {...register('citizen_id')} />
+            <TextField label='เลขบัตรประชาชน' fullWidth {...register('citizen_id')} />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='Address' fullWidth {...register('address')} />
+            <TextField label='ที่อยู่' fullWidth {...register('address')} />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='Telephone Number' fullWidth {...register('telephone_number')} />
+            <TextField label='เบอร์โทร' fullWidth {...register('telephone_number')} />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField label='Line ID' fullWidth {...register('line_contacts')} />
           </Grid>
           <Grid item xs={12}>
             <LoadingButton type='submit' variant='contained' color='primary' loading={isLoading}>
-              UPDATE
+              บันทึก
             </LoadingButton>
           </Grid>
         </Grid>
