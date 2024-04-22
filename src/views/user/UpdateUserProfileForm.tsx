@@ -18,7 +18,6 @@ export default function UpdateProfileForm(props: Props) {
   const { updateProfile } = userAPI
 
   const { isSuccess, isLoading } = updateProfile
-  const linkToUser = `/user/${user?._id}`
 
   const defaultValues = {
     first_name: user?.profile?.first_name || '',
@@ -37,6 +36,16 @@ export default function UpdateProfileForm(props: Props) {
   })
 
   const onSubmit: SubmitHandler<any> = data => {
+    console.log('data', data)
+    const {
+      first_name: name,
+      last_name: surname,
+      telephone_number: tel,
+      line_contacts: line
+    } = data
+    if (!name || !surname || !tel || !line ){
+      
+    }
     const profile: UserProfile = {
       ...user?.profile,
       ...data
@@ -61,26 +70,41 @@ export default function UpdateProfileForm(props: Props) {
             </Typography>
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='First Name' fullWidth {...register('first_name')} />
+            <TextField label='ชื่อ' fullWidth {...register('first_name')} />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='Last Name' fullWidth {...register('last_name')} />
+            <TextField label='นามสกุล' fullWidth {...register('last_name')} />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='Citizen ID' fullWidth {...register('citizen_id')} />
+            <TextField
+              type='number'
+              onWheel={e => e.target instanceof HTMLElement && e.target.blur()}
+              label='เลขบัตรประชาชน'
+              inputProps={{ pattern: "^[0-9]*$" }}
+              fullWidth
+              required
+              {...register('citizen_id')}
+            />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='Address' fullWidth {...register('address')} />
+            <TextField label='ที่อยู่' fullWidth {...register('address')} />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='Telephone Number' fullWidth {...register('telephone_number')} />
+            <TextField
+              type='tel'
+              inputProps={{ pattern: "^[0-9]*$" }}
+              label='เบอร์โทร'
+              fullWidth
+              required
+              {...register('telephone_number')}
+            />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField label='Line ID' fullWidth {...register('line_contacts')} />
           </Grid>
           <Grid item xs={12}>
             <LoadingButton type='submit' variant='contained' color='primary' loading={isLoading}>
-              UPDATE
+              บันทึก
             </LoadingButton>
           </Grid>
         </Grid>

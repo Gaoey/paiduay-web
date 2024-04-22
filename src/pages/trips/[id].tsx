@@ -9,10 +9,11 @@ import TripDetailComponent from 'src/views/admin/TripDetail'
 export default function UserTripDetail() {
   const router = useRouter()
   const tripID = router.query.id as string
+  const hideElement = Boolean(router.query.hideElement) || false
 
   return (
     <ApexChartWrapper>
-      <Grid container spacing={7} style={{ paddingBottom: '6em'}}>
+      <Grid container spacing={7} style={{ paddingBottom: '6em' }}>
         <Grid
           item
           md={12}
@@ -26,16 +27,18 @@ export default function UserTripDetail() {
           <TripDetailComponent tripID={tripID} />
         </Grid>
       </Grid>
-      <div style={{ position: 'fixed', bottom: '2em', textAlign: 'center', width: '100%' }}>
-        <Button
-          variant="contained"
-          color='secondary'
-          style={{ filter: 'drop-shadow(1px 1px 1px #444)', fontSize: '1em' }}
-          onClick={() => router.push(`/booking/${tripID}`)}
-        >
-          จอง
-        </Button>
-      </div>
+      {!hideElement && (
+        <div style={{ position: 'fixed', bottom: '2em', textAlign: 'center', width: '100%' }}>
+          <Button
+            variant='contained'
+            color='secondary'
+            style={{ filter: 'drop-shadow(1px 1px 1px #444)', fontSize: '1em' }}
+            onClick={() => router.push(`/booking/${tripID}`)}
+          >
+            จอง
+          </Button>
+        </div>
+      )}
     </ApexChartWrapper>
   )
 }

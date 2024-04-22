@@ -223,18 +223,18 @@ function ConfirmSeatButton(props: ConfirmSeatButtonProps) {
             <form onSubmit={handleSubmit(onSubmit)}>
               <DialogContent>
                 <DialogContentText sx={{ marginBottom: 10 }}>
-                  โปรดใส่ข้อมูลส่วนตัวเพื่อให้เจ้าของทริปติดต่อคุณได้ง่ายขึ้น
+                  โปรดใส่ข้อมูลส่วนตัวเพื่อให้หัวหน้าทริปติดต่อคุณได้ง่ายขึ้น
                 </DialogContentText>
                 <Grid container spacing={5}>
                   <Grid item xs={12}>
-                    <TextField label='First Name' fullWidth {...register('first_name')} />
+                    <TextField label='ชื่อ' fullWidth {...register('first_name')} />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField label='Last Name' fullWidth {...register('last_name')} />
+                    <TextField label='นามสกุล' fullWidth {...register('last_name')} />
                   </Grid>
 
                   <Grid item xs={12}>
-                    <TextField label='Telephone Number' fullWidth {...register('telephone_number')} />
+                    <TextField label='เบอร์ติดต่อ' fullWidth {...register('telephone_number')} />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField label='Line ID' fullWidth {...register('line_contacts')} />
@@ -243,7 +243,7 @@ function ConfirmSeatButton(props: ConfirmSeatButtonProps) {
               </DialogContent>
               <DialogActions>
                 <LoadingButton variant='contained' type='submit' loading={isLoading}>
-                  SUBMIT
+                  บันทึก
                 </LoadingButton>
                 <Button onClick={handleClose}>ปิด</Button>
               </DialogActions>
