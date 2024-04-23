@@ -11,6 +11,8 @@ import { TripPayload, TripStatus } from 'src/@core/types/trip'
 import { TransportationNormalForm, VanForm, getDefaultTransport } from './TransportationForm'
 
 import Tiptap from '../editor/Tiptap'
+import 'react-datepicker/dist/react-datepicker.css'
+
 
 interface TripFormProps {
   trip_payload?: TripPayload
@@ -26,13 +28,13 @@ function TripForm(props: TripFormProps) {
     title: p?.trip_data?.title || '',
     description: p?.trip_data.description || '',
     cover_images: p?.trip_data.cover_images || [],
-    date_to_reserve: new Date(p?.trip_data.date_to_reserve || 0) || new Date(),
-    from_date: new Date(p?.trip_data.from_date || 0) || new Date(),
-    to_date: new Date(p?.trip_data.to_date || 0) || new Date(),
+    date_to_reserve: new Date(p?.trip_data.date_to_reserve || new Date()),
+    from_date: new Date(p?.trip_data.from_date || new Date()),
+    to_date: new Date(p?.trip_data.to_date  || new Date()),
     payment:
       {
         ...p?.trip_data.payment,
-        payment_date: new Date(p?.trip_data.payment?.payment_date || 0) || new Date()
+        payment_date: new Date(p?.trip_data.payment?.payment_date || new Date())
       } || null,
     total_people: p?.trip_data.total_people || 10,
     members: p?.trip_data.members || [],
@@ -122,6 +124,9 @@ function TripForm(props: TripFormProps) {
     control,
     name: 'transport_data'
   })
+
+  const numberOfVans = transports.reduce((total, x) => total + (x.transport_by === Transportation[Transportation.VAN] ? 1 : 0), 0)
+  const numberOfAlternativeVehicles = transports.length - numberOfVans
 
   return (
     <Card>
@@ -248,7 +253,7 @@ function TripForm(props: TripFormProps) {
                 ))}
               </Box>
               <Button variant='contained' component='label'>
-                อัพโหลดภาพเกี่ยวกับทริป
+                อัพโหลดภาพประกอบ
                 <input
                   {...register('cover_images')}
                   type='file'
@@ -271,6 +276,7 @@ function TripForm(props: TripFormProps) {
                   placeholderText='MM/DD/YYYY'
                   customInput={<TextField label='วันไป' {...register('from_date', { required: true })} fullWidth />}
                   onChange={(date: Date) => setValue('from_date', date)}
+                  minDate={new Date()}
                 />
               </DatePickerWrapper>
             </Grid>
@@ -285,11 +291,13 @@ function TripForm(props: TripFormProps) {
                   placeholderText='MM/DD/YYYY'
                   customInput={<TextField label='วันกลับ' {...register('to_date', { required: true })} fullWidth />}
                   onChange={(date: Date) => setValue('to_date', date)}
+                  minDate={new Date()}
                 />
               </DatePickerWrapper>
             </Grid>
 
             <Grid item xs={12} sm={6}>
+            <DatePickerWrapper>
               <DatePicker
                 selected={watch('date_to_reserve', new Date()) || defaultValues.date_to_reserve}
                 showYearDropdown
@@ -300,7 +308,9 @@ function TripForm(props: TripFormProps) {
                   <TextField label='วันเริ่มจอง' {...register('date_to_reserve', { required: true })} fullWidth />
                 }
                 onChange={(date: Date) => setValue('date_to_reserve', date)}
+                minDate={new Date()}
               />
+              </DatePickerWrapper>
             </Grid>
             <Grid item xs={12}>
               <Typography variant='body2' sx={{ fontWeight: 600 }}>
@@ -364,14 +374,14 @@ function TripForm(props: TripFormProps) {
                   <Box style={{ display: 'flex', flexDirection: 'row' }}>
                     <Button
                       variant='outlined'
-                      style={{ marginRight: 20 }}
-                      onClick={() => appendTransport(getDefaultTransport(10, 'VAN #1', Transportation.VAN))}
+                      style={{ marginRight: '1em' }}
+                      onClick={() => appendTransport(getDefaultTransport(10, `VAN #${numberOfVans + 1}`, Transportation.VAN))}
                     >
                       เพิ่มรถตู้
                     </Button>
                     <Button
                       variant='outlined'
-                      onClick={() => appendTransport(getDefaultTransport(5, 'SELF #1', Transportation.SELF))}
+                      onClick={() => appendTransport(getDefaultTransport(5, `OTHER #${numberOfAlternativeVehicles + 1}`, Transportation.SELF))}
                     >
                       เพิ่อวิธีการเดินทางแบบอื่น
                     </Button>

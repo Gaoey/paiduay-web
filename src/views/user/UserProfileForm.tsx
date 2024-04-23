@@ -70,25 +70,25 @@ export default function UserProfileForm(props: Props) {
             <Grid item xs={6}>
               <Typography variant='subtitle2'>เลขบัตรประชาชน:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.citizen_id || 'เลข 13 หลัก'}
+                {user?.profile?.citizen_id || '-'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant='subtitle2'>ที่อยู่:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.address || 'ที่อยู่ปัจจุบันที่ติดต่อได้'}
+                {user?.profile?.address || '-'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant='subtitle2'>เบอร์ติดต่อ:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.telephone_number || 'โปรดใส่เบอร์ติดต่อ'}
+                {user?.profile?.telephone_number || '-'}
               </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant='subtitle2'>LINE ID:</Typography>
               <Typography variant='subtitle1' color='secondary'>
-                {user?.profile?.line_contacts || 'ใส่ LINE ID หรือเบอร์โทรที่ add line ได้'}
+                {user?.profile?.line_contacts || '-'}
               </Typography>
             </Grid>
             {currUser?._id === user?._id && (

@@ -48,12 +48,12 @@ const Profile = (props: ProfileProps) => {
           <CircularProgress color='secondary' />
         ) : (
           <>
-            <Typography variant='h6'>หวัดดีเพื่อน {currentUser?.name}! 🥳</Typography>
+            <Typography variant='h6'>หวัดดีเพื่อน {currentUser?.name}!</Typography>
             <Typography variant='body2' sx={{ letterSpacing: '0.25px', marginBottom: '2em' }}>
-              คำแนะนำตัวของคุณ
+              {profiler?.data ? profiler.data.description.slice(0, 100) + '...' : 'คำแนะนำตัวของคุณ'}
             </Typography>
             <Button size='small' variant='contained' onClick={() => router.push('/admin/profiler-settings')}>
-              UPDATE
+              อัพเดต
             </Button>
             <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />
             {!R.isNil(profiler) && <ProfileImg alt='Profile' src={profiler.data.logo_image?.signed_url} />}
