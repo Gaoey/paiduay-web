@@ -248,7 +248,7 @@ function TripForm(props: TripFormProps) {
                 ))}
               </Box>
               <Button variant='contained' component='label'>
-                อัพโหลดภาพเกี่ยวกับทริป
+                อัพโหลดภาพประกอบ
                 <input
                   {...register('cover_images')}
                   type='file'
