@@ -50,7 +50,7 @@ const Profile = (props: ProfileProps) => {
           <>
             <Typography variant='h6'>หวัดดีเพื่อน {currentUser?.name}! 🥳</Typography>
             <Typography variant='body2' sx={{ letterSpacing: '0.25px', marginBottom: '2em' }}>
-              คำแนะนำตัวของคุณ
+              {profiler?.data ? profiler.data.description.slice(0, 100) + '...' : 'คำแนะนำตัวของคุณ'}
             </Typography>
             <Button size='small' variant='contained' onClick={() => router.push('/admin/profiler-settings')}>
               UPDATE
