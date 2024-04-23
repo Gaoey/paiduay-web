@@ -203,48 +203,48 @@ function ProfilerForm(props: ProfilerFormProps) {
             </Grid>
 
             <Grid item xs={12}>
-              <Grid container spacing={5}>
-                {bankAccountsField.map((item, index) => (
-                  <>
-                    <Grid item xs={4} key={item.id}>
-                      <TextField
-                        {...register(`bank_accounts.${index}.bank_title`)}
-                        label='ชื่อธนาคาร'
-                        fullWidth
-                        defaultValue={item.bank_title}
-                      />
-                    </Grid>
-                    <Grid item xs={4} key={item.id}>
-                      <TextField
-                        {...register(`bank_accounts.${index}.account_name`)}
-                        label='ชื่อบัญชี'
-                        defaultValue={item.account_name}
-                        fullWidth
-                        style={{ marginLeft: 10 }}
-                      />
-                    </Grid>
-                    <Grid item xs={3} key={item.id}>
-                      <TextField
-                        {...register(`bank_accounts.${index}.account_number`)}
-                        label='เลขบัญชี'
-                        defaultValue={item.account_number}
-                        fullWidth
-                        style={{ marginLeft: 10 }}
-                      />
-                    </Grid>
-                    <Grid item xs={1} key={item.id}>
-                      <IconButton
-                        size='large'
-                        aria-label='remove-bank-account'
-                        onClick={() => removeBankAccount(index)}
-                        style={{ color: 'darkgrey' }}
-                      >
-                        <Close />
-                      </IconButton>
-                    </Grid>
-                  </>
-                ))}
-              </Grid>
+              {bankAccountsField.map((item, index) => (
+                <Grid container spacing={4} key={item.id} sx={{ 
+                    pb: 2, 
+                    pt: 2,
+                    borderBottom: 'solid 1px #ebebeb' 
+                  }}>
+                  <Grid item xs={12} sm={4}>
+                    <TextField
+                      {...register(`bank_accounts.${index}.bank_title`)}
+                      label='ชื่อธนาคาร'
+                      fullWidth
+                      defaultValue={item.bank_title}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <TextField
+                      {...register(`bank_accounts.${index}.account_name`)}
+                      label='ชื่อบัญชี'
+                      defaultValue={item.account_name}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={10} sm={3}>
+                    <TextField
+                      {...register(`bank_accounts.${index}.account_number`)}
+                      label='เลขบัญชี'
+                      defaultValue={item.account_number}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={2} sm={1}>
+                    <IconButton
+                      size='large'
+                      aria-label='remove-bank-account'
+                      onClick={() => removeBankAccount(index)}
+                      style={{ color: 'darkgrey' }}
+                    >
+                      <Close />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              ))}
               <Button
                 type='button'
                 variant='outlined'
