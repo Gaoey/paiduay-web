@@ -123,6 +123,9 @@ function TripForm(props: TripFormProps) {
     name: 'transport_data'
   })
 
+  const numberOfVans = transports.reduce((total, x) => total + (x.transport_by === Transportation[Transportation.VAN] ? 1 : 0), 0)
+  const numberOfAlternativeVehicles = transports.length - numberOfVans
+
   return (
     <Card>
       <CardHeader title='สร้างทริป' titleTypographyProps={{ variant: 'h6' }} />
@@ -367,14 +370,14 @@ function TripForm(props: TripFormProps) {
                   <Box style={{ display: 'flex', flexDirection: 'row' }}>
                     <Button
                       variant='outlined'
-                      style={{ marginRight: 20 }}
-                      onClick={() => appendTransport(getDefaultTransport(10, 'VAN #1', Transportation.VAN))}
+                      style={{ marginRight: '1em' }}
+                      onClick={() => appendTransport(getDefaultTransport(10, `VAN #${numberOfVans + 1}`, Transportation.VAN))}
                     >
                       เพิ่มรถตู้
                     </Button>
                     <Button
                       variant='outlined'
-                      onClick={() => appendTransport(getDefaultTransport(5, 'SELF #1', Transportation.SELF))}
+                      onClick={() => appendTransport(getDefaultTransport(5, `OTHER #${numberOfAlternativeVehicles + 1}`, Transportation.SELF))}
                     >
                       เพิ่อวิธีการเดินทางแบบอื่น
                     </Button>

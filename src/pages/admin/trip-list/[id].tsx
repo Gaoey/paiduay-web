@@ -83,6 +83,12 @@ export default function TripDetail() {
     }
   }, [isUpdateBookingSuccess, tripID])
 
+  const numberOfVans = transports.filter(x => x.data.transport_by === Transportation[Transportation.VAN]).length
+  console.log('numberOfVans', numberOfVans)
+  
+  const numberOfAlternativeVehicles = transports.length - numberOfVans
+  console.log('numberOfAlternativeVehicles', numberOfAlternativeVehicles)
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={7}>
@@ -93,7 +99,7 @@ export default function TripDetail() {
                 <Button
                   variant='contained'
                   style={{ color: 'white', marginRight: 20 }}
-                  onClick={() => router.push(`/trips/${tripID}`)}
+                  onClick={() => router.push(`/trips/${tripID}?hideElement=true`)}
                 >
                   PREVIEW
                 </Button>
@@ -102,7 +108,7 @@ export default function TripDetail() {
                   style={{ marginRight: 20 }}
                   onClick={() => router.push(`/admin/update-trip/${tripID}`)}
                 >
-                  EDIT
+                  แก้ไขรายละเอียด
                 </Button>
                 <RemoveTripPopUp tripID={tripID} onRemove={(tripID: string) => removeTrip.mutate(tripID)} />
               </Box>
@@ -126,6 +132,7 @@ export default function TripDetail() {
                   onCreateTransport={(tripID: string, transportData: TransportData) => {
                     createTransport.mutate({ tripID, transportData: [transportData] })
                   }}
+                  transportNumber={numberOfVans + 1}
                 />
                 <AddTransportButton
                   title={'เพิ่อวิธีการเดินทางแบบอื่น'}
@@ -134,6 +141,7 @@ export default function TripDetail() {
                   onCreateTransport={(tripID: string, transportData: TransportData) => {
                     createTransport.mutate({ tripID, transportData: [transportData] })
                   }}
+                  transportNumber={numberOfAlternativeVehicles + 1}
                 />
               </Box>
             </Grid>

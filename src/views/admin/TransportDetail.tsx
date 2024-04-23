@@ -1,6 +1,6 @@
 import { Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from '@mui/material'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Seat, Transport, TransportData, Transportation } from 'src/@core/types/transport'
 import { TransportationNormalForm, VanForm, getDefaultTransport } from './TransportationForm'
 import { useForm } from 'react-hook-form'
@@ -44,7 +44,7 @@ export default function TransportDetail({ item, onSetSeat, onRemoveTransport, on
                   }}
                   sx={{ height: 55, width: '100%' }}
                 >
-                  EDIT
+                  แก้ไข
                 </Button>
               ) : (
                 <Button
@@ -57,7 +57,7 @@ export default function TransportDetail({ item, onSetSeat, onRemoveTransport, on
                   }}
                   sx={{ height: 55, width: '100%' }}
                 >
-                  SAVE
+                  บันทึก
                 </Button>
               )}
             </Grid>
@@ -133,15 +133,16 @@ interface AddTransportButtonProps {
   tripID: string
   transportBy: Transportation | string
   onCreateTransport: (tripID: string, transportData: TransportData) => void
+  transportNumber: number
 }
 
 export function AddTransportButton(props: AddTransportButtonProps) {
-  const { title, onCreateTransport, transportBy, tripID } = props
+  const { title, onCreateTransport, transportBy, tripID, transportNumber } = props
 
   const defaultValues =
     transportBy === Transportation[Transportation.VAN]
-      ? getDefaultTransport(10, 'VAN #1', Transportation.VAN)
-      : getDefaultTransport(5, 'SELF #1', Transportation.SELF)
+      ? getDefaultTransport(10, `VAN #${transportNumber}`, Transportation.VAN)
+      : getDefaultTransport(5, `SELF #${transportNumber}`, Transportation.SELF)
 
   const [open, setOpen] = useState(false)
 
@@ -171,7 +172,7 @@ export function AddTransportButton(props: AddTransportButtonProps) {
           <DialogContent style={{ margin: 10, padding: 10 }}>
             <Grid container spacing={7}>
               <Grid item xs={4}>
-                <TextField {...register(`name`)} label='ชื่อ' defaultValue={defaultValues.name} fullWidth />
+                <TextField {...register(`name`)} label='ชื่อ' value={defaultValues.name} fullWidth />
               </Grid>
               <Grid item xs={4}>
                 <TextField
