@@ -26,13 +26,13 @@ function TripForm(props: TripFormProps) {
     title: p?.trip_data?.title || '',
     description: p?.trip_data.description || '',
     cover_images: p?.trip_data.cover_images || [],
-    date_to_reserve: new Date(p?.trip_data.date_to_reserve || 0) || new Date(),
-    from_date: new Date(p?.trip_data.from_date || 0) || new Date(),
-    to_date: new Date(p?.trip_data.to_date || 0) || new Date(),
+    date_to_reserve: new Date(p?.trip_data.date_to_reserve || new Date()),
+    from_date: new Date(p?.trip_data.from_date || new Date()),
+    to_date: new Date(p?.trip_data.to_date  || new Date()),
     payment:
       {
         ...p?.trip_data.payment,
-        payment_date: new Date(p?.trip_data.payment?.payment_date || 0) || new Date()
+        payment_date: new Date(p?.trip_data.payment?.payment_date || new Date())
       } || null,
     total_people: p?.trip_data.total_people || 10,
     members: p?.trip_data.members || [],
@@ -271,6 +271,7 @@ function TripForm(props: TripFormProps) {
                   placeholderText='MM/DD/YYYY'
                   customInput={<TextField label='วันไป' {...register('from_date', { required: true })} fullWidth />}
                   onChange={(date: Date) => setValue('from_date', date)}
+                  minDate={new Date()}
                 />
               </DatePickerWrapper>
             </Grid>
@@ -285,6 +286,7 @@ function TripForm(props: TripFormProps) {
                   placeholderText='MM/DD/YYYY'
                   customInput={<TextField label='วันกลับ' {...register('to_date', { required: true })} fullWidth />}
                   onChange={(date: Date) => setValue('to_date', date)}
+                  minDate={new Date()}
                 />
               </DatePickerWrapper>
             </Grid>
@@ -300,6 +302,7 @@ function TripForm(props: TripFormProps) {
                   <TextField label='วันเริ่มจอง' {...register('date_to_reserve', { required: true })} fullWidth />
                 }
                 onChange={(date: Date) => setValue('date_to_reserve', date)}
+                minDate={new Date()}
               />
             </Grid>
             <Grid item xs={12}>
