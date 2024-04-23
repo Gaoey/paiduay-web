@@ -11,6 +11,7 @@ import { Transport, TransportData } from 'src/@core/types/transport'
 import { Trip, TripData, TripPayload, TripStatus } from 'src/@core/types/trip'
 import AdminLayout from 'src/layouts/AdminLayout'
 import TripForm from 'src/views/admin/TripForm'
+import 'react-datepicker/dist/react-datepicker.css'
 
 export default function UpdateTrip() {
   const router = useRouter()
@@ -77,13 +78,13 @@ export default function UpdateTrip() {
   }
 
   return (
-    <DatePickerWrapper>
-      <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <TripForm onSubmit={onSubmit} trip_payload={payload} isHiddenTransport={true} />
+      <DatePickerWrapper>
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <TripForm onSubmit={onSubmit} trip_payload={payload} isHiddenTransport={true} />
+          </Grid>
         </Grid>
-      </Grid>
-    </DatePickerWrapper>
+      </DatePickerWrapper>
   )
 }
 

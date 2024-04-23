@@ -11,6 +11,8 @@ import { TripPayload, TripStatus } from 'src/@core/types/trip'
 import { TransportationNormalForm, VanForm, getDefaultTransport } from './TransportationForm'
 
 import Tiptap from '../editor/Tiptap'
+import 'react-datepicker/dist/react-datepicker.css'
+
 
 interface TripFormProps {
   trip_payload?: TripPayload
@@ -295,6 +297,7 @@ function TripForm(props: TripFormProps) {
             </Grid>
 
             <Grid item xs={12} sm={6}>
+            <DatePickerWrapper>
               <DatePicker
                 selected={watch('date_to_reserve', new Date()) || defaultValues.date_to_reserve}
                 showYearDropdown
@@ -307,6 +310,7 @@ function TripForm(props: TripFormProps) {
                 onChange={(date: Date) => setValue('date_to_reserve', date)}
                 minDate={new Date()}
               />
+              </DatePickerWrapper>
             </Grid>
             <Grid item xs={12}>
               <Typography variant='body2' sx={{ fontWeight: 600 }}>
