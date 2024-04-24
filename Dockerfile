@@ -5,9 +5,8 @@ RUN apk add git
 RUN apk add --no-cache libc6-compat
 RUN apk add --no-cache --virtual .gyp python3 make g++
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm
-RUN pnpm install --no-frozen-lockfile
+COPY package.json package-lock.yaml ./
+RUN npm install --no-frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM node:alpine AS builder
@@ -16,8 +15,7 @@ RUN apk add --no-cache --virtual .gyp python3 make g++
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-RUN npm install -g pnpm
-RUN pnpm build && pnpm install --production --ignore-scripts --prefer-offline
+RUN npm build && npm install --production --ignore-scripts --prefer-offline
 
 # Production image, copy all the files and run next
 FROM node:alpine AS runner
@@ -28,7 +26,6 @@ RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 # You only need to copy next.config.js if you are NOT using the default configuration
 COPY --from=builder /app/next.config.js ./
-COPY --from=builder /app/next-i18next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
