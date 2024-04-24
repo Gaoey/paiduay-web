@@ -27,7 +27,8 @@
     "themeselection"
   ],
   "scripts": {
-    "dev": "next dev -p 9000",
+    "dev": "next dev -p 9010",
+    "prod": "next start -p 9010",
     "build": "next build",
     "start": "next start",
     "export": "next export",
