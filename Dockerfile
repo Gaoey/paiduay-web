@@ -5,7 +5,7 @@ RUN apk add git
 RUN apk add --no-cache libc6-compat
 RUN apk add --no-cache --virtual .gyp python3 make g++
 WORKDIR /app
-COPY package.json package-lock.yaml ./
+COPY package.json package-lock.json ./
 RUN npm install --no-frozen-lockfile
 
 # Rebuild the source code only when needed
@@ -15,7 +15,7 @@ RUN apk add --no-cache --virtual .gyp python3 make g++
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-RUN npm build && npm install --production --ignore-scripts --prefer-offline
+RUN npm run build 
 
 # Production image, copy all the files and run next
 FROM node:alpine AS runner
