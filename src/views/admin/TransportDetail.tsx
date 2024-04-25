@@ -176,7 +176,7 @@ export function AddTransportButton(props: AddTransportButtonProps) {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  {...register(`transport_by`)}
+                  {...register(`transport_by`, { required: 'ต้องมีวิธีการเดินทาง' })}
                   label='เดินทางด้วย'
                   disabled
                   fullWidth
@@ -185,7 +185,7 @@ export function AddTransportButton(props: AddTransportButtonProps) {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  {...register(`total_seats`)}
+                  {...register(`total_seats`, { required: 'ต้องมีจำนวนที่นั่ง' })}
                   label='จำนวนที่นั่ง'
                   disabled={transportBy === Transportation[Transportation.VAN]}
                   defaultValue={defaultValues.total_seats}

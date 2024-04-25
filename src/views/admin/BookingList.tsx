@@ -294,7 +294,7 @@ function ChangeBookingNameButton(props: ChangeBookingNameButtonProps) {
               <TextField
                 key={item.id}
                 sx={{ margin: 2 }}
-                {...register(`seats.${index}.seat_name`)}
+                {...register(`seats.${index}.seat_name`, { required: 'โปรดใส่ชื่อที่นั่ง' })}
                 label={`ขื่อผู้จอง #${index}`}
                 defaultValue={item.seat_name}
               />

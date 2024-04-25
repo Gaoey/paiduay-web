@@ -153,7 +153,7 @@ export default function BookingForm(props: BookingFormProps) {
                       return (
                         <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
                           <TextField
-                            {...register(`seats.${index}.seat_name`)}
+                            {...register(`seats.${index}.seat_name`, { required: 'ต้องมีชื่อที่นั่ง' })}
                             label={`ใส่ชื่อจองที่นั่ง #${item.seat_number} ของคุณ`}
                             defaultValue={item.seat_name}
                             disabled={isDeposit}

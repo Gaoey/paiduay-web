@@ -211,7 +211,7 @@ function ProfilerForm(props: ProfilerFormProps) {
                   }}>
                   <Grid item xs={12} sm={4}>
                     <TextField
-                      {...register(`bank_accounts.${index}.bank_title`)}
+                      {...register(`bank_accounts.${index}.bank_title`, { required: 'ต้องมีชื่อธนาคาร' })}
                       label='ชื่อธนาคาร'
                       fullWidth
                       defaultValue={item.bank_title}
@@ -219,7 +219,7 @@ function ProfilerForm(props: ProfilerFormProps) {
                   </Grid>
                   <Grid item xs={12} sm={4}>
                     <TextField
-                      {...register(`bank_accounts.${index}.account_name`)}
+                      {...register(`bank_accounts.${index}.account_name`, { required: 'ต้องมีชื่อบัญชี' })}
                       label='ชื่อบัญชี'
                       defaultValue={item.account_name}
                       fullWidth
@@ -227,7 +227,7 @@ function ProfilerForm(props: ProfilerFormProps) {
                   </Grid>
                   <Grid item xs={10} sm={3}>
                     <TextField
-                      {...register(`bank_accounts.${index}.account_number`)}
+                      {...register(`bank_accounts.${index}.account_number`, { required: 'ต้องมีเลขบัญชี' })}
                       label='เลขบัญชี'
                       defaultValue={item.account_number}
                       fullWidth
@@ -259,13 +259,13 @@ function ProfilerForm(props: ProfilerFormProps) {
               {contactsField.map((item, index) => (
                 <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
                   <TextField
-                    {...register(`contacts.${index}.contact_type`)}
+                    {...register(`contacts.${index}.contact_type`, { required: 'ต้องมีวิธีการติดต่อ' })}
                     label='วิธีการติดต่อ'
                     defaultValue={item.contact_type}
                   />
                   <TextField
-                    {...register(`contacts.${index}.link`)}
-                    label='ลิงค์'
+                    {...register(`contacts.${index}.link`, { required: 'โปรดใส่ข้อมูลในการติดต่อ' })}
+                    label='ลิงค์ หรือ เบอร์โทร id'
                     defaultValue={item.link}
                     style={{ marginLeft: 10 }}
                   />
