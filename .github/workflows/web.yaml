@@ -63,7 +63,7 @@ jobs:
 
       - name: "Patch K8S"
         env:
-          APP_NAME: paiduay-web
+          APP_NAME: paiduay-web-core
           NAME_SPACE: waarn
           DOCKER_IMAGE: asia-southeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ github.repository }}:${{ needs.push.outputs.tag }}
         run: |
