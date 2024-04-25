@@ -2,6 +2,7 @@
 import { ChangeEvent, useState } from 'react'
 
 // ** Next Import
+import Pica from 'pica'
 
 // ** MUI Components
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
@@ -86,20 +87,77 @@ function ProfilerForm(props: ProfilerFormProps) {
   })
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const pica = Pica()
 
-  const handleLogoFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleLogoFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const target: File = e.target.files[0]
-      setSelectedFile(target)
-      const logoMedia: Media = {
-        bucket_name: BUCKET_NAME,
-        name: target.name,
-        uri: '',
-        signed_url: '',
-        type: target.type,
-        file: target
+      const file: File = e.target.files[0]
+
+      // Validate file type
+      if (!file.type.includes('jpeg') && !file.type.includes('png')) {
+        alert('Only PNG and JPEG files are allowed.')
+
+        return
       }
-      setValue('logo_image', logoMedia)
+
+      if (file.size > 800 * 1024) {
+        if (!window.confirm('File is larger than 800KB, it will be resized. Continue?')) {
+          return
+        }
+        try {
+          const img = new Image()
+          img.src = URL.createObjectURL(file)
+
+          // Wait for the image to load before resizing
+          img.onload = async () => {
+            const canvas = document.createElement('canvas')
+
+            // Set canvas size proportionate to the image
+            const scaleFactor = (800 * 1024) / file.size
+            canvas.width = img.width * scaleFactor
+            canvas.height = img.height * scaleFactor
+
+            // Pica resize function
+            await pica
+              .resize(img, canvas)
+              .then((result: any) => pica.toBlob(result, file.type, 0.9))
+              .then((blob: any) => {
+                const resizedFile = new File([blob], file.name, {
+                  type: file.type
+                })
+                setSelectedFile(resizedFile)
+
+                const logoMedia: Media = {
+                  bucket_name: BUCKET_NAME,
+                  name: resizedFile.name,
+                  uri: '',
+                  signed_url: '',
+                  type: resizedFile.type,
+                  file: resizedFile
+                }
+                setValue('logo_image', logoMedia)
+              })
+            URL.revokeObjectURL(img.src)
+          }
+          img.onerror = function () {
+            console.error('The image could not be loaded.')
+          }
+        } catch (error) {
+          console.error('Error resizing image:', error)
+          alert('Failed to resize image.')
+        }
+      } else {
+        setSelectedFile(file)
+        const logoMedia: Media = {
+          bucket_name: BUCKET_NAME,
+          name: file.name,
+          uri: '',
+          signed_url: '',
+          type: file.type,
+          file: file
+        }
+        setValue('logo_image', logoMedia)
+      }
     }
   }
 
@@ -204,11 +262,16 @@ function ProfilerForm(props: ProfilerFormProps) {
 
             <Grid item xs={12}>
               {bankAccountsField.map((item, index) => (
-                <Grid container spacing={4} key={item.id} sx={{ 
-                    pb: 2, 
+                <Grid
+                  container
+                  spacing={4}
+                  key={item.id}
+                  sx={{
+                    pb: 2,
                     pt: 2,
-                    borderBottom: 'solid 1px #ebebeb' 
-                  }}>
+                    borderBottom: 'solid 1px #ebebeb'
+                  }}
+                >
                   <Grid item xs={12} sm={4}>
                     <TextField
                       {...register(`bank_accounts.${index}.bank_title`, { required: 'ต้องมีชื่อธนาคาร' })}
