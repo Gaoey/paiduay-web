@@ -53,8 +53,8 @@ function ProfilerForm(props: ProfilerFormProps) {
     description: props?.profiler?.data?.description || '',
     logo_image: props?.profiler?.data?.logo_image || null,
     cover_image: props?.profiler?.data?.cover_image || null,
-    bank_accounts: props?.profiler?.data?.bank_accounts || [],
-    contacts: props?.profiler?.data?.contacts || []
+    bank_accounts: props?.profiler?.data?.bank_accounts || [{ bank_title: '', account_name: '', account_number: '' }],
+    contacts: props?.profiler?.data?.contacts || [{ contact_type: '', link: '' }]
   }
 
   // ** Hooks
@@ -85,6 +85,14 @@ function ProfilerForm(props: ProfilerFormProps) {
     control,
     name: 'bank_accounts'
   })
+
+  if (bankAccountsField.length === 0) {
+    appendBankAccount({ bank_title: '', account_name: '', account_number: '' })
+  }
+
+  if (contactsField.length === 0) {
+    appendContact({ contact_type: '', link: '' })
+  }
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const pica = Pica()
@@ -268,6 +276,7 @@ function ProfilerForm(props: ProfilerFormProps) {
                   key={item.id}
                   sx={{
                     pb: 2,
+                    mb: 5,
                     pt: 2,
                     borderBottom: 'solid 1px #ebebeb'
                   }}
@@ -276,6 +285,8 @@ function ProfilerForm(props: ProfilerFormProps) {
                     <TextField
                       {...register(`bank_accounts.${index}.bank_title`, { required: 'ต้องมีชื่อธนาคาร' })}
                       label='ชื่อธนาคาร'
+                      error={Boolean(errors.bank_accounts?.[index]?.bank_title)}
+                      helperText={errors.bank_accounts?.[index]?.bank_title?.message}
                       fullWidth
                       defaultValue={item.bank_title}
                     />
@@ -284,6 +295,8 @@ function ProfilerForm(props: ProfilerFormProps) {
                     <TextField
                       {...register(`bank_accounts.${index}.account_name`, { required: 'ต้องมีชื่อบัญชี' })}
                       label='ชื่อบัญชี'
+                      error={Boolean(errors.bank_accounts?.[index]?.account_name)}
+                      helperText={errors.bank_accounts?.[index]?.account_name?.message}
                       defaultValue={item.account_name}
                       fullWidth
                     />
@@ -292,6 +305,8 @@ function ProfilerForm(props: ProfilerFormProps) {
                     <TextField
                       {...register(`bank_accounts.${index}.account_number`, { required: 'ต้องมีเลขบัญชี' })}
                       label='เลขบัญชี'
+                      error={Boolean(errors.bank_accounts?.[index]?.account_number)}
+                      helperText={errors.bank_accounts?.[index]?.account_number?.message}
                       defaultValue={item.account_number}
                       fullWidth
                     />
@@ -320,17 +335,23 @@ function ProfilerForm(props: ProfilerFormProps) {
 
             <Grid item xs={12}>
               {contactsField.map((item, index) => (
-                <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
+                <Box
+                  key={item.id}
+                  style={{ display: 'flex', flexWrap: 'wrap', gap: 15, alignItems: 'center', marginBottom: 20 }}
+                >
                   <TextField
                     {...register(`contacts.${index}.contact_type`, { required: 'ต้องมีวิธีการติดต่อ' })}
                     label='วิธีการติดต่อ'
+                    error={Boolean(errors.contacts?.[index]?.contact_type)}
+                    helperText={errors.contacts?.[index]?.contact_type?.message}
                     defaultValue={item.contact_type}
                   />
                   <TextField
                     {...register(`contacts.${index}.link`, { required: 'โปรดใส่ข้อมูลในการติดต่อ' })}
                     label='ลิงค์ หรือ เบอร์โทร id'
+                    error={Boolean(errors.contacts?.[index]?.link)}
+                    helperText={errors.contacts?.[index]?.link?.message}
                     defaultValue={item.link}
-                    style={{ marginLeft: 10 }}
                   />
                   <IconButton
                     size='large'
