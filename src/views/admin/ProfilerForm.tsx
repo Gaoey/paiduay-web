@@ -2,6 +2,7 @@
 import { ChangeEvent, useState } from 'react'
 
 // ** Next Import
+import Pica from 'pica'
 
 // ** MUI Components
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
@@ -52,8 +53,8 @@ function ProfilerForm(props: ProfilerFormProps) {
     description: props?.profiler?.data?.description || '',
     logo_image: props?.profiler?.data?.logo_image || null,
     cover_image: props?.profiler?.data?.cover_image || null,
-    bank_accounts: props?.profiler?.data?.bank_accounts || [],
-    contacts: props?.profiler?.data?.contacts || []
+    bank_accounts: props?.profiler?.data?.bank_accounts || [{ bank_title: '', account_name: '', account_number: '' }],
+    contacts: props?.profiler?.data?.contacts || [{ contact_type: '', link: '' }]
   }
 
   // ** Hooks
@@ -85,21 +86,86 @@ function ProfilerForm(props: ProfilerFormProps) {
     name: 'bank_accounts'
   })
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  if (bankAccountsField.length === 0) {
+    appendBankAccount({ bank_title: '', account_name: '', account_number: '' })
+  }
 
-  const handleLogoFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  if (contactsField.length === 0) {
+    appendContact({ contact_type: '', link: '' })
+  }
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const pica = Pica()
+
+  const handleLogoFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const target: File = e.target.files[0]
-      setSelectedFile(target)
-      const logoMedia: Media = {
-        bucket_name: BUCKET_NAME,
-        name: target.name,
-        uri: '',
-        signed_url: '',
-        type: target.type,
-        file: target
+      const file: File = e.target.files[0]
+
+      // Validate file type
+      if (!file.type.includes('jpeg') && !file.type.includes('png')) {
+        alert('Only PNG and JPEG files are allowed.')
+
+        return
       }
-      setValue('logo_image', logoMedia)
+
+      if (file.size > 800 * 1024) {
+        if (!window.confirm('File is larger than 800KB, it will be resized. Continue?')) {
+          return
+        }
+        try {
+          const img = new Image()
+          img.src = URL.createObjectURL(file)
+
+          // Wait for the image to load before resizing
+          img.onload = async () => {
+            const canvas = document.createElement('canvas')
+
+            // Set canvas size proportionate to the image
+            const scaleFactor = (800 * 1024) / file.size
+            canvas.width = img.width * scaleFactor
+            canvas.height = img.height * scaleFactor
+
+            // Pica resize function
+            await pica
+              .resize(img, canvas)
+              .then((result: any) => pica.toBlob(result, file.type, 0.9))
+              .then((blob: any) => {
+                const resizedFile = new File([blob], file.name, {
+                  type: file.type
+                })
+                setSelectedFile(resizedFile)
+
+                const logoMedia: Media = {
+                  bucket_name: BUCKET_NAME,
+                  name: resizedFile.name,
+                  uri: '',
+                  signed_url: '',
+                  type: resizedFile.type,
+                  file: resizedFile
+                }
+                setValue('logo_image', logoMedia)
+              })
+            URL.revokeObjectURL(img.src)
+          }
+          img.onerror = function () {
+            console.error('The image could not be loaded.')
+          }
+        } catch (error) {
+          console.error('Error resizing image:', error)
+          alert('Failed to resize image.')
+        }
+      } else {
+        setSelectedFile(file)
+        const logoMedia: Media = {
+          bucket_name: BUCKET_NAME,
+          name: file.name,
+          uri: '',
+          signed_url: '',
+          type: file.type,
+          file: file
+        }
+        setValue('logo_image', logoMedia)
+      }
     }
   }
 
@@ -204,31 +270,43 @@ function ProfilerForm(props: ProfilerFormProps) {
 
             <Grid item xs={12}>
               {bankAccountsField.map((item, index) => (
-                <Grid container spacing={4} key={item.id} sx={{ 
-                    pb: 2, 
+                <Grid
+                  container
+                  spacing={4}
+                  key={item.id}
+                  sx={{
+                    pb: 2,
+                    mb: 5,
                     pt: 2,
-                    borderBottom: 'solid 1px #ebebeb' 
-                  }}>
+                    borderBottom: 'solid 1px #ebebeb'
+                  }}
+                >
                   <Grid item xs={12} sm={4}>
                     <TextField
-                      {...register(`bank_accounts.${index}.bank_title`)}
+                      {...register(`bank_accounts.${index}.bank_title`, { required: 'ต้องมีชื่อธนาคาร' })}
                       label='ชื่อธนาคาร'
+                      error={Boolean(errors.bank_accounts?.[index]?.bank_title)}
+                      helperText={errors.bank_accounts?.[index]?.bank_title?.message}
                       fullWidth
                       defaultValue={item.bank_title}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
                     <TextField
-                      {...register(`bank_accounts.${index}.account_name`)}
+                      {...register(`bank_accounts.${index}.account_name`, { required: 'ต้องมีชื่อบัญชี' })}
                       label='ชื่อบัญชี'
+                      error={Boolean(errors.bank_accounts?.[index]?.account_name)}
+                      helperText={errors.bank_accounts?.[index]?.account_name?.message}
                       defaultValue={item.account_name}
                       fullWidth
                     />
                   </Grid>
                   <Grid item xs={10} sm={3}>
                     <TextField
-                      {...register(`bank_accounts.${index}.account_number`)}
+                      {...register(`bank_accounts.${index}.account_number`, { required: 'ต้องมีเลขบัญชี' })}
                       label='เลขบัญชี'
+                      error={Boolean(errors.bank_accounts?.[index]?.account_number)}
+                      helperText={errors.bank_accounts?.[index]?.account_number?.message}
                       defaultValue={item.account_number}
                       fullWidth
                     />
@@ -257,17 +335,23 @@ function ProfilerForm(props: ProfilerFormProps) {
 
             <Grid item xs={12}>
               {contactsField.map((item, index) => (
-                <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
+                <Box
+                  key={item.id}
+                  style={{ display: 'flex', flexWrap: 'wrap', gap: 15, alignItems: 'center', marginBottom: 20 }}
+                >
                   <TextField
-                    {...register(`contacts.${index}.contact_type`)}
+                    {...register(`contacts.${index}.contact_type`, { required: 'ต้องมีวิธีการติดต่อ' })}
                     label='วิธีการติดต่อ'
+                    error={Boolean(errors.contacts?.[index]?.contact_type)}
+                    helperText={errors.contacts?.[index]?.contact_type?.message}
                     defaultValue={item.contact_type}
                   />
                   <TextField
-                    {...register(`contacts.${index}.link`)}
-                    label='ลิงค์'
+                    {...register(`contacts.${index}.link`, { required: 'โปรดใส่ข้อมูลในการติดต่อ' })}
+                    label='ลิงค์ หรือ เบอร์โทร id'
+                    error={Boolean(errors.contacts?.[index]?.link)}
+                    helperText={errors.contacts?.[index]?.link?.message}
                     defaultValue={item.link}
-                    style={{ marginLeft: 10 }}
                   />
                   <IconButton
                     size='large'

@@ -136,7 +136,7 @@ function TripForm(props: TripFormProps) {
           <Grid container spacing={7}>
             <Grid item xs={12}>
               <TextField
-                {...register('title', { required: true })}
+                {...register('title', { required: "โปรดใส่หัวข้อ" })}
                 label='หัวข้อ'
                 variant='outlined'
                 fullWidth
@@ -163,7 +163,7 @@ function TripForm(props: TripFormProps) {
 
             <Grid item xs={12}>
               <TextField
-                {...register('total_people', { required: true })}
+                {...register('total_people', { required: 'โปรดใส่จำนวนลูกทริป' })}
                 label='จำนวนลูกทริป'
                 variant='outlined'
                 type='number'
@@ -177,12 +177,12 @@ function TripForm(props: TripFormProps) {
               {contactsField.map((item, index) => (
                 <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
                   <TextField
-                    {...register(`contacts.${index}.contact_type`)}
+                    {...register(`contacts.${index}.contact_type`, { required: 'Contact type is required' })}
                     label='วิธีการติดต่อ'
                     defaultValue={item.contact_type}
                   />
                   <TextField
-                    {...register(`contacts.${index}.link`)}
+                    {...register(`contacts.${index}.link`, { required: 'Contact link is required' })}
                     label='ลิงค์การติดต่อ'
                     defaultValue={item.link}
                     style={{ marginLeft: 10 }}
@@ -212,12 +212,12 @@ function TripForm(props: TripFormProps) {
               {locationFields.map((item, index) => (
                 <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
                   <TextField
-                    {...register(`locations.${index}.title`)}
+                    {...register(`locations.${index}.title`, { required: 'โปรดใส่ชื่อจุหมาย' })}
                     label='จุดหมายที่จะไป'
                     defaultValue={item.title}
                   />
                   <TextField
-                    {...register(`locations.${index}.description`)}
+                    {...register(`locations.${index}.description`, { required: 'Location description is required' })}
                     label='ลิงค์ GPS หรือ แผนที่'
                     defaultValue={item.description}
                     style={{ marginLeft: 10 }}
@@ -255,7 +255,9 @@ function TripForm(props: TripFormProps) {
               <Button variant='contained' component='label'>
                 อัพโหลดภาพประกอบ
                 <input
-                  {...register('cover_images')}
+                  {...register('cover_images', {
+                    required: 'ต้องอัพโหลดอย่างน้อยหนึ่งภาพ'
+                  })}
                   type='file'
                   accept='image/*'
                   multiple
@@ -274,7 +276,7 @@ function TripForm(props: TripFormProps) {
                   showMonthDropdown
                   id='from_date_picker'
                   placeholderText='MM/DD/YYYY'
-                  customInput={<TextField label='วันไป' {...register('from_date', { required: true })} fullWidth />}
+                  customInput={<TextField label='วันไป' {...register('from_date', { required: 'โปรดใส่วันไป' })} fullWidth />}
                   onChange={(date: Date) => setValue('from_date', date)}
                   minDate={new Date()}
                 />
@@ -289,7 +291,7 @@ function TripForm(props: TripFormProps) {
                   showMonthDropdown
                   id='to_date_picker'
                   placeholderText='MM/DD/YYYY'
-                  customInput={<TextField label='วันกลับ' {...register('to_date', { required: true })} fullWidth />}
+                  customInput={<TextField label='วันกลับ' {...register('to_date', { required: 'โปรดใส่วันกลับ' })} fullWidth />}
                   onChange={(date: Date) => setValue('to_date', date)}
                   minDate={new Date()}
                 />
@@ -305,7 +307,7 @@ function TripForm(props: TripFormProps) {
                 id='date_to_reserve_picker'
                 placeholderText='MM/DD/YYYY'
                 customInput={
-                  <TextField label='วันเริ่มจอง' {...register('date_to_reserve', { required: true })} fullWidth />
+                  <TextField label='วันเริ่มจอง' {...register('date_to_reserve', { required: 'โปรดใส่วันเริ่มจอง' })} fullWidth />
                 }
                 onChange={(date: Date) => setValue('date_to_reserve', date)}
                 minDate={new Date()}
@@ -320,7 +322,7 @@ function TripForm(props: TripFormProps) {
 
             <Grid item xs={12} sm={6}>
               <TextField
-                {...register('payment.full_price', { required: true })}
+                {...register('payment.full_price', { required: 'โปรดใส่ราคาทริป' })}
                 label='ราคาเต็ม'
                 variant='outlined'
                 fullWidth
@@ -353,7 +355,7 @@ function TripForm(props: TripFormProps) {
                   customInput={
                     <TextField
                       label='จ่ายภายในวัน'
-                      {...register('payment.payment_date', { required: true })}
+                      {...register('payment.payment_date', { required: 'โปรดใส่วันสุดท้ายที่รับชำระเงิน' })}
                       fullWidth
                     />
                   }
@@ -444,7 +446,7 @@ function TripForm(props: TripFormProps) {
 
             <Grid item xs={12}>
               <Button type='submit' variant='contained' color='primary'>
-                SAVE
+                บันทึก
               </Button>
             </Grid>
           </Grid>

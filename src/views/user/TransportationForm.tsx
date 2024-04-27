@@ -163,7 +163,7 @@ function ConfirmSeatButton(props: ConfirmSeatButtonProps) {
   const { isLoading, isSuccess } = updateProfile
   useEffect(() => {
     user.mutate()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const hasUserData = !R.isNil(userData?.profile) && !R.isEmpty(userData?.profile.line_contacts)
@@ -227,17 +227,27 @@ function ConfirmSeatButton(props: ConfirmSeatButtonProps) {
                 </DialogContentText>
                 <Grid container spacing={5}>
                   <Grid item xs={12}>
-                    <TextField label='ชื่อ' fullWidth {...register('first_name')} />
+                    <TextField label='ชื่อ' fullWidth {...register('first_name', { required: 'โปรดใส่ชื่อ' })} />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField label='นามสกุล' fullWidth {...register('last_name')} />
+                    <TextField label='นามสกุล' fullWidth {...register('last_name', { required: 'โปรดใส่นามสกุล' })} />
                   </Grid>
 
                   <Grid item xs={12}>
-                    <TextField label='เบอร์ติดต่อ' fullWidth {...register('telephone_number')} />
+                    <TextField
+                      label='เบอร์ติดต่อ'
+                      type='tel'
+                      inputProps={{ pattern: '^[0-9]*$' }}
+                      fullWidth
+                      {...register('telephone_number', { required: 'โปรดใส่เบอร์ติดต่อ' })}
+                    />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField label='Line ID' fullWidth {...register('line_contacts')} />
+                    <TextField
+                      label='Line ID'
+                      fullWidth
+                      {...register('line_contacts', { required: 'โปรดใส่ LINE id' })}
+                    />
                   </Grid>
                 </Grid>
               </DialogContent>

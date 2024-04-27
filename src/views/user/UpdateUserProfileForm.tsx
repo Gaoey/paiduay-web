@@ -70,10 +70,10 @@ export default function UpdateProfileForm(props: Props) {
             </Typography>
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='ชื่อ' fullWidth {...register('first_name')} />
+            <TextField label='ชื่อ' fullWidth {...register('first_name', { required: 'โปรดใส่ชื่อ' })} />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='นามสกุล' fullWidth {...register('last_name')} />
+            <TextField label='นามสกุล' fullWidth {...register('last_name', { required: 'โปรดใส่นามสกุล' })} />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
@@ -82,8 +82,7 @@ export default function UpdateProfileForm(props: Props) {
               label='เลขบัตรประชาชน'
               inputProps={{ pattern: "^[0-9]*$" }}
               fullWidth
-              required
-              {...register('citizen_id')}
+              {...register('citizen_id', { required: 'โปรดเลขบัตรประชาชน' })}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -95,12 +94,11 @@ export default function UpdateProfileForm(props: Props) {
               inputProps={{ pattern: "^[0-9]*$" }}
               label='เบอร์โทร'
               fullWidth
-              required
-              {...register('telephone_number')}
+              {...register('telephone_number', { required: 'โปรดใส่เบอร์ดิดต่อ' })}
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField label='Line ID' fullWidth {...register('line_contacts')} />
+            <TextField label='Line ID' fullWidth {...register('line_contacts', { required: 'โปรดใส่ LINE id' })} />
           </Grid>
           <Grid item xs={12}>
             <LoadingButton type='submit' variant='contained' color='primary' loading={isLoading}>
