@@ -14,6 +14,9 @@ const userAPI = (authIntance: AxiosInstance) => ({
   },
   updateProfile: (body: UserProfile): Promise<boolean> => {
     return authIntance.put(`/v1/user/profile`, body)
+  },
+  ping: () => {
+    return authIntance.get('/')
   }
 })
 
@@ -50,13 +53,15 @@ function useUserAPI({ authInstance }: InstanceProps) {
 
   const updateProfile = useMutation(api.updateProfile)
   const getUserById = useMutation(api.getUserById)
+  const healthcheck = useMutation(api.ping)
 
   return {
     user,
     getUser: userCache,
     getUserById,
     updateProfile,
-    isLogin: session.status === 'authenticated'
+    isLogin: session.status === 'authenticated',
+    healthcheck
   }
 }
 
