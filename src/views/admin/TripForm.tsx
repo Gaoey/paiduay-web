@@ -132,6 +132,8 @@ function TripForm(props: TripFormProps) {
     data.description = tiptapContent
     if (data.cover_images.length === 0) {
       alert('ต้องอัพโหลดอย่างน้อยหนึ่งภาพ')
+      
+      return
     }
     props.onSubmit(data)
   })
