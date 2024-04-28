@@ -12,7 +12,7 @@ import { TransportationNormalForm, VanForm, getDefaultTransport } from './Transp
 
 import Tiptap from '../editor/Tiptap'
 import 'react-datepicker/dist/react-datepicker.css'
-
+import Pica from 'pica'
 
 interface TripFormProps {
   trip_payload?: TripPayload
@@ -30,7 +30,7 @@ function TripForm(props: TripFormProps) {
     cover_images: p?.trip_data.cover_images || [],
     date_to_reserve: new Date(p?.trip_data.date_to_reserve || new Date()),
     from_date: new Date(p?.trip_data.from_date || new Date()),
-    to_date: new Date(p?.trip_data.to_date  || new Date()),
+    to_date: new Date(p?.trip_data.to_date || new Date()),
     payment:
       {
         ...p?.trip_data.payment,
@@ -44,23 +44,67 @@ function TripForm(props: TripFormProps) {
     transport_data: p?.transport_data || []
   }
 
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    control,
+    formState: { errors }
+  } = useForm({ defaultValues })
+
   const [selectedImages, setSelectedImages] = React.useState<Media[]>(defaultValues.cover_images)
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: any) => {
     const files = e.target.files
     if (files) {
-      const medias: Media[] = Array.from(files).map(file => {
-        return {
-          bucket_name: BUCKET_NAME,
-          name: file.name,
-          uri: URL.createObjectURL(file),
-          signed_url: URL.createObjectURL(file),
-          type: file.type,
-          file: file
-        }
-      })
+      const filteredFiles = Array.from(files).filter((file: any) => file.type === 'image/jpeg' || file.type === 'image/png')
 
-      setSelectedImages(prevMedias => [...prevMedias, ...medias])
+      const resizedImages = await Promise.all(
+        filteredFiles.map(async (file: any) => {
+          if (file.size > 6000 * 1024) {
+            const img = new Image()
+            const canvas = document.createElement('canvas')
+            const pica = Pica()
+
+            return new Promise((resolve, reject) => {
+              img.onload = () => {
+                const scaleFactor = Math.sqrt((6000 * 1024) / file.size) // Scale factor for resizing
+                canvas.width = img.width * scaleFactor
+                canvas.height = img.height * scaleFactor
+
+                pica
+                  .resize(img, canvas)
+                  .then((resizedCanvas: any) => pica.toBlob(resizedCanvas, file.type, 0.9))
+                  .then((blob: any) => {
+                    const resizedFile = new File([blob], file.name, { type: file.type })
+                    resolve({
+                      bucket_name: BUCKET_NAME,
+                      name: file.name,
+                      uri: URL.createObjectURL(resizedFile),
+                      signed_url: URL.createObjectURL(resizedFile),
+                      type: file.type,
+                      file: resizedFile
+                    })
+                  })
+              }
+              img.onerror = reject
+              img.src = URL.createObjectURL(file)
+            })
+          } else {
+            return {
+              bucket_name: BUCKET_NAME,
+              name: file.name,
+              uri: URL.createObjectURL(file),
+              signed_url: URL.createObjectURL(file),
+              type: file.type,
+              file: file
+            }
+          }
+        })
+      )
+
+      setSelectedImages((prevImages: any) => [...prevImages, ...resizedImages])
     }
   }
 
@@ -84,17 +128,11 @@ function TripForm(props: TripFormProps) {
     setTiptapContent(content)
   }
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    control,
-    formState: { errors }
-  } = useForm({ defaultValues })
-
   const handleSubmitWithTiptap = handleSubmit(data => {
     data.description = tiptapContent
+    if (data.cover_images.length === 0) {
+      alert('ต้องอัพโหลดอย่างน้อยหนึ่งภาพ')
+    }
     props.onSubmit(data)
   })
 
@@ -125,7 +163,10 @@ function TripForm(props: TripFormProps) {
     name: 'transport_data'
   })
 
-  const numberOfVans = transports.reduce((total, x) => total + (x.transport_by === Transportation[Transportation.VAN] ? 1 : 0), 0)
+  const numberOfVans = transports.reduce(
+    (total, x) => total + (x.transport_by === Transportation[Transportation.VAN] ? 1 : 0),
+    0
+  )
   const numberOfAlternativeVehicles = transports.length - numberOfVans
 
   return (
@@ -136,7 +177,7 @@ function TripForm(props: TripFormProps) {
           <Grid container spacing={7}>
             <Grid item xs={12}>
               <TextField
-                {...register('title', { required: "โปรดใส่หัวข้อ" })}
+                {...register('title', { required: 'โปรดใส่หัวข้อ' })}
                 label='หัวข้อ'
                 variant='outlined'
                 fullWidth
@@ -255,9 +296,7 @@ function TripForm(props: TripFormProps) {
               <Button variant='contained' component='label'>
                 อัพโหลดภาพประกอบ
                 <input
-                  {...register('cover_images', {
-                    required: 'ต้องอัพโหลดอย่างน้อยหนึ่งภาพ'
-                  })}
+                  {...register('cover_images')}
                   type='file'
                   accept='image/*'
                   multiple
@@ -276,7 +315,9 @@ function TripForm(props: TripFormProps) {
                   showMonthDropdown
                   id='from_date_picker'
                   placeholderText='MM/DD/YYYY'
-                  customInput={<TextField label='วันไป' {...register('from_date', { required: 'โปรดใส่วันไป' })} fullWidth />}
+                  customInput={
+                    <TextField label='วันไป' {...register('from_date', { required: 'โปรดใส่วันไป' })} fullWidth />
+                  }
                   onChange={(date: Date) => setValue('from_date', date)}
                   minDate={new Date()}
                 />
@@ -291,7 +332,9 @@ function TripForm(props: TripFormProps) {
                   showMonthDropdown
                   id='to_date_picker'
                   placeholderText='MM/DD/YYYY'
-                  customInput={<TextField label='วันกลับ' {...register('to_date', { required: 'โปรดใส่วันกลับ' })} fullWidth />}
+                  customInput={
+                    <TextField label='วันกลับ' {...register('to_date', { required: 'โปรดใส่วันกลับ' })} fullWidth />
+                  }
                   onChange={(date: Date) => setValue('to_date', date)}
                   minDate={new Date()}
                 />
@@ -299,19 +342,23 @@ function TripForm(props: TripFormProps) {
             </Grid>
 
             <Grid item xs={12} sm={6}>
-            <DatePickerWrapper>
-              <DatePicker
-                selected={watch('date_to_reserve', new Date()) || defaultValues.date_to_reserve}
-                showYearDropdown
-                showMonthDropdown
-                id='date_to_reserve_picker'
-                placeholderText='MM/DD/YYYY'
-                customInput={
-                  <TextField label='วันเริ่มจอง' {...register('date_to_reserve', { required: 'โปรดใส่วันเริ่มจอง' })} fullWidth />
-                }
-                onChange={(date: Date) => setValue('date_to_reserve', date)}
-                minDate={new Date()}
-              />
+              <DatePickerWrapper>
+                <DatePicker
+                  selected={watch('date_to_reserve', new Date()) || defaultValues.date_to_reserve}
+                  showYearDropdown
+                  showMonthDropdown
+                  id='date_to_reserve_picker'
+                  placeholderText='MM/DD/YYYY'
+                  customInput={
+                    <TextField
+                      label='วันเริ่มจอง'
+                      {...register('date_to_reserve', { required: 'โปรดใส่วันเริ่มจอง' })}
+                      fullWidth
+                    />
+                  }
+                  onChange={(date: Date) => setValue('date_to_reserve', date)}
+                  minDate={new Date()}
+                />
               </DatePickerWrapper>
             </Grid>
             <Grid item xs={12}>
@@ -377,13 +424,19 @@ function TripForm(props: TripFormProps) {
                     <Button
                       variant='outlined'
                       style={{ marginRight: '1em' }}
-                      onClick={() => appendTransport(getDefaultTransport(10, `VAN #${numberOfVans + 1}`, Transportation.VAN))}
+                      onClick={() =>
+                        appendTransport(getDefaultTransport(10, `VAN #${numberOfVans + 1}`, Transportation.VAN))
+                      }
                     >
                       เพิ่มรถตู้
                     </Button>
                     <Button
                       variant='outlined'
-                      onClick={() => appendTransport(getDefaultTransport(5, `OTHER #${numberOfAlternativeVehicles + 1}`, Transportation.SELF))}
+                      onClick={() =>
+                        appendTransport(
+                          getDefaultTransport(5, `OTHER #${numberOfAlternativeVehicles + 1}`, Transportation.SELF)
+                        )
+                      }
                     >
                       เพิ่อวิธีการเดินทางแบบอื่น
                     </Button>
