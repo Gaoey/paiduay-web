@@ -187,7 +187,11 @@ function ConfirmSeatButton(props: ConfirmSeatButtonProps) {
     line_contacts: ''
   }
 
-  const { register, handleSubmit } = useForm<UserProfile>({ defaultValues })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<UserProfile>({ defaultValues })
 
   const onSubmit: SubmitHandler<any> = data => {
     const profile: UserProfile = {
@@ -225,27 +229,43 @@ function ConfirmSeatButton(props: ConfirmSeatButtonProps) {
                   โปรดใส่ข้อมูลส่วนตัวเพื่อให้หัวหน้าทริปติดต่อคุณได้ง่ายขึ้น
                 </DialogContentText>
                 <Grid container spacing={5}>
-                  <Grid item xs={12}>
-                    <TextField label='ชื่อ' fullWidth {...register('first_name', { required: 'โปรดใส่ชื่อ' })} />
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      label='ชื่อ'
+                      fullWidth
+                      {...register('first_name', { required: 'โปรดใส่ชื่อ' })}
+                      error={Boolean(errors?.first_name)}
+                      helperText={errors?.first_name?.message}
+                    />
                   </Grid>
-                  <Grid item xs={12}>
-                    <TextField label='นามสกุล' fullWidth {...register('last_name', { required: 'โปรดใส่นามสกุล' })} />
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      label='นามสกุล'
+                      fullWidth
+                      {...register('last_name', { required: 'โปรดใส่นามสกุล' })}
+                      error={Boolean(errors?.last_name)}
+                      helperText={errors?.last_name?.message}
+                    />
                   </Grid>
 
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={6}>
                     <TextField
                       label='เบอร์ติดต่อ'
                       type='tel'
                       inputProps={{ pattern: '^[0-9]*$' }}
                       fullWidth
                       {...register('telephone_number', { required: 'โปรดใส่เบอร์ติดต่อ' })}
+                      error={Boolean(errors?.telephone_number)}
+                      helperText={errors?.telephone_number?.message}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={6}>
                     <TextField
                       label='Line ID'
                       fullWidth
                       {...register('line_contacts', { required: 'โปรดใส่ LINE id' })}
+                      error={Boolean(errors?.line_contacts)}
+                      helperText={errors?.line_contacts?.message}
                     />
                   </Grid>
                 </Grid>

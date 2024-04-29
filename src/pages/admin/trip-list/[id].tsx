@@ -63,7 +63,7 @@ export default function TripDetail() {
     if (isSuccess || isRemoveTransportSuccess || isUpdateTransportSuccess || isCreateTransportSuccess) {
       findTransportByTripID.mutate(tripID)
     }
-  }, [isSuccess, isRemoveTransportSuccess, isUpdateTransportSuccess, isCreateTransportSuccess, findTransportByTripID])
+  }, [isSuccess, isRemoveTransportSuccess, isUpdateTransportSuccess, isCreateTransportSuccess])
 
   useEffect(() => {
     if (isRemoveTripSuccess) {
