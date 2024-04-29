@@ -22,12 +22,8 @@ export default function TripCard(props: TripCardProps) {
     : trip?.data.cover_images.map(v => v.signed_url)
 
   // ** Hook
-  const htmlString = trip?.data?.description
+  const htmlString = trip?.data?.description || ''
   const parsedHtml = parse(htmlString)
-
-  const DescriptionHTML = () => {
-    return <>{parsedHtml}</>
-  }
 
   return (
     <Card sx={{ height: 600 }}>
@@ -45,10 +41,9 @@ export default function TripCard(props: TripCardProps) {
         />
       )}
 
-      <CardMedia component='img' image={imgSrc[0]} alt='image of trip' sx={{ height: 300 }} />
+      <CardMedia component='img' image={imgSrc[0]} alt='image of trip' sx={{ height: 300, width: '100%' }} />
       <CardContent>
         <Grid container spacing={7}>
-          _
           <Grid item xs={12}>
             <Box
               style={{
@@ -85,25 +80,24 @@ export default function TripCard(props: TripCardProps) {
                 จำนวนคน: {trip?.data?.members.length} / {trip?.data?.total_people}
               </Typography>
             </div>
-            {hideProfiler && trip?.data?.contacts.map((v, id) => {
-              return (
-                <div style={{ display: 'flex' }} key={id}>
-                  <AlternateEmail style={{ color: '#3B5249' }} />
-                  <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
-                    {v.contact_type}
-                  </Typography>
-                  <Link href={v.link} rel='noopener noreferrer' target='_blank'>
+            {hideProfiler &&
+              trip?.data?.contacts.map((v, id) => {
+                return (
+                  <div style={{ display: 'flex' }} key={id}>
+                    <AlternateEmail style={{ color: '#3B5249' }} />
                     <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
-                      {trimMessage(v.link, 50)}
+                      {v.contact_type}
                     </Typography>
-                  </Link>
-                </div>
-              )
-            })}
+                    <Link href={v.link} rel='noopener noreferrer' target='_blank'>
+                      <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
+                        {trimMessage(v.link, 50)}
+                      </Typography>
+                    </Link>
+                  </div>
+                )
+              })}
 
-            <div style={{ marginTop: 10, overflowY: 'hidden', maxHeight: '3em' }}>
-              <DescriptionHTML />
-            </div>
+            <div style={{ marginTop: 10, overflowY: 'hidden', maxHeight: '3em' }}>{parsedHtml}</div>
           </Grid>
         </Grid>
       </CardContent>
