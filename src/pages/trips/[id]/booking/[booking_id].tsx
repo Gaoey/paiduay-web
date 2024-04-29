@@ -1,9 +1,9 @@
+import { CircularProgress } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
-import { BasicLoadingComponent } from 'src/@core/components/loading'
 import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import { Media } from 'src/@core/types'
@@ -31,7 +31,7 @@ export default function UpdateBooking() {
   const { data: findProfilerData } = findProfilerByTripID
   const { data: bookingData } = findBookingByID
 
-  const { error: updateBookingError, isSuccess } = updateBooking
+  const { isSuccess } = updateBooking
 
   const trip = R.pathOr<Trip | null>(null, [], findTripData)
   const booking = R.pathOr<Booking | null>(null, [], bookingData)
@@ -42,25 +42,25 @@ export default function UpdateBooking() {
     findBookingByID.mutate(bookingID)
     findTripByID.mutate(tripID)
     findProfilerByTripID.mutate(tripID)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onSubmit: SubmitHandler<any> = async data => {
     if (!R.isNil(data?.slip_image) && !R.isNil(userData?._id) && !R.isNil(trip?.data?.payment) && !R.isNil(booking)) {
       const newMedias: Media[] = await uploadMedias.mutateAsync(data?.slip_image)
-      
+
       if (trip?.data?.payment.full_price && trip?.data?.payment.payment_date) {
         const bookingData: BookingData = {
           ...booking.data,
           payment_type: data?.payment_type,
           payment_price: getPaymentPrice(trip?.data?.payment, data?.seats.length, data?.payment_type),
           status:
-          data?.payment_type === PaymentType[PaymentType.DEPOSIT]
-          ? BookingStatus[BookingStatus.DEPOSIT]
-          : BookingStatus[BookingStatus.PENDING],
+            data?.payment_type === PaymentType[PaymentType.DEPOSIT]
+              ? BookingStatus[BookingStatus.DEPOSIT]
+              : BookingStatus[BookingStatus.PENDING],
           slips: [...booking.data.slips, newMedias[0]]
         }
-        
+
         updateBooking.mutate({ bookingID, tripID, params: bookingData })
       }
     }
@@ -74,13 +74,16 @@ export default function UpdateBooking() {
     }
   }, [isSuccess])
 
+  const isLoading = R.isNil(trip) || R.isNil(profiler) || R.isNil(booking)
+
   return (
     <ApexChartWrapper>
-      <BasicLoadingComponent
-        isLoading={R.isNil(trip) || R.isNil(profiler) || R.isNil(booking)}
-        error={updateBookingError}
-      >
-        {!R.isNil(trip) && !R.isNil(profiler) && !R.isNil(booking) && (
+      {isLoading ? (
+        <CircularProgress size={40} color='primary' />
+      ) : (
+        !R.isNil(trip) &&
+        !R.isNil(profiler) &&
+        !R.isNil(booking) && (
           <BookingForm
             trip={trip}
             booking={booking}
@@ -90,8 +93,8 @@ export default function UpdateBooking() {
             onSubmit={onSubmit}
             isDeposit={true}
           />
-        )}
-      </BasicLoadingComponent>
+        )
+      )}
     </ApexChartWrapper>
   )
 }

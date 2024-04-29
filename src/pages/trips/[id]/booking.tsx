@@ -1,9 +1,9 @@
+import { CircularProgress } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
-import { BasicLoadingComponent } from 'src/@core/components/loading'
 import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import { Media } from 'src/@core/types'
@@ -30,7 +30,7 @@ export default function Booking() {
   const { data: userData } = user
   const { data: findTripData } = findTripByID
   const { data: findProfilerData } = findProfilerByTripID
-  const { error: createBookingError, isSuccess } = createBooking
+  const { isSuccess } = createBooking
   const trip = R.pathOr<Trip | null>(null, [], findTripData)
   const profiler = R.pathOr<Profiler | null>(null, [], findProfilerData)
 
@@ -38,9 +38,9 @@ export default function Booking() {
     user.mutate()
     findTripByID.mutate(tripID)
     findProfilerByTripID.mutate(tripID)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  
+
   const simplySeats = (): SimplySeatData[] => {
     if (typeof seat_numbers === 'string') {
       return [
@@ -89,11 +89,15 @@ export default function Booking() {
   }, [isSuccess])
 
   const totalPrice = trip?.data?.payment?.full_price || 0.0
+  const isLoading = R.isNil(trip) && R.isNil(profiler)
 
   return (
     <ApexChartWrapper>
-      <BasicLoadingComponent isLoading={R.isNil(trip) && R.isNil(profiler)} error={createBookingError}>
-        {!R.isNil(trip) && !R.isNil(profiler) && (
+      {isLoading ? (
+        <CircularProgress size={40} color='primary' />
+      ) : (
+        !R.isNil(trip) &&
+        !R.isNil(profiler) && (
           <BookingForm
             trip={trip}
             profiler={profiler}
@@ -101,8 +105,8 @@ export default function Booking() {
             totalPrice={totalPrice}
             onSubmit={onSubmit}
           />
-        )}
-      </BasicLoadingComponent>
+        )
+      )}
     </ApexChartWrapper>
   )
 }

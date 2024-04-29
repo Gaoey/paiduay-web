@@ -16,7 +16,7 @@ const userAPI = (authIntance: AxiosInstance) => ({
     return authIntance.put(`/v1/user/profile`, body)
   },
   ping: () => {
-    return authIntance.get('/')
+    return authIntance.get('')
   }
 })
 
