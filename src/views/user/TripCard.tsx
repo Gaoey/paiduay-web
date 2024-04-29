@@ -1,19 +1,20 @@
 import { AlternateEmail, Groups, Schedule } from '@mui/icons-material'
-import { Avatar, Box, Card, CardContent, CardHeader, CardMedia, Chip, Grid, Typography } from '@mui/material'
+import { Avatar, Box, Card, CardContent, CardHeader, CardMedia, Chip, Grid, Link, Typography } from '@mui/material'
 import { format } from 'date-fns'
+import parse from 'html-react-parser'
+import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { Trip } from 'src/@core/types/trip'
 import { toCurrency } from 'src/@core/utils/currency'
 import { trimMessage } from 'src/@core/utils/string'
 import { DefaultCoverTripImage } from '../admin/TripDetail'
-import Link from 'next/link'
-import parse from 'html-react-parser'
 
 interface TripCardProps {
   trip: Trip
   hideProfiler?: boolean
 }
 export default function TripCard(props: TripCardProps) {
+  const router = useRouter()
   const { trip, hideProfiler = false } = props
 
   const imgSrc: string[] = R.isEmpty(trip?.data.cover_images)
@@ -31,18 +32,17 @@ export default function TripCard(props: TripCardProps) {
   return (
     <Card sx={{ height: 600 }}>
       {!hideProfiler && (
-        <Link href={`/profiler/${trip?.profiler_id}`} passHref={true}>
-          <CardHeader
-            avatar={
-              R.isNil(trip?.profiler?.data?.logo_image?.signed_url) ? (
-                <Avatar src={trip?.profiler?.data?.logo_image?.signed_url || ''} />
-              ) : (
-                <Avatar>{trip?.profiler?.data?.name[0]}</Avatar>
-              )
-            }
-            title={trip?.profiler?.data?.name}
-          />
-        </Link>
+        <CardHeader
+          onClick={() => router.push(`/profiler/${trip?.profiler_id}`)}
+          avatar={
+            R.isNil(trip?.profiler?.data?.logo_image?.signed_url) ? (
+              <Avatar src={trip?.profiler?.data?.logo_image?.signed_url || ''} />
+            ) : (
+              <Avatar>{trip?.profiler?.data?.name[0]}</Avatar>
+            )
+          }
+          title={trip?.profiler?.data?.name}
+        />
       )}
 
       <CardMedia component='img' image={imgSrc[0]} alt='image of trip' sx={{ height: 300 }} />
@@ -92,11 +92,11 @@ export default function TripCard(props: TripCardProps) {
                   <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                     {v.contact_type}
                   </Typography>
-                  <a href={v.link} rel='noopener noreferrer' target='_blank'>
+                  <Link href={v.link} rel='noopener noreferrer' target='_blank'>
                     <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                       {trimMessage(v.link, 50)}
                     </Typography>
-                  </a>
+                  </Link>
                 </div>
               )
             })}
