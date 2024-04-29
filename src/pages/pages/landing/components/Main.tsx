@@ -14,21 +14,20 @@ const ParallaxImage = (props: any) => {
 }
 
 const HeroImage = () => {
-  const [windowWidth, setWindowWidth] = useState(100000);
-  const [windowHeight, setWindowHeight] = useState(10000);
-
+  const [windowWidth, setWindowWidth] = useState(100000)
+  const [windowHeight, setWindowHeight] = useState(10000)
 
   useEffect(() => {
     const updateDimensions = () => {
-      setWindowWidth(window.innerWidth); 
-      setWindowHeight(window.innerHeight); 
-    };
+      setWindowWidth(window.innerWidth)
+      setWindowHeight(window.innerHeight)
+    }
 
-    updateDimensions(); // Initial update
-    window.addEventListener('resize', updateDimensions);
+    updateDimensions() // Initial update
+    window.addEventListener('resize', updateDimensions)
 
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, []);
+    return () => window.removeEventListener('resize', updateDimensions)
+  }, [])
 
   return (
     <div
@@ -41,23 +40,23 @@ const HeroImage = () => {
       }}
     >
       <Parallax className={styles.backMountainTwo} translateX={[20, 0]}>
-        <ParallaxImage src={('/images/landing/hero/Back mountain 2.svg')} />
+        <ParallaxImage src={'/images/landing/hero/Back_mountain_2.svg'} />
       </Parallax>
       <div className={styles.waterRipple}></div>
       <Parallax className={styles.backMountainOne} translateX={[-20, 0]}>
-        <ParallaxImage src={('/images/landing/hero/Back mountain 1.svg')} />
+        <ParallaxImage src={'/images/landing/hero/Back_mountain_1.svg'} />
       </Parallax>
       <Parallax className={styles.fourthTerrain} translateX={[30, 0]}>
-        <ParallaxImage src={('/images/landing/hero/4th Terrain.svg')} />
+        <ParallaxImage src={'/images/landing/hero/4th_terrain.svg'} />
       </Parallax>
       <Parallax className={styles.thirdTerrain} translateX={[-30, 0]}>
-        <ParallaxImage src={('/images/landing/hero/3rd Terrain.svg')} />
+        <ParallaxImage src={'/images/landing/hero/3rd_terrain.svg'} />
       </Parallax>
       <Parallax className={styles.secondTerrain} translateX={[10, 0]}>
-        <ParallaxImage src={('/images/landing/hero/2nd Terrain.svg')} />
+        <ParallaxImage src={'/images/landing/hero/2nd_terrain.svg'} />
       </Parallax>
       <Parallax className={styles.firstTerrain} translateX={[-10, 0]}>
-        <ParallaxImage src={('/images/landing/hero/1st Terrain.svg')} />
+        <ParallaxImage src={'/images/landing/hero/1st_terrain.svg'} />
       </Parallax>
       <div
         style={{
@@ -67,7 +66,7 @@ const HeroImage = () => {
           bottom: '-10px'
         }}
       >
-        <ParallaxImage src={('/images/landing/hero/front rocks.svg')} />
+        <ParallaxImage src={'/images/landing/hero/front rocks.svg'} />
       </div>
       <div
         style={{
@@ -78,7 +77,7 @@ const HeroImage = () => {
           right: '27.5vw'
         }}
       >
-        <ParallaxImage src={('/images/landing/hero/fisherman.svg')} />
+        <ParallaxImage src={'/images/landing/hero/fisherman.svg'} />
       </div>
       <svg>
         <filter id='turbulence' x='0' y='0' width='100%' height='100%'>
