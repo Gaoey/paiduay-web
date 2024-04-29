@@ -84,10 +84,7 @@ export default function TripDetail() {
   }, [isUpdateBookingSuccess, tripID])
 
   const numberOfVans = transports.filter(x => x.data.transport_by === Transportation[Transportation.VAN]).length
-  console.log('numberOfVans', numberOfVans)
-  
   const numberOfAlternativeVehicles = transports.length - numberOfVans
-  console.log('numberOfAlternativeVehicles', numberOfAlternativeVehicles)
 
   return (
     <ApexChartWrapper>
