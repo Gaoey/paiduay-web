@@ -8,33 +8,11 @@
 
 // ** Demo Components Imports
 import { getSession } from 'next-auth/react'
-import { ReactNode, useEffect } from 'react'
-import { useApi } from 'src/@core/services'
+import { ReactNode } from 'react'
 import UserLayout from 'src/layouts/UserLayout'
 import LandingPage from 'src/pages/pages/landing/LandingPage'
 
 const Main = () => {
-  console.log(process.env.CORE_SERVER_API)
-  const { userAPI } = useApi()
-  const { healthcheck } = userAPI
-  useEffect(() => {
-    healthcheck.mutate()
-  }, [])
-
-  const { isSuccess, isError } = healthcheck
-
-  useEffect(() => {
-    if (isSuccess) {
-      console.log('ping server success')
-    }
-  }, [isSuccess])
-
-  useEffect(() => {
-    if (isError) {
-      console.log('ping server error')
-    }
-  }, [isError])
-
   return <LandingPage />
 }
 
