@@ -10,7 +10,7 @@ type jwt = {
   exp: Date
 }
 
-const nextAuthOption: NextAuthOptions = {
+export const nextAuthOption: NextAuthOptions = {
   secret: process.env.SECRET,
   jwt: {
     secret: process.env.SECRET
