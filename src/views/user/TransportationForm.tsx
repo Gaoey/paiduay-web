@@ -201,7 +201,6 @@ function ConfirmSeatButton(props: ConfirmSeatButtonProps) {
     const query = seats.reduce((prev, curr) => {
       return `${prev}&seat_number=${curr.seat_number}`
     }, '')
-    console.log({ seats })
     router.push(`/trips/${tripID}/booking?transport_id=${transportID}&${query}`)
   }, [router, seats, transportID, tripID])
 

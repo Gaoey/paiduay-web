@@ -36,7 +36,6 @@ export default function UpdateProfileForm(props: Props) {
   })
 
   const onSubmit: SubmitHandler<any> = data => {
-    console.log('data', data)
     const {
       first_name: name,
       last_name: surname,

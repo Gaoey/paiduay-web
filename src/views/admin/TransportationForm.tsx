@@ -186,7 +186,7 @@ function SeatButton(props: SeatButtonProps) {
           <DialogContentText>
             <Grid container spacing={2}>
               <Grid item md={12}>
-                <Typography variant='subtitle2' sx={{ mt: 1 }}>
+                <Typography variant='subtitle2' sx={{ mt: 1 }} component="span">
                   {`การล็อกที่นั่งจะทำให้ลูกทัวร์จองที่ไม่ได้ การจองแทนลูกทัวร์จะสร้างการจองให้ในระบบ`}
                 </Typography>
               </Grid>
