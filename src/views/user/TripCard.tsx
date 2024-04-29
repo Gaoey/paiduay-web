@@ -85,7 +85,7 @@ export default function TripCard(props: TripCardProps) {
                 จำนวนคน: {trip?.data?.members.length} / {trip?.data?.total_people}
               </Typography>
             </div>
-            {trip?.data?.contacts.map((v, id) => {
+            {hideProfiler && trip?.data?.contacts.map((v, id) => {
               return (
                 <div style={{ display: 'flex' }} key={id}>
                   <AlternateEmail style={{ color: '#3B5249' }} />
