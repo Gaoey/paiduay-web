@@ -8,7 +8,8 @@ import useTransportAPI from './transport'
 import useBookingAPI from './booking'
 import useNotificationAPI from './notification'
 
-const axiosInstance = (accessToken = '', baseURL = process.env.NEXT_PUBLIC_CORE_API) => {
+const axiosInstance = (accessToken = '', baseURL = 'https://api.waarn.finance/paiduay-core') => {
+  console.log({ baseURL })
   const instance = axios.create({
     baseURL
   })
