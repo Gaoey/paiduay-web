@@ -151,9 +151,9 @@ export default function TripDetail() {
                       key={item._id}
                       item={item}
                       onSetSeat={onSetSeat}
-                      onUpdateTransport={(transportID, transportData) =>
+                      onUpdateTransport={(transportID, transportData) => {
                         updateTransport.mutate({ tripID, transportID, transportData })
-                      }
+                      }}
                       onRemoveTransport={(tripID: string, transportID: string) =>
                         removeTransport.mutate({ tripID, transportID })
                       }

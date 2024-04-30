@@ -183,22 +183,16 @@ function SeatButton(props: SeatButtonProps) {
     () => (
       <>
         <DialogContent>
-          <DialogContentText>
-            <Grid container spacing={2}>
-              <Grid item md={12}>
-                <Typography variant='subtitle2' sx={{ mt: 1 }} component="span">
-                  {`การล็อกที่นั่งจะทำให้ลูกทัวร์จองที่ไม่ได้ การจองแทนลูกทัวร์จะสร้างการจองให้ในระบบ`}
-                </Typography>
-              </Grid>
-            </Grid>
-          </DialogContentText>
+          <Typography variant='subtitle2' sx={{ mt: 1 }} component='span'>
+            {`การล็อกที่นั่งจะทำให้ลูกทัวร์จองที่ไม่ได้ การจองแทนลูกทัวร์จะสร้างการจองให้ในระบบ`}
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button
             variant='contained'
             color='error'
             onClick={() => {
-              onChange({ ...seat, is_lock: true })
+              onChange({ ...seat, is_lock: true, status: SeatStatus[SeatStatus.RESERVE] })
               handleClose()
             }}
           >
@@ -222,22 +216,16 @@ function SeatButton(props: SeatButtonProps) {
   const LockForm = () => (
     <>
       <DialogContent>
-        <DialogContentText>
-          <Grid container spacing={2}>
-            <Grid item md={12}>
-              <Typography variant='subtitle2' sx={{ mt: 1 }} color='red'>
-                {`คุณกำลังจะปลดล็อกที่นั่ง! โปรดตรวจสอบว่าถูกต้องแล้ว`}
-              </Typography>
-            </Grid>
-          </Grid>
-        </DialogContentText>
+        <Typography variant='subtitle2' sx={{ mt: 1 }} color='red'>
+          {`คุณกำลังจะปลดล็อกที่นั่ง! โปรดตรวจสอบว่าถูกต้องแล้ว`}
+        </Typography>
       </DialogContent>
       <DialogActions>
         <Button
           variant='contained'
           color='error'
           onClick={() => {
-            onChange({ ...seat, is_lock: false })
+            onChange({ ...seat, is_lock: false, status: SeatStatus[SeatStatus.EMPTY] })
             handleClose()
             setReserveFormLocalStatus('EMPTY')
           }}
