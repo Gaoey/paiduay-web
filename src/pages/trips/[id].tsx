@@ -24,7 +24,7 @@ export default function UserTripDetail() {
             width: '100%'
           }}
         >
-          <TripDetailComponent tripID={tripID} />
+          <TripDetailComponent tripID={tripID} fullWidth={true} />
         </Grid>
       </Grid>
       {!hideElement && (

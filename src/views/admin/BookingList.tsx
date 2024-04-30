@@ -87,7 +87,7 @@ const BookingCards = ({ bookings, transports, onUpdateBooking }: Props) => {
                       style={{ color: 'white', marginRight: '0.5em' }}
                       onClick={() => router.push(`/user/${booking.data.user_id}`)}
                     >
-                      View User
+                      ดูข้อมูลผู้จอง
                     </Button>
                     <UpdateStatusButton
                       bookingID={booking._id}
@@ -171,7 +171,7 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
             variant='contained'
             color='warning'
           >
-            ชำระไม่ครบ
+            ขาดชำระ
           </Button>
           <Button
             onClick={() => {
@@ -238,6 +238,7 @@ function ViewSlipButton(props: ViewSlipButtonProps) {
     </>
   )
 }
+
 interface ChangeBookingNameButtonProps {
   booking: Booking
   onChange: (bookingID: string, seats: SimplySeatData[]) => void

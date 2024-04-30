@@ -37,9 +37,14 @@ export const DefaultCoverTripImage =
 interface TripDetailsProps {
   tripID: string
   isShortDescription?: boolean
+  fullWidth?: boolean
 }
 
-export default function TripDetailComponent({ tripID, isShortDescription = false }: TripDetailsProps) {
+export default function TripDetailComponent({ 
+  fullWidth = false,
+  tripID, 
+  isShortDescription = false 
+}: TripDetailsProps) {
   const { tripAPI } = useApi()
 
   const { findTripByID } = tripAPI
@@ -70,7 +75,7 @@ export default function TripDetailComponent({ tripID, isShortDescription = false
   }
 
   return (
-    <Card style={{ margin: 0, maxWidth: 1200 }}>
+    <Card style={{ margin: 0, maxWidth: '1200px', width: fullWidth ? '100vw' : 'auto' }}>
       <CardHeader
         avatar={
           R.isNil(profiler?.data?.logo_image?.signed_url) ? (

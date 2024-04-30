@@ -146,7 +146,9 @@ function SeatButton(props: SeatButtonProps) {
   const [reserveFormLocalStatus, setReserveFormLocalStatus] = useState<string>('EMPTY')
 
   useEffect(() => {
+    console.log('seat status changed', seat)
     if (seat.is_lock) {
+      console.log('seat is locked', seat)
       setReserveFormLocalStatus('LOCKED')
     } else if (seat.status === SeatStatus[SeatStatus.RESERVE]) {
       setReserveFormLocalStatus('RESERVE')
@@ -198,6 +200,7 @@ function SeatButton(props: SeatButtonProps) {
             variant='contained'
             color='error'
             onClick={() => {
+              console.log('lock seat')
               onChange({ ...seat, is_lock: true })
               handleClose()
             }}
