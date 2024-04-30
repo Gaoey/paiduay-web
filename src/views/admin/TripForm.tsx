@@ -535,6 +535,7 @@ function TripForm(props: TripFormProps) {
                         ) : (
                           <TransportationNormalForm
                             values={watch(`transport_data.${index}.seats`)}
+                            totalSeats={watch(`transport_data.${index}.total_seats`)}
                             onChange={(data: Seat[]) => setValue(`transport_data.${index}.seats`, data)}
                           />
                         )}

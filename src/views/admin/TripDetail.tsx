@@ -75,7 +75,7 @@ export default function TripDetailComponent({
   }
 
   return (
-    <Card style={{ margin: 0, maxWidth: '1200px', width: fullWidth ? '100vw' : 'auto' }}>
+    <Card style={{ margin: 0, maxWidth: '1200px', width: fullWidth ? '93vw' : 'auto' }}>
       <CardHeader
         avatar={
           R.isNil(profiler?.data?.logo_image?.signed_url) ? (

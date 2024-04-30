@@ -77,7 +77,7 @@ export default function TransportDetail({ item, onSetSeat, onRemoveTransport, on
           {item.data.transport_by === Transportation[Transportation.VAN] ? (
             <VanForm values={item.data.seats} onChange={(seat: Seat[]) => onSetSeat(seat)} />
           ) : (
-            <TransportationNormalForm values={item.data.seats} onChange={(seat: Seat[]) => onSetSeat(seat)} />
+            <TransportationNormalForm totalSeats={item.data.seats.length} values={item.data.seats} onChange={(seat: Seat[]) => onSetSeat(seat)} />
           )}
         </Grid>
       </Grid>
@@ -157,6 +157,7 @@ export function AddTransportButton(props: AddTransportButtonProps) {
   const { register, handleSubmit, setValue, watch } = useForm({ defaultValues })
 
   const handleSubmitTransportForm = handleSubmit(data => {
+    data.total_seats = Number(data.total_seats)
     onCreateTransport(tripID, data)
     handleClose()
   })
@@ -199,7 +200,10 @@ export function AddTransportButton(props: AddTransportButtonProps) {
                 ) : (
                   <TransportationNormalForm
                     values={watch(`seats`)}
-                    onChange={(data: Seat[]) => setValue(`seats`, data)}
+                    totalSeats={watch(`total_seats`)}
+                    onChange={(data: Seat[]) => {
+                      setValue(`seats`, data)
+                    }}
                   />
                 )}
               </Grid>
