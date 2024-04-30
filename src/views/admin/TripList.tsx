@@ -33,9 +33,11 @@ const statusObj: StatusObj = {
   [TripStatus[TripStatus.NotAvailable]]: { color: 'error', display: 'ผ่านไปแล้ว' }
 }
 
+
 const DashboardCards = ({ ...props }) => {
   const router = useRouter()
   const { tripAPI, profilerAPI } = useApi()
+
 
   const { getCurrentProfiler } = profilerAPI
   const { findTripByProfilerID, removeTrip } = tripAPI
@@ -128,7 +130,7 @@ const DashboardCards = ({ ...props }) => {
               <RemoveTripPopUp
                 tripID={trip._id}
                 tripName={trip.data.title}
-                onRemove={props.onRemove} // Pass tripID and removal handler down
+                onRemove={(tripID: string) => removeTrip.mutate(tripID)} // Pass tripID and removal handler down
               />
             </Box>
           </Grid>
