@@ -40,10 +40,10 @@ interface TripDetailsProps {
   fullWidth?: boolean
 }
 
-export default function TripDetailComponent({ 
+export default function TripDetailComponent({
   fullWidth = false,
-  tripID, 
-  isShortDescription = false 
+  tripID,
+  isShortDescription = false
 }: TripDetailsProps) {
   const { tripAPI } = useApi()
 
@@ -52,7 +52,7 @@ export default function TripDetailComponent({
 
   useEffect(() => {
     findTripByID.mutate(tripID)
-  }, [])
+  }, [tripID])
 
   const trip = data as Trip | undefined
   const profiler = trip?.profiler
@@ -65,7 +65,12 @@ export default function TripDetailComponent({
     ? [DefaultCoverTripImage]
     : trip?.data.cover_images.map(v => v.signed_url)
 
-  const images = imgSrc.map(v => ({ original: v, thumbnail: v, thumbnailHeight: '60px', originalHeight: '600px' }))
+  const images = imgSrc.map(v => ({
+    original: v,
+    thumbnail: v,
+    thumbnailHeight: '60px',
+    originalHeight: '600px'
+  }))
   const htmlString = trip?.data?.description
   const msg = trimMessage(htmlString, 300)
   const parsedHtml = parse(isShortDescription ? msg : htmlString)

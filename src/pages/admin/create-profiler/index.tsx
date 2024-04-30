@@ -44,7 +44,7 @@ const CreateProfiler = () => {
       name: data?.name,
       description: data?.description,
       bank_accounts: data?.bank_accounts || [],
-      contacts: []
+      contacts: data?.contacts || []
     }
 
     const media: Media | undefined = R.pathOr<Media | undefined>(undefined, ['logo_image'], data)
