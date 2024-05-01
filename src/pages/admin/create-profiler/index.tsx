@@ -30,7 +30,8 @@ const CreateProfiler = () => {
 
   const { isSuccess, isAdmin } = useAdminAccount()
 
-  const { isSuccess: isCreateProfilerSuccess } = createProfiler
+  const { isSuccess: isCreateProfilerSuccess, isLoading: isCreateProfilerLoading } = createProfiler
+  const { isLoading: isUploadMediasLoading } = uploadMedias
 
   // ** Effects
   useEffect(() => {
@@ -66,9 +67,12 @@ const CreateProfiler = () => {
   return (
     <Box className='content-center'>
       <Box sx={{ p: 5 }}>
-        <ProfilerForm onSubmit={onSubmit} title={'สร้างทริปของคุณ'} />
+        <ProfilerForm
+          onSubmit={onSubmit}
+          title={'สร้างทริปของคุณ'}
+          isLoading={isUploadMediasLoading || isCreateProfilerLoading}
+        />
       </Box>
-      {/* <FooterIllustrations image={<TreeIllustration alt='tree' src='/images/pages/tree.png' />} /> */}
     </Box>
   )
 }

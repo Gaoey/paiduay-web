@@ -13,15 +13,17 @@ import { TransportationNormalForm, VanForm, getDefaultTransport } from './Transp
 import Tiptap from '../editor/Tiptap'
 import 'react-datepicker/dist/react-datepicker.css'
 import Pica from 'pica'
+import { LoadingButton } from '@mui/lab'
 
 interface TripFormProps {
   trip_payload?: TripPayload
   onSubmit: SubmitHandler<any>
   isHiddenTransport?: boolean
+  isLoading: boolean
 }
 
 function TripForm(props: TripFormProps) {
-  const { isHiddenTransport = false } = props
+  const { isHiddenTransport = false, isLoading = false } = props
   const p = props?.trip_payload
 
   const defaultValues = {
@@ -58,7 +60,9 @@ function TripForm(props: TripFormProps) {
   const handleImageChange = async (e: any) => {
     const files = e.target.files
     if (files) {
-      const filteredFiles = Array.from(files).filter((file: any) => file.type === 'image/jpeg' || file.type === 'image/png')
+      const filteredFiles = Array.from(files).filter(
+        (file: any) => file.type === 'image/jpeg' || file.type === 'image/png'
+      )
 
       const resizedImages = await Promise.all(
         filteredFiles.map(async (file: any) => {
@@ -132,7 +136,7 @@ function TripForm(props: TripFormProps) {
     data.description = tiptapContent
     if (data.cover_images.length === 0) {
       alert('ต้องอัพโหลดอย่างน้อยหนึ่งภาพ')
-      
+
       return
     }
     props.onSubmit(data)
@@ -500,9 +504,9 @@ function TripForm(props: TripFormProps) {
             )}
 
             <Grid item xs={12}>
-              <Button type='submit' variant='contained' color='primary'>
+              <LoadingButton type='submit' variant='contained' color='primary' loading={isLoading}>
                 บันทึก
-              </Button>
+              </LoadingButton>
             </Grid>
           </Grid>
         </form>

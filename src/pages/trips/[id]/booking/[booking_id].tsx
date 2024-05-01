@@ -31,7 +31,8 @@ export default function UpdateBooking() {
   const { data: findProfilerData } = findProfilerByTripID
   const { data: bookingData } = findBookingByID
 
-  const { isSuccess } = updateBooking
+  const { isLoading: isUploadMediaLoading } = uploadMedias
+  const { isSuccess, isLoading: isUpdateBookingLoading } = updateBooking
 
   const trip = R.pathOr<Trip | null>(null, [], findTripData)
   const booking = R.pathOr<Booking | null>(null, [], bookingData)
@@ -92,6 +93,7 @@ export default function UpdateBooking() {
             totalPrice={totalPrice}
             onSubmit={onSubmit}
             isDeposit={true}
+            isLoading={isUploadMediaLoading || isUpdateBookingLoading}
           />
         )
       )}

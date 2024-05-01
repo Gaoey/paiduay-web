@@ -8,10 +8,10 @@ import { ReactNode, useEffect } from 'react'
 // ** Layout Import
 
 // ** Demo Imports
-import { CircularProgress } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import * as R from 'ramda'
 import { SubmitHandler } from 'react-hook-form'
+import { LoadingComponent } from 'src/@core/components/loading'
 import { useApi } from 'src/@core/services'
 import { Media } from 'src/@core/types'
 import { Profiler, ProfilerData } from 'src/@core/types/profiler'
@@ -26,7 +26,8 @@ const UpdateProfiler = () => {
   const { uploadMedias } = mediaAPI
 
   const { data: currentProfilerData } = getCurrentProfilerMutation
-
+  const { isLoading: isUploadMediasLoading } = uploadMedias
+  const { isLoading: isUpdateProfilerLoading } = updateProfiler
   useEffect(() => {
     getCurrentProfilerMutation.mutate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,7 +54,7 @@ const UpdateProfiler = () => {
   }
 
   if (R.isNil(currentProfilerData) || R.isEmpty(currentProfilerData)) {
-    return <CircularProgress color='secondary' />
+    return <LoadingComponent />
   }
 
   return (
@@ -61,6 +62,7 @@ const UpdateProfiler = () => {
       onSubmit={onSubmit}
       title='ตั้งค่าโปรไฟล์ของคุณ'
       profiler={!R.isNil(currentProfilerData) ? currentProfilerData[0] : undefined}
+      isLoading={isUploadMediasLoading || isUpdateProfilerLoading}
     />
   )
 }

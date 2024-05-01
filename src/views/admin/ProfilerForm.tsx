@@ -23,6 +23,7 @@ import * as R from 'ramda'
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { BUCKET_NAME, Media } from 'src/@core/types'
 import { Profiler } from 'src/@core/types/profiler'
+import { LoadingButton } from '@mui/lab'
 
 export const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -45,9 +46,11 @@ interface ProfilerFormProps {
   title: string
   profiler?: Profiler
   onSubmit: SubmitHandler<any>
+  isLoading: boolean
 }
 
 function ProfilerForm(props: ProfilerFormProps) {
+  const { isLoading } = props
   const defaultValues = {
     name: props?.profiler?.data?.name || '',
     description: props?.profiler?.data?.description || '',
@@ -378,9 +381,9 @@ function ProfilerForm(props: ProfilerFormProps) {
                   justifyContent: 'space-between'
                 }}
               >
-                <Button type='submit' variant='contained' size='large'>
+                <LoadingButton type='submit' variant='contained' size='large' loading={isLoading}>
                   บันทึก
-                </Button>
+                </LoadingButton>
               </Box>
             </Grid>
           </Grid>

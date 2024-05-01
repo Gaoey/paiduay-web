@@ -31,7 +31,8 @@ const CreateTrip = () => {
   const { createTrip } = tripAPI
   const { uploadMedias } = mediaAPI
 
-  const { isSuccess, data } = createTrip
+  const { isSuccess, data, isLoading } = createTrip
+  const { isLoading: isUploadMediaLoading } = uploadMedias
 
   const onSubmit: SubmitHandler<any> = async data => {
     const profiler: Profiler[] = await getCurrentProfiler()
@@ -90,7 +91,7 @@ const CreateTrip = () => {
     <DatePickerWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <TripForm onSubmit={onSubmit} />
+          <TripForm onSubmit={onSubmit} isLoading={isUploadMediaLoading || isLoading} />
         </Grid>
       </Grid>
     </DatePickerWrapper>

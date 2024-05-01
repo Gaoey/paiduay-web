@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { Parallax } from 'react-scroll-parallax'
+import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import Image from 'next/image'
 import gsap from 'gsap'
-import Button from '@mui/material/Button'
+import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
+import { Parallax } from 'react-scroll-parallax'
 
 const HowItWorksTraveller = () => {
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 })
@@ -14,7 +13,7 @@ const HowItWorksTraveller = () => {
   useEffect(() => {
     const calculateDimensions = () => {
       if (imageContainerRef.current) {
-        const containerWidth = (imageContainerRef.current as HTMLElement).offsetWidth;
+        const containerWidth = (imageContainerRef.current as HTMLElement).offsetWidth
         const newImageWidth = containerWidth < 1000 ? Math.min(containerWidth, 500) : containerWidth / 3
         setImageDimensions({ width: newImageWidth, height: newImageWidth })
       }
@@ -143,9 +142,6 @@ const HowItWorksTraveller = () => {
                 <Typography paragraph align='center' color='#FDECEF'>
                   หาเพื่อน เจอคนใหม่ๆ สร้างความสัมพันธ์ในโลกของนักท่องเที่ยว
                 </Typography>
-                <Button variant='contained' color='secondary'>
-                  จองทริปเลย!
-                </Button>
               </div>
             </Parallax>
           </Grid>

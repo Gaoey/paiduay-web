@@ -30,7 +30,8 @@ export default function Booking() {
   const { data: userData } = user
   const { data: findTripData } = findTripByID
   const { data: findProfilerData } = findProfilerByTripID
-  const { isSuccess } = createBooking
+  const { isLoading: isUploadMediaLoading } = uploadMedias
+  const { isSuccess, isLoading: isCreateBookingLoading } = createBooking
   const trip = R.pathOr<Trip | null>(null, [], findTripData)
   const profiler = R.pathOr<Profiler | null>(null, [], findProfilerData)
 
@@ -104,6 +105,7 @@ export default function Booking() {
             seats={simplySeats()}
             totalPrice={totalPrice}
             onSubmit={onSubmit}
+            isLoading={isUploadMediaLoading || isCreateBookingLoading}
           />
         )
       )}

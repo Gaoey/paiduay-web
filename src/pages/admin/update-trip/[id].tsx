@@ -29,7 +29,7 @@ export default function UpdateTrip() {
   const { updateTrip } = tripAPI
   const { uploadMedias } = mediaAPI
 
-  const { isSuccess } = updateTrip
+  const { isSuccess, isLoading: isUpdateTripLoading } = updateTrip
   const { isLoading } = uploadMedias
 
   const onSubmit: SubmitHandler<any> = async data => {
@@ -82,7 +82,12 @@ export default function UpdateTrip() {
     <DatePickerWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <TripForm onSubmit={onSubmit} trip_payload={payload} isHiddenTransport={true} />
+          <TripForm
+            onSubmit={onSubmit}
+            trip_payload={payload}
+            isHiddenTransport={true}
+            isLoading={isUpdateTripLoading || isLoading}
+          />
         </Grid>
       </Grid>
     </DatePickerWrapper>

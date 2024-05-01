@@ -1,4 +1,5 @@
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { LoadingButton } from '@mui/lab'
 import {
   Box,
   Button,
@@ -58,10 +59,11 @@ interface BookingFormProps {
   totalPrice: number
   onSubmit: SubmitHandler<any>
   isDeposit?: boolean
+  isLoading: boolean
 }
 
 export default function BookingForm(props: BookingFormProps) {
-  const { trip, profiler, seats, totalPrice, booking, onSubmit, isDeposit = false } = props
+  const { trip, profiler, seats, totalPrice, booking, onSubmit, isDeposit = false, isLoading = false } = props
   const defaultValues = {
     seats: seats,
     payment_type: PaymentType[PaymentType.FULL] as string,
@@ -185,9 +187,9 @@ export default function BookingForm(props: BookingFormProps) {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <Button type='submit' variant='contained' color='primary'>
+                    <LoadingButton type='submit' variant='contained' color='primary' loading={isLoading}>
                       ดำเนินการจ่ายเงิน
-                    </Button>
+                    </LoadingButton>
                   </Grid>
                 </Grid>
               </CardContent>
