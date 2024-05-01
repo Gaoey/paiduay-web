@@ -1,9 +1,9 @@
-import { CircularProgress } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
+import { LoadingComponent } from 'src/@core/components/loading'
 import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import { Media } from 'src/@core/types'
@@ -94,7 +94,7 @@ export default function Booking() {
   return (
     <ApexChartWrapper>
       {isLoading ? (
-        <CircularProgress size={40} color='primary' />
+        <LoadingComponent />
       ) : (
         !R.isNil(trip) &&
         !R.isNil(profiler) && (

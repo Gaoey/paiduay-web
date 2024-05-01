@@ -9,11 +9,11 @@ import Grid from '@mui/material/Grid'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
-import { CircularProgress } from '@mui/material'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
+import { LoadingComponent } from 'src/@core/components/loading'
 import { useAdminAccount } from 'src/@core/layouts/components/shared-components/UserDropdown'
 import { useApi } from 'src/@core/services'
 import { Profiler } from 'src/@core/types/profiler'
@@ -54,7 +54,7 @@ const Dashboard = () => {
       <ApexChartWrapper>
         <Grid container spacing={6}>
           <Grid item xs={12} md={4}>
-            <CircularProgress size={40} color='primary' />
+            <LoadingComponent />
           </Grid>
         </Grid>
       </ApexChartWrapper>

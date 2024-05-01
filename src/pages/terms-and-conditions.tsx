@@ -1,18 +1,18 @@
 // components/TermsAndConditions.tsx
 
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Box, Typography } from '@mui/material'
+import UserLayout from 'src/layouts/UserLayout'
 
-const TermsAndConditions: React.FC = () => {
+function TermsAndConditions() {
   return (
     <Box sx={{ margin: '20px', maxWidth: '1600px' }}>
       <Typography variant='h4' gutterBottom>
         เงื่อนไขและข้อตกลงสำหรับ https://paiduay.com
       </Typography>
       <Typography paragraph>
-        ยินดีต้อนรับสู่ https://paiduay.com
-        เงื่อนไขและข้อตกลงเหล่านี้กำหนดกฎเกณฑ์และข้อบังคับสำหรับการใช้งานเว็บไซต์ของ LOG21RUBY CO., LTD. ซึ่งตั้งอยู่ที่
-        https://paiduay.com
+        ยินดีต้อนรับสู่ https://paiduay.com เงื่อนไขและข้อตกลงเหล่านี้กำหนดกฎเกณฑ์และข้อบังคับสำหรับการใช้งานเว็บไซต์ของ
+        LOG21RUBY CO., LTD. ซึ่งตั้งอยู่ที่ https://paiduay.com
       </Typography>
       <Typography paragraph>
         การเข้าถึงเว็บไซต์นี้ถือว่าคุณยอมรับเงื่อนไขและข้อตกลงเหล่านี้อย่างเต็มที่
@@ -50,8 +50,8 @@ const TermsAndConditions: React.FC = () => {
         4. การจองและการสร้างทริป
       </Typography>
       <Typography paragraph>
-        - การจองทริป: ผู้ใช้สามารถจองทริปที่มีอยู่บนแพลตฟอร์ม ข้อมูลที่จำเป็นในการจอง ได้แก่ ชื่อ, อีเมล,
-        เบอร์โทรศัพท์, และ ID Line
+        - การจองทริป: ผู้ใช้สามารถจองทริปที่มีอยู่บนแพลตฟอร์ม ข้อมูลที่จำเป็นในการจอง ได้แก่ ชื่อ, อีเมล, เบอร์โทรศัพท์,
+        และ ID Line
       </Typography>
       <Typography paragraph>
         - การสร้างทริป: ผู้ใช้สามารถสร้างทริปและแชร์กับชุมชนผ่านแพลตฟอร์มนี้
@@ -82,5 +82,7 @@ const TermsAndConditions: React.FC = () => {
     </Box>
   )
 }
+
+TermsAndConditions.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>
 
 export default TermsAndConditions

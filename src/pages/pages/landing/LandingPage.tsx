@@ -14,6 +14,7 @@ const PathBackground = () => {
   const [scrollProgress, setScrollProgress] = useState(0)
 
   const pathLength = pathRef.current ? pathRef.current.getTotalLength() : 10000
+
   useEffect(() => {
     const updateScrollProgress = () => {
       const winScroll = document.documentElement.scrollTop || document.body.scrollTop
@@ -61,19 +62,6 @@ const PathBackground = () => {
 }
 
 function LandingPage() {
-  // const [state, setState] = React.useState<LandingPageState>({
-  //   selectedDate: null,
-  //   selectedPriceRange: [0, 100000]
-  // })
-
-  // const handleDateChange = (newValue: Date | null) => {
-  //   setState({ ...state, selectedDate: newValue })
-  // }
-
-  // const setPriceRange = (priceRange: [number, number]) => {
-  //   setState({ ...state, selectedPriceRange: priceRange })
-  // }
-
   return (
     <div
       style={{
@@ -84,7 +72,7 @@ function LandingPage() {
       <section
         style={{ backgroundColor: '#3B534A', backgroundSize: 'cover', overflow: 'hidden', position: 'relative' }}
       >
-        <HeroSection  />
+        <HeroSection />
       </section>
       <PathBackground />
       <HowItWorksTripLeader />

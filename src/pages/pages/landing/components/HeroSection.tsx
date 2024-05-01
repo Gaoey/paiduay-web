@@ -25,7 +25,7 @@ function HeroSection() {
         </Typography>
         <div style={{ paddingTop: '4em' }}>
           <Button variant='contained' color='secondary' onClick={() => router.push('/trips')}>
-            ดู ทริป
+            Get Started!
           </Button>
         </div>
       </div>
