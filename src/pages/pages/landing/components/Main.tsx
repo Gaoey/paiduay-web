@@ -124,7 +124,7 @@ const Main = () => {
     <div
       style={{
         backgroundColor: '#E0ECF0',
-        overflowY: 'hidden',
+        overflow: 'hidden',
         position: 'relative'
       }}
     >
