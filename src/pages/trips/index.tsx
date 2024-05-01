@@ -34,13 +34,3 @@ export default function TripList() {
 }
 
 TripList.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const session = await getServerSession(ctx.req, ctx.res, nextAuthOption)
-
-  return {
-    props: {
-      session
-    }
-  }
-}
