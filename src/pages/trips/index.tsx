@@ -1,5 +1,3 @@
-import { getServerSession } from 'next-auth'
-import { GetServerSidePropsContext } from 'next/types'
 import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
 import { useApi } from 'src/@core/services'
@@ -8,7 +6,6 @@ import { Paginate } from 'src/@core/types'
 import { Trip, TripFilter } from 'src/@core/types/trip'
 import UserLayout from 'src/layouts/UserLayout'
 import TripCardList from 'src/views/user/TripCardList'
-import { nextAuthOption } from '../api/auth/[...nextauth]'
 
 export default function TripList() {
   const { tripAPI } = useApi()
