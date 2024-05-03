@@ -100,13 +100,29 @@ export function VanForm(props: VanFormProps) {
 interface TransportationNormalFormProps {
   values: Seat[]
   onChange?: (seats: Seat[]) => void
+  totalSeats: number
 }
 
 export function TransportationNormalForm(props: TransportationNormalFormProps) {
-  const { values, onChange = () => null } = props
+  const { values, onChange = () => null, totalSeats } = props
+
+  const additionalSeats = totalSeats - values.length
+
+  const newSeats =
+    additionalSeats < 0
+      ? values.slice(0, totalSeats)
+      : Array.from({ length: additionalSeats }, (_, index) => ({
+          name: `#${index + values.length + 1}`,
+          seat_number: index + values.length + 1,
+          user_id: null,
+          is_lock: false,
+          status: 'EMPTY'
+        }))
+
+  const totalSeatsData = totalSeats > values.length - 1 ? [...values, ...newSeats] : newSeats
 
   const onChangeSeats = (seat: Seat) => {
-    const res = values.map(v => {
+    const res = totalSeatsData.map(v => {
       if (v.seat_number === seat.seat_number) {
         return {
           ...v,
@@ -120,13 +136,19 @@ export function TransportationNormalForm(props: TransportationNormalFormProps) {
     onChange(res)
   }
 
+  useEffect(() => {
+    if (totalSeats !== values.length) {
+      onChangeSeats({} as Seat)
+    }
+  }, [totalSeats])
+
   return (
     <Grid container spacing={2}>
-      {range(1, values.length).map(pos => {
+      {range(1, totalSeatsData.length).map(pos => {
         return (
           <Grid item xs={4} key={pos}>
             <Paper style={{ height: 100, textAlign: 'center', lineHeight: '100px' }}>
-              <SeatButton seat={values[pos - 1]} onChange={s => onChangeSeats(s)} />
+              <SeatButton seat={totalSeatsData[pos - 1]} onChange={s => onChangeSeats(s)} />
             </Paper>
           </Grid>
         )
@@ -386,7 +408,7 @@ const ReserveForm = ({
         >
           คอนเฟิร์ม
         </Button>
-        {!isDefaultName && (
+        {seat.status === SeatStatus[SeatStatus.RESERVE] && (
           <Button
             variant='outlined'
             color='secondary'

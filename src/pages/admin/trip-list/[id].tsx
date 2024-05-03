@@ -13,6 +13,7 @@ import BookingCard from 'src/views/admin/BookingList'
 import RemoveTripPopUp from 'src/views/admin/RemoveTripPopUp'
 import TransportDetail, { AddTransportButton } from 'src/views/admin/TransportDetail'
 import TripDetailComponent from 'src/views/admin/TripDetail'
+import { useMediaQuery, useTheme } from '@mui/material';
 
 export default function TripDetail() {
   const router = useRouter()
@@ -86,6 +87,10 @@ export default function TripDetail() {
   const numberOfVans = transports.filter(x => x.data.transport_by === Transportation[Transportation.VAN]).length
   const numberOfAlternativeVehicles = transports.length - numberOfVans
 
+  const theme = useTheme(); 
+  const screenIsWide = useMediaQuery(theme.breakpoints.up('md')); 
+
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={7}>
@@ -111,7 +116,7 @@ export default function TripDetail() {
               </Box>
             </Grid>
             <Grid item md={12}>
-              <TripDetailComponent tripID={tripID} isShortDescription />
+              <TripDetailComponent tripID={tripID} isShortDescription fullWidth={!screenIsWide} />
             </Grid>
           </Grid>
         </Grid>
