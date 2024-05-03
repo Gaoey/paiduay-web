@@ -27,7 +27,6 @@ export default function TripCard(props: TripCardProps) {
     <Card sx={{ height: 600 }}>
       {!hideProfiler && (
         <Link
-          target='_blank'
           href={`/profiler/${trip?.profiler_id}`}
           sx={{
             '&:hover': {
@@ -48,7 +47,7 @@ export default function TripCard(props: TripCardProps) {
           />
         </Link>
       )}
-      <Link target='_blank' href={`/trips/${trip._id}`}>
+      <Link href={`/trips/${trip._id}`}>
         <>
           <CardMedia component='img' image={imgSrc[0]} alt='image of trip' sx={{ height: 300, width: '100%' }} />
           <CardContent>
@@ -97,7 +96,7 @@ export default function TripCard(props: TripCardProps) {
                         <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                           {v.contact_type}
                         </Typography>
-                        <Link href={v.link} rel='noopener noreferrer' target='_blank'>
+                        <Link href={v.link} rel='noopener noreferrer'>
                           <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                             {trimMessage(v.link, 50)}
                           </Typography>

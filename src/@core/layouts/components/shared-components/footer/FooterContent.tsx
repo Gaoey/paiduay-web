@@ -15,9 +15,7 @@ const FooterContent = () => {
           ❤️
         </Box>
         {` by `}
-        <Link target='_blank' href='https://themeselection.com/'>
-          Log21Ruby
-        </Link>
+        <Link href='https://themeselection.com/'>Log21Ruby</Link>
       </Typography>
       {/* {hidden ? null : (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', '& :not(:last-child)': { mr: 4 } }}>

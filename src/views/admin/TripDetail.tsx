@@ -83,7 +83,6 @@ export default function TripDetailComponent({
   return (
     <Card style={{ margin: 0, maxWidth: '1200px', width: fullWidth ? '100vw' : 'auto' }}>
       <Link
-        target='_blank'
         href={`/profiler/${trip?.profiler_id}`}
         sx={{
           '&:hover': {
@@ -179,7 +178,7 @@ export default function TripDetailComponent({
                   <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                     {v.contact_type}
                   </Typography>
-                  <a href={v.link} rel='noopener noreferrer' target='_blank'>
+                  <a href={v.link} rel='noopener noreferrer'>
                     <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                       {v.link}
                     </Typography>
