@@ -1,11 +1,10 @@
 import { CircularProgress } from '@mui/material'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
+import * as R from 'ramda'
 import React, { useEffect } from 'react'
 import AlertWarning from './alert'
-import * as R from 'ramda'
 
-const FullScreenLoadingComponent = () => {
+export const LoadingComponent = () => {
   return (
     <Box
       sx={{
@@ -13,13 +12,11 @@ const FullScreenLoadingComponent = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        p: { xs: 2, md: 3 }
+        p: { xs: 2, md: 3 },
+        width: '100%'
       }}
     >
       <CircularProgress size={40} color='primary' />
-      <Typography variant='subtitle2' sx={{ mt: 1 }}>
-        Loading
-      </Typography>
     </Box>
   )
 }
@@ -49,7 +46,7 @@ export function BasicLoadingComponent(props: BasicProps) {
   }, [error, open])
 
   if (isLoading) {
-    return <FullScreenLoadingComponent />
+    return <LoadingComponent />
   }
 
   return (

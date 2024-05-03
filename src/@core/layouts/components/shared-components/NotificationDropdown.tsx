@@ -15,14 +15,14 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import BellOutline from 'mdi-material-ui/BellOutline'
 
 // ** Third Party Components
-import { CircularProgress } from '@mui/material'
 import { formatDistance } from 'date-fns'
+import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 import { useApi } from 'src/@core/services'
 import { INotification, NotificationData, NotificationType } from 'src/@core/theme/notification'
 import { Paginate } from 'src/@core/types'
-import { useRouter } from 'next/router'
+import { LoadingComponent } from 'src/@core/components/loading'
 
 // ** Styled Menu component
 const Menu = styled(MuiMenu)<MenuProps>(({ theme }) => ({
@@ -186,7 +186,7 @@ const NotificationDropdown = () => {
           </Box>
         </MenuItem>
         {isLoading ? (
-          <CircularProgress size={40} color='primary' />
+          <LoadingComponent />
         ) : R.isEmpty(notifications) ? (
           <Box
             sx={{

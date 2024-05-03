@@ -58,7 +58,7 @@ export default function TripDetail() {
       page_number: 1
     }
     findBookings.mutate({ filters, paginate })
-  }, [])
+  }, [tripID])
 
   useEffect(() => {
     if (isSuccess || isRemoveTransportSuccess || isUpdateTransportSuccess || isCreateTransportSuccess) {
@@ -156,9 +156,9 @@ export default function TripDetail() {
                       key={item._id}
                       item={item}
                       onSetSeat={onSetSeat}
-                      onUpdateTransport={(transportID, transportData) =>
+                      onUpdateTransport={(transportID, transportData) => {
                         updateTransport.mutate({ tripID, transportID, transportData })
-                      }
+                      }}
                       onRemoveTransport={(tripID: string, transportID: string) =>
                         removeTransport.mutate({ tripID, transportID })
                       }

@@ -33,7 +33,7 @@ const statusObj: StatusObj = {
   [TripStatus[TripStatus.NotAvailable]]: { color: 'error', display: 'ผ่านไปแล้ว' }
 }
 
-const DashboardCards = ({ ...props }) => {
+const DashboardCards = () => {
   const router = useRouter()
   const { tripAPI, profilerAPI } = useApi()
 
@@ -128,7 +128,7 @@ const DashboardCards = ({ ...props }) => {
               <RemoveTripPopUp
                 tripID={trip._id}
                 tripName={trip.data.title}
-                onRemove={props.onRemove} // Pass tripID and removal handler down
+                onRemove={(tripID: string) => removeTrip.mutate(tripID)} // Pass tripID and removal handler down
               />
             </Box>
           </Grid>
@@ -139,15 +139,15 @@ const DashboardCards = ({ ...props }) => {
 
   const emptyTrip = (
     <div style={{ textAlign: 'center', width: '100%', marginTop: '2em', padding: '2em' }}>
-    <Button
-      variant='contained'
-      color='primary'
-      fullWidth
-      style={{ fontSize: '1em' }}
-      onClick={() => router.push(`/admin/create-trip`)}
-    >
-      เริ่มสร้างทริปกัน!
-    </Button>
+      <Button
+        variant='contained'
+        color='primary'
+        fullWidth
+        style={{ fontSize: '1em' }}
+        onClick={() => router.push(`/admin/create-trip`)}
+      >
+        เริ่มสร้างทริปกัน!
+      </Button>
     </div>
   )
 

@@ -1,21 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { Parallax } from 'react-scroll-parallax'
+import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import Image from 'next/image'
 import gsap from 'gsap'
-import Button from '@mui/material/Button'
+import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
+import { Parallax } from 'react-scroll-parallax'
 
 const HowItWorksTripLeader = () => {
-  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 }); 
-  const imageContainerRef = useRef(null);
-
+  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 })
+  const imageContainerRef = useRef(null)
 
   useEffect(() => {
     const calculateDimensions = () => {
       if (imageContainerRef.current) {
-        const containerWidth = (imageContainerRef.current as HTMLElement).offsetWidth;
+        const containerWidth = (imageContainerRef.current as HTMLElement).offsetWidth
         const newImageWidth = containerWidth < 1000 ? Math.min(containerWidth, 500) : containerWidth / 3
         setImageDimensions({ width: newImageWidth, height: newImageWidth })
       }
@@ -49,7 +47,7 @@ const HowItWorksTripLeader = () => {
         maxWidth: '100vw',
         width: '100vw',
         alignItems: 'center',
-        padding: '8em 0 4em 0',
+        padding: '8em 0 4em 0'
       }}
     >
       <Grid
@@ -150,7 +148,6 @@ const HowItWorksTripLeader = () => {
                 <Typography paragraph align='center' color='#FDECEF'>
                   สร้างชื่อ เก็บรวบรวมคำชมและรีวิว connect กับชุมชนนักเดินทางของคุณ
                 </Typography>
-                <Button variant="contained" color="secondary">สร้างทริปเลย!</Button>
               </div>
             </Parallax>
           </Grid>

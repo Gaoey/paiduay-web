@@ -1,5 +1,4 @@
 // ** MUI Imports
-import { CircularProgress } from '@mui/material'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -7,6 +6,7 @@ import Typography from '@mui/material/Typography'
 import { styled, useTheme } from '@mui/material/styles'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
+import { LoadingComponent } from 'src/@core/components/loading'
 import { Profiler } from 'src/@core/types/profiler'
 import { User } from 'src/@core/types/user'
 
@@ -45,7 +45,7 @@ const Profile = (props: ProfileProps) => {
     <Card sx={{ position: 'relative' }}>
       <CardContent>
         {isLoading && R.isNil(profiler) ? (
-          <CircularProgress color='secondary' />
+          <LoadingComponent />
         ) : (
           <>
             <Typography variant='h6'>หวัดดีเพื่อน {currentUser?.name}!</Typography>

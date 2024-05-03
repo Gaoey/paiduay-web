@@ -7,7 +7,12 @@ function HeroSection() {
   const router = useRouter()
 
   return (
-    <div style={{ width: '100vw', position: 'relative', overflowY: 'hidden', zIndex: '10' }}>
+    <div style={{ 
+      width: '100vw', 
+      position: 'relative', 
+      overflow: 'hidden', 
+      zIndex: '10' 
+    }}>
       <div
         style={{
           position: 'absolute',
@@ -25,7 +30,7 @@ function HeroSection() {
         </Typography>
         <div style={{ paddingTop: '4em' }}>
           <Button variant='contained' color='secondary' onClick={() => router.push('/trips')}>
-            ดู ทริป
+            Get Started!
           </Button>
         </div>
       </div>

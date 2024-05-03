@@ -13,9 +13,9 @@ import {
   CardHeader,
   CardMedia,
   Chip,
-  CircularProgress,
   Grid,
   IconButton,
+  Link,
   Typography
 } from '@mui/material'
 
@@ -26,6 +26,7 @@ import { format } from 'date-fns'
 import parse from 'html-react-parser'
 import * as R from 'ramda'
 import { useEffect } from 'react'
+import { LoadingComponent } from 'src/@core/components/loading'
 import { useApi } from 'src/@core/services'
 import { Trip } from 'src/@core/types/trip'
 import { toCurrency } from 'src/@core/utils/currency'
@@ -40,10 +41,10 @@ interface TripDetailsProps {
   fullWidth?: boolean
 }
 
-export default function TripDetailComponent({ 
+export default function TripDetailComponent({
   fullWidth = false,
-  tripID, 
-  isShortDescription = false 
+  tripID,
+  isShortDescription = false
 }: TripDetailsProps) {
   const { tripAPI } = useApi()
 
@@ -52,20 +53,25 @@ export default function TripDetailComponent({
 
   useEffect(() => {
     findTripByID.mutate(tripID)
-  }, [])
+  }, [tripID])
 
   const trip = data as Trip | undefined
   const profiler = trip?.profiler
 
   if (R.isNil(trip) || R.isNil(profiler)) {
-    return <CircularProgress color='secondary' />
+    return <LoadingComponent />
   }
 
   const imgSrc: string[] = R.isEmpty(trip?.data.cover_images)
     ? [DefaultCoverTripImage]
     : trip?.data.cover_images.map(v => v.signed_url)
 
-  const images = imgSrc.map(v => ({ original: v, thumbnail: v, thumbnailHeight: '60px', originalHeight: '600px' }))
+  const images = imgSrc.map(v => ({
+    original: v,
+    thumbnail: v,
+    thumbnailHeight: '60px',
+    originalHeight: '600px'
+  }))
   const htmlString = trip?.data?.description
   const msg = trimMessage(htmlString, 300)
   const parsedHtml = parse(isShortDescription ? msg : htmlString)
@@ -75,17 +81,28 @@ export default function TripDetailComponent({
   }
 
   return (
-    <Card style={{ margin: 0, maxWidth: '1200px', width: fullWidth ? '93vw' : 'auto' }}>
-      <CardHeader
-        avatar={
-          R.isNil(profiler?.data?.logo_image?.signed_url) ? (
-            <Avatar src={profiler?.data?.logo_image?.signed_url || ''} />
-          ) : (
-            <Avatar>{profiler?.data?.name[0]}</Avatar>
-          )
-        }
-        title={profiler?.data?.name}
-      />
+    <Card style={{ margin: 0, maxWidth: '1200px', width: fullWidth ? '100vw' : 'auto' }}>
+      <Link
+        target='_blank'
+        href={`/profiler/${trip?.profiler_id}`}
+        sx={{
+          '&:hover': {
+            color: '#000000',
+            textDecoration: 'underline #000000'
+          }
+        }}
+      >
+        <CardHeader
+          avatar={
+            !R.isNil(profiler?.data?.logo_image?.signed_url) ? (
+              <Avatar src={profiler?.data?.logo_image?.signed_url || ''} />
+            ) : (
+              <Avatar>{profiler?.data?.name[0]}</Avatar>
+            )
+          }
+          title={profiler?.data?.name}
+        />
+      </Link>
 
       {imgSrc.length === 1 ? (
         <CardMedia component='img' image={imgSrc[0]} alt='image of trip' sx={{ maxHeight: 500 }} />
@@ -162,7 +179,7 @@ export default function TripDetailComponent({
                   <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                     {v.contact_type}
                   </Typography>
-                  <a href={`https://line.me/R/ti/g/OVvKBVRdhk`} rel='noopener noreferrer' target='_blank'>
+                  <a href={v.link} rel='noopener noreferrer' target='_blank'>
                     <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
                       {v.link}
                     </Typography>

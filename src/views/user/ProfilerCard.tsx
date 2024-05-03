@@ -14,7 +14,7 @@ export default function ProfilerCard(props: ProfilerCardProps) {
     <Card>
       <CardHeader
         avatar={
-          R.isNil(profiler?.data?.logo_image?.signed_url) ? (
+          !R.isNil(profiler?.data?.logo_image?.signed_url) ? (
             <Avatar src={profiler?.data?.logo_image?.signed_url || ''} />
           ) : (
             <Avatar>{profiler?.data?.name[0]}</Avatar>
