@@ -1,10 +1,9 @@
 import AlternateEmail from '@mui/icons-material/AlternateEmail'
 import ChevronLeft from '@mui/icons-material/ChevronLeft'
 import ChevronRight from '@mui/icons-material/ChevronRight'
-import CloseFullscreen from '@mui/icons-material/CloseFullscreen'
-import Fullscreen from '@mui/icons-material/Fullscreen'
 import Groups from '@mui/icons-material/Groups'
 import Schedule from '@mui/icons-material/Schedule'
+import TourIcon from '@mui/icons-material/Tour'
 import {
   Avatar,
   Box,
@@ -19,13 +18,19 @@ import {
   Typography
 } from '@mui/material'
 
+import styled from '@emotion/styled'
+// ** MUI Imports
+import { Theme, useTheme } from '@mui/material/styles'
+
 import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/css/image-gallery.css'
+
+import Slider from 'react-slick'
 
 import { format } from 'date-fns'
 import parse from 'html-react-parser'
 import * as R from 'ramda'
-import { useEffect } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { LoadingComponent } from 'src/@core/components/loading'
 import { useApi } from 'src/@core/services'
 import { Trip } from 'src/@core/types/trip'
@@ -47,9 +52,34 @@ export default function TripDetailComponent({
   isShortDescription = false
 }: TripDetailsProps) {
   const { tripAPI } = useApi()
+  const theme: Theme = useTheme()
 
   const { findTripByID } = tripAPI
   const { data } = findTripByID
+
+  console.log('data', data)
+
+  // IMAGES
+  const getResponsiveHeight = () => {
+    if (typeof window === 'undefined') return 'calc(100vw * 0.8)' // Default height if window is not available
+    const width = window.innerWidth
+    if (width >= 1200) return 'calc(50vw * 0.7)'
+    if (width >= 900) return 'calc(50vw * 0.7)'
+    else if (width >= 600) return 'calc(50vw * 0.8)'
+
+    return 'calc(60vw * 0.8)'
+  }
+
+  const [height, setHeight] = useState(getResponsiveHeight())
+
+  const dotsRef = useRef<(HTMLDivElement | null)[]>([])
+
+  useEffect(() => {
+    const handleResize = () => setHeight(getResponsiveHeight())
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     findTripByID.mutate(tripID)
@@ -66,127 +96,219 @@ export default function TripDetailComponent({
     ? [DefaultCoverTripImage]
     : trip?.data.cover_images.map(v => v.signed_url)
 
-  const images = imgSrc.map(v => ({
-    original: v,
-    thumbnail: v,
-    thumbnailHeight: '60px',
-    originalHeight: '600px'
-  }))
+  const Dot = styled.div`
+    margin-top: 3em;
+    width: 10px;
+    height: 10px;
+    background-color: rgba(67, 224, 208, 0.8);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.1s, transform 0.1s;
+    outline: none;
+    &:hover {
+      background-color: rgba(67, 200, 156, 1);
+    }
+    &:focus {
+      background-color: rgba(200, 100, 50, 1);
+      transform: scale(1.2);
+    }
+  `
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    className: 'center',
+    centerMode: true,
+    centerPadding: '10%',
+    customPaging: (i: number) => (
+      <Dot
+        ref={el => {
+          dotsRef.current[i] = el
+        }}
+        tabIndex={0}
+      />
+    ),
+    appendDots: (dots: React.ReactNode) => (
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '10px',
+          display: 'flex',
+          justifyContent: 'center',
+          width: '100%'
+        }}
+      >
+        <ul style={{ margin: '0', padding: '0', display: 'flex', listStyleType: 'none' }}>{dots}</ul>
+      </div>
+    ),
+    afterChange: (current: number) => {
+      if (dotsRef.current[current]) {
+        dotsRef.current[current]?.focus()
+      }
+    }
+  }
+
+  const imageCarousel = (
+    <div style={{ paddingBottom: '2em' }}>
+      <Slider {...settings}>
+        {imgSrc.map((v, index) => {
+          return (
+            <div key={index}>
+              <img
+                src={v}
+                alt='image of the trip'
+                style={{
+                  width: '95%',
+                  height,
+                  objectFit: 'cover',
+                  borderRadius: '20px'
+                }}
+              />
+            </div>
+          )
+        })}
+      </Slider>
+    </div>
+  )
+
+  // RICH TEXT
   const htmlString = trip?.data?.description
   const msg = trimMessage(htmlString, 300)
   const parsedHtml = parse(isShortDescription ? msg : htmlString)
+  const DescriptionHTML = () => <>{parsedHtml}</>
 
-  const DescriptionHTML = () => {
-    return <>{parsedHtml}</>
-  }
+  // AVATAR
+  const profilerAvatar = !R.isNil(profiler?.data?.logo_image?.signed_url) ? (
+    <Avatar src={profiler?.data?.logo_image?.signed_url || ''} />
+  ) : (
+    <Avatar>{profiler?.data?.name[0]}</Avatar>
+  )
+
+  // MEMBER AVATAR
+  const goingAvatars =
+    data?.data?.members.length > 0 ? <GoingAvatars members={data?.data?.members as Member[]} /> : <></>
 
   return (
     <Card style={{ margin: 0, maxWidth: '1200px', width: fullWidth ? '100vw' : 'auto' }}>
-      <Link
-        target='_blank'
-        href={`/profiler/${trip?.profiler_id}`}
-        sx={{
-          '&:hover': {
-            color: '#000000',
-            textDecoration: 'underline #000000'
-          }
+      <Box
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '1.5em'
         }}
       >
-        <CardHeader
-          avatar={
-            !R.isNil(profiler?.data?.logo_image?.signed_url) ? (
-              <Avatar src={profiler?.data?.logo_image?.signed_url || ''} />
-            ) : (
-              <Avatar>{profiler?.data?.name[0]}</Avatar>
-            )
-          }
-          title={profiler?.data?.name}
+        <Typography gutterBottom variant='h5' component='div' style={{ fontWeight: 'bold' }}>
+          {trip?.data?.title}
+        </Typography>
+        <Chip
+          label={toCurrency(trip.data.payment?.full_price || 0.0)}
+          color='secondary'
+          sx={{
+            height: '2em',
+            fontSize: '1rem',
+            textTransform: 'capitalize',
+            '& .MuiChip-label': { fontWeight: 500 }
+          }}
         />
-      </Link>
+      </Box>
 
       {imgSrc.length === 1 ? (
         <CardMedia component='img' image={imgSrc[0]} alt='image of trip' sx={{ maxHeight: 500 }} />
       ) : (
-        <ImageGallery
-          items={images}
-          showPlayButton={false}
-          autoPlay={true}
-          renderLeftNav={(onClick: any, disabled: boolean) => (
-            <div style={{ position: 'absolute', top: '48%', left: '0.5em', zIndex: '1' }}>
-              <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
-                <ChevronLeft />
-              </IconButton>
-            </div>
-          )}
-          renderRightNav={(onClick: any, disabled: boolean) => (
-            <div style={{ position: 'absolute', top: '48%', right: '0.5em', zIndex: '1' }}>
-              <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick} disabled={disabled}>
-                <ChevronRight />
-              </IconButton>
-            </div>
-          )}
-          renderFullscreenButton={(onClick: any, isFullscreen: boolean) => (
-            <div style={{ position: 'absolute', bottom: '1em', right: '1em', zIndex: '1' }}>
-              <IconButton color='secondary' aria-label='go back' component='span' onClick={onClick}>
-                {isFullscreen ? <CloseFullscreen /> : <Fullscreen />}
-              </IconButton>
-            </div>
-          )}
-        />
+        imageCarousel
       )}
       <CardContent>
-        <Grid container spacing={7}>
-          <Grid item xs={12}>
-            <Box
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-              }}
-            >
-              <Typography gutterBottom variant='h5' component='div'>
-                {trip?.data?.title}
-              </Typography>
-              <Chip
-                label={toCurrency(trip.data.payment?.full_price || 0.0)}
-                color='primary'
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={4}>
+            <div style={{ display: 'flex', flexDirection: 'column', paddingBottom: '1em' }}>
+              <div style={{ display: 'flex', paddingBottom: '0.6em' }}>
+                <TourIcon style={{ color: theme.palette.info.main }} />
+                <Typography
+                  variant='body1'
+                  color={theme.palette.info.main}
+                  style={{ paddingLeft: '0.5em', fontWeight: 'bold' }}
+                >
+                  ทัวร์ลีดเดอร์
+                </Typography>
+              </div>
+              <Link
+                target='_blank'
+                href={`/profiler/${trip?.profiler_id}`}
                 sx={{
-                  height: 24,
-                  fontSize: '0.75rem',
-                  textTransform: 'capitalize',
-                  '& .MuiChip-label': { fontWeight: 500 }
+                  '&:hover': {
+                    color: '#000000',
+                    textDecoration: 'underline #000000'
+                  },
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center'
                 }}
-              />
-            </Box>
-            <div style={{ display: 'flex' }}>
-              <Schedule style={{ color: '#3B5249' }} />
-              <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
+              >
+                <div style={{}}>{profilerAvatar}</div>
+                <Typography variant='body1' color='text.primary' style={{ paddingLeft: '1em', fontWeight: 'bold' }}>
+                  {profiler.data.name}
+                </Typography>
+              </Link>
+            </div>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <div style={{ display: 'flex', paddingBottom: '0.6em', alignItems: 'center' }}>
+              <Schedule style={{ color: theme.palette.secondary.main }} />
+              <Typography
+                variant='body2'
+                color={theme.palette.secondary.main}
+                style={{ paddingLeft: '0.5em', fontWeight: 'bold' }}
+              >
                 {`${format(new Date(trip?.data.from_date), 'dd MMM yyyy')} -
                 ${format(new Date(trip?.data.to_date), 'dd MMM yyyy')}`}
               </Typography>
             </div>
-            <div style={{ display: 'flex' }}>
-              <Groups style={{ color: '#3B5249' }} />
-              <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
-                จำนวนคน: {trip?.data?.members.length} / {trip?.data?.total_people}
+            <div style={{ display: 'flex', paddingBottom: '0.6em', alignItems: 'center' }}>
+              <Groups style={{ color: theme.palette.error.main }} />
+              <Typography variant='body2' color={theme.palette.error.main} style={{ paddingLeft: '0.5em' }}>
+                จองแล้ว: {trip?.data?.members.length} / {trip?.data?.total_people} คน
               </Typography>
+              <div style={{ paddingLeft: '0.8em' }}>{goingAvatars}</div>
             </div>
-            {trip?.data?.contacts.map((v, id) => {
-              return (
-                <div style={{ display: 'flex' }} key={id}>
-                  <AlternateEmail style={{ color: '#3B5249' }} />
-                  <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
-                    {v.contact_type}
-                  </Typography>
-                  <a href={v.link} rel='noopener noreferrer' target='_blank'>
-                    <Typography variant='body2' color='text.secondary' style={{ paddingLeft: '0.5em' }}>
-                      {v.link}
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <div style={{ display: 'flex', flexDirection: 'column', paddingBottom: '0.6em' }}>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <AlternateEmail style={{ color: theme.palette.info.dark, width: '0.8em' }} />
+                <Typography
+                  variant='body2'
+                  color={theme.palette.info.dark}
+                  style={{ paddingLeft: '0.5em', fontWeight: 'bold' }}
+                >
+                  ติดต่อ
+                </Typography>
+              </div>
+              {trip?.data?.contacts.map((v, id) => {
+                return (
+                  <div style={{ display: 'flex', paddingBottom: '0.3em' }} key={id}>
+                    <Typography
+                      variant='body2'
+                      color={theme.palette.info.dark}
+                      style={{ paddingLeft: '0.1em', fontWeight: 'bold' }}
+                    >
+                      {v.contact_type}
                     </Typography>
-                  </a>
-                </div>
-              )
-            })}
+                    <a href={v.link} rel='noopener noreferrer' target='_blank' style={{ textDecoration: 'none' }}>
+                      <Typography variant='body2' color={theme.palette.info.dark} style={{ paddingLeft: '0.5em' }}>
+                        {v.link}
+                      </Typography>
+                    </a>
+                  </div>
+                )
+              })}
+            </div>
+          </Grid>
+          <Grid item xs={12}>
             <div style={{ marginTop: 10 }}>
               <DescriptionHTML />
             </div>
@@ -196,3 +318,49 @@ export default function TripDetailComponent({
     </Card>
   )
 }
+
+const AvatarWrapper = styled(Box)`
+  display: flex;
+  align-items: center;
+`
+
+const StackedAvatar = styled(Avatar)<{ index: number }>`
+  z-index: ${({ index }) => 100 - index};
+  margin-left: ${({ index }) => (index > 0 ? '-18px' : '0')}; // Adjust stacking overlap
+  border: 2px solid white;
+`
+
+const MoreAvatar = styled(Avatar)`
+  background-color: #e0e0e0;
+  color: #000;
+  border: 2px solid white;
+  cursor: default;
+`
+
+interface Member {
+  signed_url?: string
+  name?: string
+}
+
+interface GoingAvatarsProps {
+  members: Member[]
+}
+
+const GoingAvatars: React.FC<GoingAvatarsProps> = ({ members }) => {
+  const MAX_VISIBLE_AVATARS = 5
+  const extraCount = members.length - MAX_VISIBLE_AVATARS
+  const visibleMembers = extraCount > 0 ? members.slice(0, MAX_VISIBLE_AVATARS) : members
+
+  return (
+    <AvatarWrapper>
+      {visibleMembers.map((member, index) => (
+        <StackedAvatar key={index} src={member.signed_url || ''} index={index}>
+          {!member.signed_url ? member.name?.[0] : ''}
+        </StackedAvatar>
+      ))}
+      {extraCount > 0 && <MoreAvatar>+{extraCount}</MoreAvatar>}
+    </AvatarWrapper>
+  )
+}
+
+// export default GoingAvatars
