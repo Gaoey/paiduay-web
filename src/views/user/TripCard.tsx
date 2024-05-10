@@ -42,7 +42,12 @@ export default function TripCard(props: TripCardProps) {
     trip?.data?.members.length > 0 ? <GoingAvatars members={trip?.data?.members as Member[]} /> : <></>
 
   return (
-    <Card sx={{ height: 350 }}>
+    <Card sx={{ height: {
+      xs: '350px', // Small screens
+      sm: '400px', // Medium screens
+      md: '450px', // Large screens
+      lg: '500px' // Extra-large screens
+    } }}>
       {!hideProfiler && (
         <div
           style={{
@@ -85,10 +90,10 @@ export default function TripCard(props: TripCardProps) {
               flexShrink: 0
             }}
           >
-            <TourIcon style={{ color: theme.palette.primary.main, height: '100%' }} />
+            <TourIcon style={{ color: theme.palette.secondary.main, height: '100%' }} />
             <Typography
               variant='body2'
-              color={theme.palette.primary.main}
+              color={theme.palette.secondary.main}
               style={{ paddingLeft: '0.5em', fontWeight: 'bold' }}
             >
               ทริปลีดเดอร์
@@ -125,7 +130,7 @@ export default function TripCard(props: TripCardProps) {
                 </Box>
               </Grid>
 
-              <Grid item xs={12} sm={8}>
+              <Grid item xs={8} sm={8}>
                 <div style={{ display: 'flex', paddingBottom: '0.6em', alignItems: 'center' }}>
                   <Schedule style={{ color: theme.palette.secondary.main }} />
                   <Typography
@@ -163,12 +168,18 @@ export default function TripCard(props: TripCardProps) {
 
                 <div style={{ marginTop: 10 }}>{parsedHtml}</div>
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={4} sm={4}>
                 <CardMedia
                   component='img'
                   image={imgSrc[0]}
                   alt='image of trip'
-                  sx={{ height: 100, width: 100, borderRadius: '12px', mt: 1, objectFit: 'cover' }}
+                  sx={{
+                    width: '100%', // Scale responsively to the grid
+                    aspectRatio: '1 / 1', // Maintain the aspect ratio (4:3 in this case)
+                    borderRadius: '12px',
+                    mt: 1,
+                    objectFit: 'cover'
+                  }}
                 />{' '}
               </Grid>
             </Grid>
