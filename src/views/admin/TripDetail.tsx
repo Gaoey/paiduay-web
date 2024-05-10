@@ -1,6 +1,4 @@
 import AlternateEmail from '@mui/icons-material/AlternateEmail'
-import ChevronLeft from '@mui/icons-material/ChevronLeft'
-import ChevronRight from '@mui/icons-material/ChevronRight'
 import Groups from '@mui/icons-material/Groups'
 import Schedule from '@mui/icons-material/Schedule'
 import TourIcon from '@mui/icons-material/Tour'
@@ -9,24 +7,15 @@ import {
   Box,
   Card,
   CardContent,
-  CardHeader,
   CardMedia,
   Chip,
   Grid,
-  IconButton,
   Link,
   Typography
 } from '@mui/material'
-
 import styled from '@emotion/styled'
-// ** MUI Imports
 import { Theme, useTheme } from '@mui/material/styles'
-
-import ImageGallery from 'react-image-gallery'
-import 'react-image-gallery/styles/css/image-gallery.css'
-
 import Slider from 'react-slick'
-
 import { format } from 'date-fns'
 import parse from 'html-react-parser'
 import * as R from 'ramda'
@@ -229,11 +218,11 @@ export default function TripDetailComponent({
               <div style={{ display: 'flex', paddingBottom: '0.6em' }}>
                 <TourIcon style={{ color: theme.palette.info.main }} />
                 <Typography
-                  variant='body1'
+                  variant='body2'
                   color={theme.palette.info.main}
                   style={{ paddingLeft: '0.5em', fontWeight: 'bold' }}
                 >
-                  ทัวร์ลีดเดอร์
+                  ทริปลีดเดอร์
                 </Typography>
               </div>
               <Link
@@ -330,13 +319,6 @@ const StackedAvatar = styled(Avatar)<{ index: number }>`
   border: 2px solid white;
 `
 
-const MoreAvatar = styled(Avatar)`
-  background-color: #e0e0e0;
-  color: #000;
-  border: 2px solid white;
-  cursor: default;
-`
-
 interface Member {
   signed_url?: string
   name?: string
@@ -358,9 +340,8 @@ const GoingAvatars: React.FC<GoingAvatarsProps> = ({ members }) => {
           {!member.signed_url ? member.name?.[0] : ''}
         </StackedAvatar>
       ))}
-      {extraCount > 0 && <MoreAvatar>+{extraCount}</MoreAvatar>}
+      {extraCount > 0 && <Typography variant='body2' style={{ fontSize: '0.7em', paddingLeft: '0.1em'}} >{`+${extraCount}`}</Typography>}
     </AvatarWrapper>
   )
 }
 
-// export default GoingAvatars
