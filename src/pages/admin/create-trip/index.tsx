@@ -9,7 +9,6 @@ import { Grid } from '@mui/material'
 // ** Demo Tabs Imports
 
 // ** Third Party Styles Imports
-import { getSession } from 'next-auth/react'
 import 'react-datepicker/dist/react-datepicker.css'
 import { SubmitHandler } from 'react-hook-form'
 import { useApi } from 'src/@core/services'
@@ -22,6 +21,7 @@ import { TripData, TripPayload, TripStatus } from 'src/@core/types/trip'
 import { useRouter } from 'next/router'
 import { Seat, SeatStatus, TransportData } from 'src/@core/types/transport'
 import { Media } from 'src/@core/types'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 
 const CreateTrip = () => {
   const router = useRouter()
@@ -101,7 +101,7 @@ const CreateTrip = () => {
 CreateTrip.getLayout = (page: ReactNode) => <AdminLayout>{page}</AdminLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx)
+  const session = await getSessionFromCookie(ctx)
 
   return {
     props: {

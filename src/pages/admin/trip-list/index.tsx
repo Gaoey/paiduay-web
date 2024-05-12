@@ -9,10 +9,10 @@ import Grid from '@mui/material/Grid'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
-import { getSession } from 'next-auth/react'
 import { ReactNode } from 'react'
 import AdminLayout from 'src/layouts/AdminLayout'
 import TripList from 'src/views/admin/TripList'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 
 const TripListPage = () => {
   return (
@@ -29,7 +29,7 @@ const TripListPage = () => {
 TripListPage.getLayout = (page: ReactNode) => <AdminLayout>{page}</AdminLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx)
+  const session = await getSessionFromCookie(ctx)
 
   return {
     props: {

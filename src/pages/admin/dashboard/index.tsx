@@ -9,7 +9,6 @@ import Grid from '@mui/material/Grid'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
-import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
@@ -21,6 +20,7 @@ import AdminLayout from 'src/layouts/AdminLayout'
 import TripList from 'src/views/admin/TripList'
 import Profile from 'src/views/dashboard/Profile'
 import StatisticsCard from 'src/views/dashboard/StatisticsCard'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 
 const Dashboard = () => {
   const router = useRouter()
@@ -133,7 +133,7 @@ const Dashboard = () => {
 Dashboard.getLayout = (page: ReactNode) => <AdminLayout>{page}</AdminLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx)
+  const session = await getSessionFromCookie(ctx)
 
   return {
     props: {

@@ -1,4 +1,3 @@
-import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
@@ -10,6 +9,7 @@ import { Media } from 'src/@core/types'
 import { BookingData, BookingStatus, PaymentType, SimplySeatData } from 'src/@core/types/booking'
 import { Profiler } from 'src/@core/types/profiler'
 import { Trip } from 'src/@core/types/trip'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 import UserLayout from 'src/layouts/UserLayout'
 import BookingForm, { getPaymentPrice } from 'src/views/user/BookingForm'
 
@@ -116,7 +116,7 @@ export default function Booking() {
 Booking.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx)
+  const session = await getSessionFromCookie(ctx)
 
   return {
     props: {

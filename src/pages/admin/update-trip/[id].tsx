@@ -1,5 +1,4 @@
 import { Grid } from '@mui/material'
-import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
@@ -11,6 +10,7 @@ import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import { Media } from 'src/@core/types'
 import { Transport, TransportData } from 'src/@core/types/transport'
 import { Trip, TripData, TripPayload, TripStatus } from 'src/@core/types/trip'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 import AdminLayout from 'src/layouts/AdminLayout'
 import TripForm from 'src/views/admin/TripForm'
 
@@ -97,7 +97,7 @@ export default function UpdateTrip() {
 UpdateTrip.getLayout = (page: ReactNode) => <AdminLayout>{page}</AdminLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx)
+  const session = await getSessionFromCookie(ctx)
 
   return {
     props: {

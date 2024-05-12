@@ -1,5 +1,4 @@
 import { Grid, Typography } from '@mui/material'
-import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
@@ -7,6 +6,7 @@ import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import { Paginate } from 'src/@core/types'
 import { Booking } from 'src/@core/types/booking'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 import UserLayout from 'src/layouts/UserLayout'
 import BookingHistoryTable from 'src/views/user/BookingHistory'
 import UserProfileForm from 'src/views/user/UserProfileForm'
@@ -59,7 +59,7 @@ export default function UserProfileDetail() {
 UserProfileDetail.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx)
+  const session = await getSessionFromCookie(ctx)
 
   return {
     props: {

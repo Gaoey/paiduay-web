@@ -1,5 +1,4 @@
 import { Box, Button, Grid, Typography } from '@mui/material'
-import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
@@ -13,6 +12,8 @@ import BookingCard from 'src/views/admin/BookingList'
 import RemoveTripPopUp from 'src/views/admin/RemoveTripPopUp'
 import TransportDetail, { AddTransportButton } from 'src/views/admin/TransportDetail'
 import TripDetailComponent from 'src/views/admin/TripDetail'
+import { useMediaQuery, useTheme } from '@mui/material'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 
 export default function TripDetail() {
   const router = useRouter()
@@ -86,6 +87,9 @@ export default function TripDetail() {
   const numberOfVans = transports.filter(x => x.data.transport_by === Transportation[Transportation.VAN]).length
   const numberOfAlternativeVehicles = transports.length - numberOfVans
 
+  const theme = useTheme()
+  const screenIsWide = useMediaQuery(theme.breakpoints.up('md'))
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={7}>
@@ -111,7 +115,7 @@ export default function TripDetail() {
               </Box>
             </Grid>
             <Grid item md={12}>
-              <TripDetailComponent tripID={tripID} isShortDescription />
+              <TripDetailComponent tripID={tripID} isShortDescription fullWidth={!screenIsWide} />
             </Grid>
           </Grid>
         </Grid>
@@ -181,7 +185,7 @@ export default function TripDetail() {
 TripDetail.getLayout = (page: ReactNode) => <AdminLayout>{page}</AdminLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx)
+  const session = await getSessionFromCookie(ctx)
 
   return {
     props: {

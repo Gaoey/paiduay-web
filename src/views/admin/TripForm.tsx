@@ -52,9 +52,29 @@ function TripForm(props: TripFormProps) {
     setValue,
     watch,
     control,
-    formState: { errors }
+    formState: { errors },
+    setError
   } = useForm({ defaultValues })
 
+  const {
+    fields: locationFields,
+    append: appendLocation,
+    remove: removeLocation
+  } = useFieldArray({
+    control,
+    name: 'locations'
+  })
+
+  const {
+    fields: contactsField,
+    append: appendContact,
+    remove: removeContact
+  } = useFieldArray({
+    control,
+    name: 'contacts'
+  })
+
+  // IMAGE HANDLING LOGIC
   const [selectedImages, setSelectedImages] = React.useState<Media[]>(defaultValues.cover_images)
 
   const handleImageChange = async (e: any) => {
@@ -126,6 +146,7 @@ function TripForm(props: TripFormProps) {
     }
   }, [selectedImages.length])
 
+  // RICH TEXT HANDLING LOGIC
   const [tiptapContent, setTiptapContent] = useState('')
 
   const handleTiptapChange = (content: React.SetStateAction<string>) => {
@@ -133,7 +154,43 @@ function TripForm(props: TripFormProps) {
   }
 
   const handleSubmitWithTiptap = handleSubmit(data => {
+    // Date validations
+    const fromDate = new Date(data.from_date)
+    const toDate = new Date(data.to_date)
+    const reserveDate = new Date(data.date_to_reserve)
+    const paymentDate = new Date(data.payment.payment_date)
+
+    let hasError = false
+
+    if (fromDate >= toDate) {
+      setError('from_date', { type: 'custom', message: 'วันไป ต้องมาก่อน วันกลับ' })
+      setError('to_date', { type: 'custom', message: 'วันกลับ ต้องมาหลัง วันไป' })
+      hasError = true
+    }
+
+    if (reserveDate >= fromDate) {
+      setError('date_to_reserve', { type: 'custom', message: 'วันเริ่มจอง ต้องมาก่อนกว่า วันไป' })
+      hasError = true
+    }
+
+    if (paymentDate >= fromDate || paymentDate >= toDate || paymentDate <= reserveDate) {
+      setError('payment.payment_date', {
+        type: 'custom',
+        message: 'วันที่ลูกค้าต้องชำระเงิน ต้องเป็นวันก่อนวันไป และหลังจากวันให้เริ่มจอง'
+      })
+      hasError = true
+    }
+
+    if (hasError) {
+      alert('โปรดใส่ข้อมูลวันที่ต่างๆ ให้ถูกต้อง')
+
+      return
+    }
+
+    // Add rich text description content
     data.description = tiptapContent
+
+    // Validate 
     if (data.cover_images.length === 0) {
       alert('ต้องอัพโหลดอย่างน้อยหนึ่งภาพ')
 
@@ -142,24 +199,7 @@ function TripForm(props: TripFormProps) {
     props.onSubmit(data)
   })
 
-  const {
-    fields: locationFields,
-    append: appendLocation,
-    remove: removeLocation
-  } = useFieldArray({
-    control,
-    name: 'locations'
-  })
-
-  const {
-    fields: contactsField,
-    append: appendContact,
-    remove: removeContact
-  } = useFieldArray({
-    control,
-    name: 'contacts'
-  })
-
+  // TRANSPORT HANDLING LOGIC
   const {
     fields: transports,
     append: appendTransport,
@@ -175,6 +215,7 @@ function TripForm(props: TripFormProps) {
   )
   const numberOfAlternativeVehicles = transports.length - numberOfVans
 
+  // RENDER COMPONENT
   return (
     <Card>
       <CardHeader title='สร้างทริป' titleTypographyProps={{ variant: 'h6' }} />
@@ -327,6 +368,7 @@ function TripForm(props: TripFormProps) {
                   onChange={(date: Date) => setValue('from_date', date)}
                   minDate={new Date()}
                 />
+                {errors.from_date && <Typography color='error'>{errors.from_date.message}</Typography>}
               </DatePickerWrapper>
             </Grid>
 
@@ -344,6 +386,7 @@ function TripForm(props: TripFormProps) {
                   onChange={(date: Date) => setValue('to_date', date)}
                   minDate={new Date()}
                 />
+                {errors.to_date && <Typography color='error'>{errors.to_date.message}</Typography>}
               </DatePickerWrapper>
             </Grid>
 
@@ -365,6 +408,7 @@ function TripForm(props: TripFormProps) {
                   onChange={(date: Date) => setValue('date_to_reserve', date)}
                   minDate={new Date()}
                 />
+                {errors.date_to_reserve && <Typography color='error'>{errors.date_to_reserve.message}</Typography>}
               </DatePickerWrapper>
             </Grid>
             <Grid item xs={12}>
@@ -414,6 +458,9 @@ function TripForm(props: TripFormProps) {
                   }
                   onChange={(date: Date) => setValue('payment.payment_date', date)}
                 />
+                {errors?.payment?.payment_date && (
+                  <Typography color='error'>{errors.payment.payment_date.message}</Typography>
+                )}
               </DatePickerWrapper>
             </Grid>
 
@@ -488,6 +535,7 @@ function TripForm(props: TripFormProps) {
                         ) : (
                           <TransportationNormalForm
                             values={watch(`transport_data.${index}.seats`)}
+                            totalSeats={watch(`transport_data.${index}.total_seats`)}
                             onChange={(data: Seat[]) => setValue(`transport_data.${index}.seats`, data)}
                           />
                         )}
