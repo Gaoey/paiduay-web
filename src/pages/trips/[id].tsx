@@ -1,8 +1,8 @@
 import { Button, Grid } from '@mui/material'
-import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 import UserLayout from 'src/layouts/UserLayout'
 import TripDetailComponent from 'src/views/admin/TripDetail'
 
@@ -46,7 +46,7 @@ export default function UserTripDetail() {
 UserTripDetail.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx)
+  const session = await getSessionFromCookie(ctx)
 
   return {
     props: {

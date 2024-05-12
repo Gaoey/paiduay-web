@@ -1,5 +1,4 @@
 import { Grid, Paper } from '@mui/material'
-import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
@@ -8,6 +7,7 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import { Paginate } from 'src/@core/types'
 import { Profiler } from 'src/@core/types/profiler'
 import { Trip } from 'src/@core/types/trip'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 import UserLayout from 'src/layouts/UserLayout'
 import ProfilerCard from 'src/views/user/ProfilerCard'
 import TripCardList from 'src/views/user/TripCardList'
@@ -55,7 +55,7 @@ export default function ProfilePage() {
 ProfilePage.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx)
+  const session = await getSessionFromCookie(ctx)
 
   return {
     props: {

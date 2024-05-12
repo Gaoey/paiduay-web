@@ -10,7 +10,6 @@ import Box from '@mui/material/Box'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
-import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { SubmitHandler } from 'react-hook-form'
@@ -19,6 +18,7 @@ import { useApi } from 'src/@core/services'
 import { Media } from 'src/@core/types'
 import { ProfilerData } from 'src/@core/types/profiler'
 import ProfilerForm from 'src/views/admin/ProfilerForm'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 
 const CreateProfiler = () => {
   // ** Hooks
@@ -80,7 +80,7 @@ const CreateProfiler = () => {
 CreateProfiler.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx)
+  const session = await getSessionFromCookie(ctx)
 
   return {
     props: {

@@ -8,7 +8,6 @@ import { ReactNode, useEffect } from 'react'
 // ** Layout Import
 
 // ** Demo Imports
-import { getSession } from 'next-auth/react'
 import * as R from 'ramda'
 import { SubmitHandler } from 'react-hook-form'
 import { LoadingComponent } from 'src/@core/components/loading'
@@ -17,6 +16,7 @@ import { Media } from 'src/@core/types'
 import { Profiler, ProfilerData } from 'src/@core/types/profiler'
 import AdminLayout from 'src/layouts/AdminLayout'
 import ProfilerForm from 'src/views/admin/ProfilerForm'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 
 const UpdateProfiler = () => {
   // ** Hooks
@@ -70,7 +70,7 @@ const UpdateProfiler = () => {
 UpdateProfiler.getLayout = (page: ReactNode) => <AdminLayout>{page}</AdminLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx)
+  const session = await getSessionFromCookie(ctx)
 
   return {
     props: {
