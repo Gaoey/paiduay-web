@@ -24,6 +24,8 @@ export default function TripList() {
     findTrips.mutate({ filter, paginate })
   }, [])
 
+  console.log({ trips })
+
   return (
     <ApexChartWrapper>
       <TripCardList isLoading={isLoading} trips={trips} />

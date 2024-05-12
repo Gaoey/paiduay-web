@@ -1,6 +1,7 @@
 import { Media } from '.'
 import { Contact, Profiler } from './profiler'
 import { TransportData } from './transport'
+import { User } from './user'
 
 export interface Location {
   title: string
@@ -19,6 +20,7 @@ export interface PaymentData {
 export interface TripMember {
   user_id: string // Assuming UUID is a string in TypeScript
   status: MemberStatus
+  user_data?: User | null
 }
 
 export interface TripData {
