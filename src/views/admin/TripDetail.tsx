@@ -2,17 +2,7 @@ import AlternateEmail from '@mui/icons-material/AlternateEmail'
 import Groups from '@mui/icons-material/Groups'
 import Schedule from '@mui/icons-material/Schedule'
 import TourIcon from '@mui/icons-material/Tour'
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Chip,
-  Grid,
-  Link,
-  Typography
-} from '@mui/material'
+import { Avatar, Box, Card, CardContent, CardMedia, Chip, Grid, Link, Typography } from '@mui/material'
 import styled from '@emotion/styled'
 import { Theme, useTheme } from '@mui/material/styles'
 import Slider from 'react-slick'
@@ -22,7 +12,7 @@ import * as R from 'ramda'
 import { useEffect, useState, useRef } from 'react'
 import { LoadingComponent } from 'src/@core/components/loading'
 import { useApi } from 'src/@core/services'
-import { Trip } from 'src/@core/types/trip'
+import { Trip, TripMember } from 'src/@core/types/trip'
 import { toCurrency } from 'src/@core/utils/currency'
 import { trimMessage } from 'src/@core/utils/string'
 
@@ -175,8 +165,7 @@ export default function TripDetailComponent({
   )
 
   // MEMBER AVATAR
-  const goingAvatars =
-    data?.data?.members.length > 0 ? <GoingAvatars members={data?.data?.members as Member[]} /> : <></>
+  const goingAvatars = <GoingAvatars members={data?.data?.members ?? []} />
 
   return (
     <Card style={{ margin: 0, maxWidth: '1200px', width: fullWidth ? '100vw' : 'auto' }}>
@@ -317,19 +306,11 @@ const StackedAvatar = styled(Avatar)<{ index: number }>`
   border: 2px solid white;
 `
 
-
-interface Member {
-  status?: string
-  user_id: string
-  user_data: any
-}
-
 interface GoingAvatarsProps {
-  members: Member[]
+  members: TripMember[]
 }
 
 const GoingAvatars: React.FC<GoingAvatarsProps> = ({ members }) => {
-
   const MAX_VISIBLE_AVATARS = 3
   const extraCount = members.length - MAX_VISIBLE_AVATARS
   const visibleMembers = extraCount > 0 ? members.slice(0, MAX_VISIBLE_AVATARS) : members

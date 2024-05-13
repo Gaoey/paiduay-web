@@ -3,7 +3,7 @@ import { Avatar, Box, Card, CardContent, CardMedia, Chip, Grid, Link, Typography
 import { format } from 'date-fns'
 import parse from 'html-react-parser'
 import * as R from 'ramda'
-import { Trip } from 'src/@core/types/trip'
+import { Trip, TripMember } from 'src/@core/types/trip'
 import { toCurrency } from 'src/@core/utils/currency'
 import { trimMessage } from 'src/@core/utils/string'
 import { DefaultCoverTripImage } from '../admin/TripDetail'
@@ -37,9 +37,9 @@ export default function TripCard(props: TripCardProps) {
     <Avatar>{profiler?.data?.name[0]}</Avatar>
   )
 
+
   // MEMBER AVATAR
-  const goingAvatars =
-    trip?.data?.members.length > 0 ? <GoingAvatars members={trip?.data?.members as Member[]} /> : <></>
+    const goingAvatars = <GoingAvatars members={trip?.data?.members ?? []} />
 
   return (
     <Card sx={{ height: {
@@ -77,7 +77,7 @@ export default function TripCard(props: TripCardProps) {
           >
             <div>{profilerAvatar}</div>
             <Typography variant='body1' color='text.primary' style={{ paddingLeft: '1em', fontWeight: 'bold' }}>
-              {profiler.data.name}
+              {profiler?.data?.name || 'Trip Leader'}
             </Typography>
           </Link>
 
@@ -203,14 +203,8 @@ const StackedAvatar = styled(Avatar)<{ index: number }>`
   width: 1.2em;
 `
 
-interface Member {
-  status?: string
-  user_id: string
-  user_data: any
-}
-
 interface GoingAvatarsProps {
-  members: Member[]
+  members: TripMember[]
 }
 
 const GoingAvatars: React.FC<GoingAvatarsProps> = ({ members }) => {

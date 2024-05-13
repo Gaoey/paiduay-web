@@ -19,6 +19,7 @@ export interface PaymentData {
 export interface TripMember {
   user_id: string // Assuming UUID is a string in TypeScript
   status: MemberStatus
+  user_data: any
 }
 
 export interface TripData {
