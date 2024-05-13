@@ -2,19 +2,20 @@ import AlternateEmail from '@mui/icons-material/AlternateEmail'
 import Groups from '@mui/icons-material/Groups'
 import Schedule from '@mui/icons-material/Schedule'
 import TourIcon from '@mui/icons-material/Tour'
-import { Avatar, Box, Card, CardContent, CardMedia, Chip, Grid, Link, Typography } from '@mui/material'
+import { Avatar, Box, Button, Card, CardContent, CardMedia, Chip, Grid, Link, Typography } from '@mui/material'
 import styled from '@emotion/styled'
 import { Theme, useTheme } from '@mui/material/styles'
 import Slider from 'react-slick'
 import { format } from 'date-fns'
 import parse from 'html-react-parser'
 import * as R from 'ramda'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, PropsWithChildren } from 'react'
 import { LoadingComponent } from 'src/@core/components/loading'
 import { useApi } from 'src/@core/services'
 import { Trip, TripMember } from 'src/@core/types/trip'
 import { toCurrency } from 'src/@core/utils/currency'
 import { trimMessage } from 'src/@core/utils/string'
+import { useRouter } from 'next/router'
 
 export const DefaultCoverTripImage =
   'https://img.freepik.com/free-vector/gradient-spring-illustration_23-2149264032.jpg?w=1380&t=st=1710694509~exp=1710695109~hmac=99468e4d3221b7e0b1890066b623b4fc51c382dc7a2f0c68bbdd92ad88a0cc42'
@@ -299,6 +300,9 @@ export default function TripDetailComponent({
               <DescriptionHTML />
             </div>
           </Grid>
+          <Grid item xs={12} sx={{ textAlign: 'center' }}>
+            <BookingButton tripID={tripID} />
+          </Grid>
         </Grid>
       </CardContent>
     </Card>
@@ -336,5 +340,40 @@ const GoingAvatars: React.FC<GoingAvatarsProps> = ({ members }: GoingAvatarsProp
         <Typography variant='body2' style={{ fontSize: '0.7em', paddingLeft: '0.1em' }}>{`+${extraCount}`}</Typography>
       )}
     </AvatarWrapper>
+  )
+}
+
+interface BookingButtonProps {
+  tripID: string
+}
+
+const BookingButton = ({ tripID }: PropsWithChildren<BookingButtonProps>): JSX.Element | null => {
+  const router = useRouter()
+  const hideElement = Boolean(router.query.hideElement) || false
+
+  return !hideElement ? (
+    <Button
+      variant='contained'
+      color='secondary'
+      onClick={() => router.push(`/booking/${tripID}`)}
+      sx={{
+        position: 'relative',
+        filter: 'drop-shadow(1px 1px 1px #444)',
+        fontSize: '1em',
+        alignSelf: 'center',
+        zIndex: 10000,
+        width: {
+          xs: '90%', // Full width on mobile
+          sm: '50%', // Half width on small screens
+          md: '40%', // 40% width on medium screens
+          lg: '30%', // 30% width on large screens
+          xl: '20%' // 20% width on extra-large screens
+        }
+      }}
+    >
+      จอง
+    </Button>
+  ) : (
+    <></>
   )
 }
