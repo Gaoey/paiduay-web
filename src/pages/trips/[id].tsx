@@ -1,6 +1,6 @@
 import { Button, Grid } from '@mui/material'
 import { useRouter } from 'next/router'
-import { ReactNode } from 'react'
+import { ReactNode, PropsWithChildren } from 'react'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import { getSessionFromCookie } from 'src/@core/utils/session'
 import UserLayout from 'src/layouts/UserLayout'
@@ -27,18 +27,7 @@ export default function UserTripDetail() {
           <TripDetailComponent tripID={tripID} fullWidth={true} />
         </Grid>
       </Grid>
-      {!hideElement && (
-        <div style={{ position: 'fixed', bottom: '2em', textAlign: 'center', width: '100%' }}>
-          <Button
-            variant='contained'
-            color='secondary'
-            style={{ filter: 'drop-shadow(1px 1px 1px #444)', fontSize: '1em' }}
-            onClick={() => router.push(`/booking/${tripID}`)}
-          >
-            จอง
-          </Button>
-        </div>
-      )}
+      <BookingButton tripID={tripID} hideElement={hideElement} />
     </ApexChartWrapper>
   )
 }
@@ -53,4 +42,52 @@ export async function getServerSideProps(ctx: any) {
       session
     }
   }
+}
+
+interface BookingButtonProps {
+  tripID: string
+  hideElement: boolean
+}
+
+const BookingButton = ({ tripID, hideElement }: PropsWithChildren<BookingButtonProps>): JSX.Element | null => {
+  const router = useRouter()
+
+  return (
+    !hideElement ? (
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '2em',
+          textAlign: 'center',
+          width: '95vw',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 10000,
+        }}
+      >
+        <Button
+          variant='contained'
+          color='secondary'
+          onClick={() => router.push(`/booking/${tripID}`)}
+          sx={{
+            position: 'relative',
+            filter: 'drop-shadow(1px 1px 1px #444)',
+            fontSize: '1em',
+            alignSelf: 'center',
+            zIndex: 10000,
+            width: {
+              xs: '90%', // Full width on mobile
+              sm: '50%', // Half width on small screens
+              md: '40%', // 40% width on medium screens
+              lg: '30%', // 30% width on large screens
+              xl: '20%' // 20% width on extra-large screens
+            }
+          }}
+        >
+          จอง
+        </Button>
+      </div>
+    ) : (<></>)
+  )
 }

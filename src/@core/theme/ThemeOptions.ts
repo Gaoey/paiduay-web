@@ -53,6 +53,7 @@ const themeOptions = (settings: Settings): ThemeOptions => {
         main: '#3B5249'
       },
       secondary: {
+        light: '#EEB8B3',
         main: '#A71D31'
       },
       background: {
