@@ -45,7 +45,7 @@ export default function TripCard(props: TripCardProps) {
     <Card sx={{ height: {
       xs: '350px', // Small screens
       sm: '400px', // Medium screens
-      md: '450px', // Large screens
+      md: '400px', // Large screens
       lg: '500px' // Extra-large screens
     } }}>
       {!hideProfiler && (
@@ -204,8 +204,9 @@ const StackedAvatar = styled(Avatar)<{ index: number }>`
 `
 
 interface Member {
-  signed_url?: string
-  name?: string
+  status?: string
+  user_id: string
+  user_data: any
 }
 
 interface GoingAvatarsProps {
@@ -213,6 +214,7 @@ interface GoingAvatarsProps {
 }
 
 const GoingAvatars: React.FC<GoingAvatarsProps> = ({ members }) => {
+
   const MAX_VISIBLE_AVATARS = 3
   const extraCount = members.length - MAX_VISIBLE_AVATARS
   const visibleMembers = extraCount > 0 ? members.slice(0, MAX_VISIBLE_AVATARS) : members
@@ -220,8 +222,8 @@ const GoingAvatars: React.FC<GoingAvatarsProps> = ({ members }) => {
   return (
     <AvatarWrapper>
       {visibleMembers.map((member, index) => (
-        <StackedAvatar key={index} src={member.signed_url || ''} index={index}>
-          {!member.signed_url ? member.name?.[0] : ''}
+        <StackedAvatar key={index} src={member.user_data.profile_image || ''} index={index}>
+          {!member.user_data.profile_image ? member.user_data.name?.[0] : ''}
         </StackedAvatar>
       ))}
       {extraCount > 0 && (

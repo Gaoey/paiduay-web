@@ -46,8 +46,6 @@ export default function TripDetailComponent({
   const { findTripByID } = tripAPI
   const { data } = findTripByID
 
-  console.log('data', data)
-
   // IMAGES
   const getResponsiveHeight = () => {
     if (typeof window === 'undefined') return 'calc(100vw * 0.8)' // Default height if window is not available
@@ -319,9 +317,11 @@ const StackedAvatar = styled(Avatar)<{ index: number }>`
   border: 2px solid white;
 `
 
+
 interface Member {
-  signed_url?: string
-  name?: string
+  status?: string
+  user_id: string
+  user_data: any
 }
 
 interface GoingAvatarsProps {
@@ -329,19 +329,21 @@ interface GoingAvatarsProps {
 }
 
 const GoingAvatars: React.FC<GoingAvatarsProps> = ({ members }) => {
-  const MAX_VISIBLE_AVATARS = 5
+
+  const MAX_VISIBLE_AVATARS = 3
   const extraCount = members.length - MAX_VISIBLE_AVATARS
   const visibleMembers = extraCount > 0 ? members.slice(0, MAX_VISIBLE_AVATARS) : members
 
   return (
     <AvatarWrapper>
       {visibleMembers.map((member, index) => (
-        <StackedAvatar key={index} src={member.signed_url || ''} index={index}>
-          {!member.signed_url ? member.name?.[0] : ''}
+        <StackedAvatar key={index} src={member.user_data.profile_image || ''} index={index}>
+          {!member.user_data.profile_image ? member.user_data.name?.[0] : ''}
         </StackedAvatar>
       ))}
-      {extraCount > 0 && <Typography variant='body2' style={{ fontSize: '0.7em', paddingLeft: '0.1em'}} >{`+${extraCount}`}</Typography>}
+      {extraCount > 0 && (
+        <Typography variant='body2' style={{ fontSize: '0.7em', paddingLeft: '0.1em' }}>{`+${extraCount}`}</Typography>
+      )}
     </AvatarWrapper>
   )
 }
-

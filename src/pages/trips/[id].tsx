@@ -62,7 +62,8 @@ const BookingButton = ({ tripID, hideElement }: PropsWithChildren<BookingButtonP
           width: '95vw',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          zIndex: 10000,
         }}
       >
         <Button
@@ -74,6 +75,7 @@ const BookingButton = ({ tripID, hideElement }: PropsWithChildren<BookingButtonP
             filter: 'drop-shadow(1px 1px 1px #444)',
             fontSize: '1em',
             alignSelf: 'center',
+            zIndex: 10000,
             width: {
               xs: '90%', // Full width on mobile
               sm: '50%', // Half width on small screens
