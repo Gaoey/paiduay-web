@@ -28,7 +28,7 @@ export default function UserProfileForm(props: Props) {
   }, [])
 
   return (
-    <Card sx={{ padding: 10 }}>
+    <Card sx={{ padding: '1em' }}>
       <Grid container spacing={5}>
         <Grid item md={12}>
           <Box>
