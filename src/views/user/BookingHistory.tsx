@@ -41,23 +41,25 @@ const BookingHistoryCards = (props: Props) => {
             <Grid item xs={12} key={booking._id}>
               <Card className={styles.bookingCard}>
                 <Grid container spacing={5} columns={12} sx={{ opacity }}>
-                  <Grid item xs={6} sm={6} md={3}>
-                    <CardHeader
-                      title={booking.trip_data?.data?.title || 'Trip Title Unavailable'}
-                      subheader={`สร้างทริป: ${format(new Date(booking.created_at || 0), 'dd MMM yyyy')}`}
-                    />
+                  <Grid item xs={12} sm={6} md={3} sx={{ marginLeft: '0.2em'}}>
+                    <Typography variant='body1' color='text.primary' style={{fontWeight: 'bold' }}>
+                      {booking.trip_data?.data?.title || 'Trip Title Unavailable'}
+                    </Typography>
+                    <Typography variant='body2' color='text.subtitle' style={{  }}>
+                    {`สร้างทริป: ${format(new Date(booking.created_at || 0), 'dd MMM yyyy')}`}
+                    </Typography>
                   </Grid>
-                  <Grid item xs={6} sm={6} md={3}>
+                  <Grid item xs={7} sm={6} md={3}>
                     <Chip
                       label={`${format(new Date(booking.trip_data?.data?.from_date || 0), 'dd MMM yy')} -
                       ${format(new Date(booking.trip_data?.data?.to_date || 0), 'dd MMM yy')}`}
-                      color='primary'
+                      color={'info'}
                       size='medium'
                       sx={{ '& .MuiChip-label': { fontWeight: 500 } }}
                     />
                   </Grid>
-                  <Grid item xs={3} sm={6} md={2}>
-                    <Box style={{ display: 'flex', marginLeft: 10 }}>
+                  <Grid item xs={5} sm={6} md={2}>
+                    <Box style={{ display: 'flex' }}>
                       <Chip
                         label={bookingStatusObj[booking.data.status].label}
                         color={bookingStatusObj[booking.data.status].color}
@@ -66,11 +68,11 @@ const BookingHistoryCards = (props: Props) => {
                       />
                     </Box>
                   </Grid>
-                  <Grid item xs={9} sm={6} md={4}>
+                  <Grid item xs={12} sm={12} md={4}>
                     <Box style={{ display: 'flex' }}>
                       <Button
                         variant='outlined'
-                        style={{ marginRight: '0.5em' }}
+                        style={{ marginRight: '1em' }}
                         onClick={() => router.push(`/trips/${booking.trip_id}?hideElement=true`)}
                       >
                         ดูข้อมูลทริป
@@ -80,7 +82,7 @@ const BookingHistoryCards = (props: Props) => {
                         booking.data.status !== BookingStatus[BookingStatus.REJECT] && (
                           <Button
                             variant='contained'
-                            style={{ marginRight: '0.5em' }}
+                            style={{ marginRight: '1em' }}
                             color='warning'
                             onClick={() => router.push(`/trips/${booking.trip_id}/booking/${booking._id}`)}
                           >
