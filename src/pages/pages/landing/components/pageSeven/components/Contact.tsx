@@ -65,7 +65,7 @@ const Contact = () => {
       />
       <TextBody
         style={{ marginTop: '16px' }}
-        text='chiayaporn.chi@log21ruby.com'
+        text='chaiyaporn.chi@log21ruby.com'
       />
       <TextBody style={{ marginTop: '16px' }} text='0892036581' />
       <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: '22px' }}>
