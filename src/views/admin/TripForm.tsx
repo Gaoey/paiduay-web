@@ -14,6 +14,7 @@ import Tiptap from '../editor/Tiptap'
 import 'react-datepicker/dist/react-datepicker.css'
 import Pica from 'pica'
 import { LoadingButton } from '@mui/lab'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface TripFormProps {
   trip_payload?: TripPayload
@@ -540,9 +541,10 @@ function TripForm(props: TripFormProps) {
                           />
                         )}
                       </Grid>
+                      
                       <Grid item xs={2}>
-                        <Button type='button' variant='outlined' onClick={() => removeTransport(index)}>
-                          ลบ
+                        <Button type='button' variant='contained' color='error' onClick={() => removeTransport(index)}>
+                          <DeleteIcon />
                         </Button>
                       </Grid>
                     </Grid>

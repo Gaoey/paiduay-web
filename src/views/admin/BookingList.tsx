@@ -20,7 +20,7 @@ import {
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
-import ImageCarousel from 'src/@core/components/image-carousel'
+import VerticalImageGallery from 'src/@core/components/image-gallery'
 import { ThemeColor } from 'src/@core/layouts/types'
 import { Media } from 'src/@core/types'
 import { Booking, BookingData, BookingStatus, SimplySeatData } from 'src/@core/types/booking'
@@ -203,32 +203,35 @@ function UpdateStatusButton(props: UpdateStatusButtonProps) {
 }
 
 interface ViewSlipButtonProps {
-  slipImg: Media[]
+  slipImg: Media[];
+}
+interface ViewSlipButtonProps {
+  slipImg: Media[];
 }
 
 function ViewSlipButton(props: ViewSlipButtonProps) {
-  const { slipImg } = props
+  const { slipImg } = props;
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const handleClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   return (
     <>
-      <Button variant='contained' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
+      <Button variant="contained" onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
         ดูสลิป
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>สลิป</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <ImageCarousel medias={slipImg} />
+            <VerticalImageGallery medias={slipImg} />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -236,7 +239,7 @@ function ViewSlipButton(props: ViewSlipButtonProps) {
         </DialogActions>
       </Dialog>
     </>
-  )
+  );
 }
 
 interface ChangeBookingNameButtonProps {
