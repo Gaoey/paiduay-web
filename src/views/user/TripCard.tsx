@@ -148,7 +148,7 @@ export default function TripCard(props: TripCardProps) {
                 <div style={{ display: 'flex', paddingBottom: '0.6em', alignItems: 'center' }}>
                   <Groups style={{ color: theme.palette.error.main }} />
                   <Typography variant='body2' color={theme.palette.error.main} style={{ paddingLeft: '0.5em' }}>
-                    จองแล้ว: {trip?.data?.members.length} / {trip?.data?.total_people} คน
+                    ไปด้วย: {trip?.data?.members.length} / {trip?.data?.total_people} คน
                   </Typography>
                 </div>
                 <div>{goingAvatars}</div>
