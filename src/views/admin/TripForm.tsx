@@ -272,7 +272,7 @@ function TripForm(props: TripFormProps) {
                   />
                   <TextField
                     {...register(`contacts.${index}.link`, { required: 'Contact link is required' })}
-                    label='ลิงค์การติดต่อ'
+                    label='ใส่ ลิงค์/ข้อมูล/id/อีเมล์ ในช่องนี้'
                     defaultValue={item.link}
                     style={{ marginLeft: 10 }}
                   />

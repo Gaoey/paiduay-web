@@ -75,16 +75,16 @@ const DashboardCards = () => {
     <Grid item xs={12} key={trip._id}>
       <Card>
         <Grid container spacing={3} columns={12} style={{ alignItems: 'center', padding: '1em' }}>
-          <Grid item xs={12} sm={6} md={4}>
-            {' '}
-            {/* Adjust column widths as needed */}
-            <CardHeader
-              title={trip.data.title}
-              subheader={`${format(new Date(trip.data.from_date), 'dd/MM/yy')} - ${format(
+          <Grid item xs={12} sm={6} md={4} sx={{ marginLeft: '0.2em' }}>
+            <Typography variant='body1' color='text.primary' style={{ fontWeight: 'bold' }}>
+              {trip.data.title || 'Trip Title Unavailable'}
+            </Typography>
+            <Typography variant='body2' color='text.subtitle' style={{}}>
+              {`${format(new Date(trip.data.from_date), 'dd/MM/yy')} - ${format(
                 new Date(trip.data.to_date),
                 'dd/MM/yy'
               )}`}
-            />
+            </Typography>
           </Grid>
           <Grid item xs={4} sm={3} md={1.5}>
             <div style={{ display: 'flex', alignItems: 'center', marginLeft: '0.5em' }}>
