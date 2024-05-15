@@ -1,7 +1,7 @@
 import { Box, Button, Grid, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { useApi } from 'src/@core/services'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import { Paginate } from 'src/@core/types'
@@ -14,6 +14,9 @@ import TransportDetail, { AddTransportButton } from 'src/views/admin/TransportDe
 import TripDetailComponent from 'src/views/admin/TripDetail'
 import { useMediaQuery, useTheme } from '@mui/material'
 import { getSessionFromCookie } from 'src/@core/utils/session'
+import LinkIcon from '@mui/icons-material/Link'
+import { Tooltip } from '@mui/material'
+import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined'
 
 export default function TripDetail() {
   const router = useRouter()
@@ -97,13 +100,16 @@ export default function TripDetail() {
           <Grid container spacing={7}>
             <Grid item md={12}>
               <Box style={{ display: 'flex', flexDirection: 'row' }}>
-                <Button
-                  variant='contained'
-                  style={{ color: 'white', marginRight: 20 }}
-                  onClick={() => router.push(`/trips/${tripID}?hideElement=true`)}
-                >
-                  PREVIEW
-                </Button>
+                <Tooltip title='Preview' arrow>
+                  <Button
+                    variant='contained'
+                    style={{ color: 'white', marginRight: 20 }}
+                    onClick={() => router.push(`/trips/${tripID}?hideElement=true`)}
+                  >
+                    <RemoveRedEyeOutlinedIcon />
+                  </Button>
+                </Tooltip>
+                <CopyLinkButton tripID={tripID} />
                 <Button
                   variant='outlined'
                   style={{ marginRight: 20 }}
@@ -192,4 +198,52 @@ export async function getServerSideProps(ctx: any) {
       session
     }
   }
+}
+
+const CopyLinkButton = ({ tripID }: any) => {
+  const [copied, setCopied] = useState(false)
+  const theme = useTheme()
+
+  const handleCopyLink = () => {
+    const url = window ? `${window.location.origin}/trips/${tripID}` : `www.paiduay.com/trips/${tripID}`
+
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      })
+      .catch(err => {
+        console.error('Failed to copy: ', err)
+      })
+  }
+
+  return (
+    <div>
+      <Tooltip title='Copy link' arrow>
+        <Button
+          variant='contained'
+          color='secondary'
+          style={{ color: 'white', marginRight: 20 }}
+          onClick={handleCopyLink}
+        >
+          <LinkIcon />
+        </Button>
+      </Tooltip>
+      {copied && (
+        <Typography
+          variant='body2'
+          color='primary'
+          style={{
+            position: 'fixed',
+            backgroundColor: theme.palette.info.light,
+            padding: '1em',
+            borderRadius: '1em'
+          }}
+        >
+          Link copied to clipboard!
+        </Typography>
+      )}
+    </div>
+  )
 }
