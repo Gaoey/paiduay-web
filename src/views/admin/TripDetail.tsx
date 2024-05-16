@@ -224,7 +224,6 @@ export default function TripDetailComponent({
                 </Typography>
               </div>
               <Link
-                target='_blank'
                 href={`/profiler/${trip?.profiler_id}`}
                 sx={{
                   '&:hover': {

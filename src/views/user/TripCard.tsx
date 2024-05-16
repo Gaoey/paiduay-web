@@ -64,7 +64,6 @@ export default function TripCard(props: TripCardProps) {
           }}
         >
           <Link
-            target='_blank'
             href={`/profiler/${trip?.profiler_id}`}
             sx={{
               '&:hover': {
