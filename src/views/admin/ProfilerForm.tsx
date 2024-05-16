@@ -15,6 +15,7 @@ import CardHeader from '@mui/material/CardHeader'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import { Close } from '@mui/icons-material'
+import CircularProgress from '@mui/material/CircularProgress'
 
 // ** Layout Import
 
@@ -24,6 +25,7 @@ import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-fo
 import { BUCKET_NAME, Media } from 'src/@core/types'
 import { Profiler } from 'src/@core/types/profiler'
 import { LoadingButton } from '@mui/lab'
+import { useRouter } from 'next/router'
 
 export const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -174,11 +176,22 @@ function ProfilerForm(props: ProfilerFormProps) {
 
   const imageURL = props?.profiler?.data?.logo_image?.signed_url || '/images/logo-square.png'
 
+  const router = useRouter()
+
+  const onSubmit = async (data: any) => {
+    try {
+      await props.onSubmit(data)
+      router.push('/admin/dashboard')
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <Card sx={{ maxWidth: 1200 }}>
       <CardHeader title={props.title} />
       <CardContent>
-        <form onSubmit={handleSubmit(props.onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={5}>
             <Grid item xs={12}>
               <label htmlFor='avatar-input'>
@@ -381,7 +394,13 @@ function ProfilerForm(props: ProfilerFormProps) {
                   justifyContent: 'space-between'
                 }}
               >
-                <LoadingButton type='submit' variant='contained' size='large' loading={isLoading}>
+                <LoadingButton
+                  type='submit'
+                  variant='contained'
+                  size='large'
+                  loading={isLoading}
+                  loadingIndicator={<CircularProgress color='info' size={20} />}
+                >
                   บันทึก
                 </LoadingButton>
               </Box>

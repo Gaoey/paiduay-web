@@ -2,6 +2,7 @@
 
 // ** Types Imports
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -29,7 +30,7 @@ function RemoveTripPopUp(props: RemoveTripPopUpProps) {
   return (
     <>
       <Button variant='contained' color='error' onClick={handleClickOpen} style={{ color: 'white', marginRight: 20 }}>
-        ลบ
+      <DeleteIcon />
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{`ยืนยันการลบทริป${!R.isNil(tripName) ? ` "${tripName}" ` : ''}ไหม?`}</DialogTitle>

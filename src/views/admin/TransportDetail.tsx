@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Seat, Transport, TransportData, Transportation } from 'src/@core/types/transport'
 import { TransportationNormalForm, VanForm, getDefaultTransport } from './TransportationForm'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Props {
   item: Transport
@@ -106,7 +107,7 @@ function RemoveTransportButton(props: RemoveTripPopUpProps) {
   return (
     <>
       <Button variant='contained' color='error' onClick={handleClickOpen} sx={{ height: 55, width: '100%' }}>
-        ลบ
+        <DeleteIcon />
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{`ยืนยันการลบไหม?`}</DialogTitle>

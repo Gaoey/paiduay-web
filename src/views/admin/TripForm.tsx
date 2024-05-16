@@ -14,6 +14,7 @@ import Tiptap from '../editor/Tiptap'
 import 'react-datepicker/dist/react-datepicker.css'
 import Pica from 'pica'
 import { LoadingButton } from '@mui/lab'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface TripFormProps {
   trip_payload?: TripPayload
@@ -271,7 +272,7 @@ function TripForm(props: TripFormProps) {
                   />
                   <TextField
                     {...register(`contacts.${index}.link`, { required: 'Contact link is required' })}
-                    label='ลิงค์การติดต่อ'
+                    label='ใส่ ลิงค์/ข้อมูล/id/อีเมล์ ในช่องนี้'
                     defaultValue={item.link}
                     style={{ marginLeft: 10 }}
                   />
@@ -540,9 +541,10 @@ function TripForm(props: TripFormProps) {
                           />
                         )}
                       </Grid>
+                      
                       <Grid item xs={2}>
-                        <Button type='button' variant='outlined' onClick={() => removeTransport(index)}>
-                          ลบ
+                        <Button type='button' variant='contained' color='error' onClick={() => removeTransport(index)}>
+                          <DeleteIcon />
                         </Button>
                       </Grid>
                     </Grid>
