@@ -6,6 +6,7 @@ import { Paginate } from 'src/@core/types'
 import { Trip, TripFilter } from 'src/@core/types/trip'
 import UserLayout from 'src/layouts/UserLayout'
 import TripCardList from 'src/views/user/TripCardList'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 
 export default function TripList() {
   const { tripAPI } = useApi()
@@ -32,3 +33,13 @@ export default function TripList() {
 }
 
 TripList.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>
+
+export async function getServerSideProps(ctx: any) {
+  const session = await getSessionFromCookie(ctx)
+
+  return {
+    props: {
+      session
+    }
+  }
+}
