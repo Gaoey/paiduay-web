@@ -1,6 +1,6 @@
 // ** MUI Imports
 import Groups from '@mui/icons-material/Groups'
-import { CardHeader, Grid } from '@mui/material'
+import { Grid } from '@mui/material'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Chip from '@mui/material/Chip'

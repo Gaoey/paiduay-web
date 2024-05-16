@@ -82,7 +82,6 @@ export default function TripCard(props: TripCardProps) {
               {profiler?.data?.name || 'Trip Leader'}
             </Typography>
           </Link>
-
           <div
             style={{
               display: 'flex',

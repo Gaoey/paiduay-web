@@ -1,71 +1,71 @@
-import { useRouter } from 'next/router';
-import * as R from 'ramda';
-import { ReactNode, useEffect, useState } from 'react';
-import { SubmitHandler } from 'react-hook-form';
-import { LoadingComponent } from 'src/@core/components/loading';
-import { useApi } from 'src/@core/services';
-import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
-import { Media } from 'src/@core/types';
-import { BookingData, BookingStatus, PaymentType, SimplySeatData } from 'src/@core/types/booking';
-import { Profiler } from 'src/@core/types/profiler';
-import { Trip } from 'src/@core/types/trip';
-import { getSessionFromCookie } from 'src/@core/utils/session';
-import UserLayout from 'src/layouts/UserLayout';
-import BookingForm, { getPaymentPrice } from 'src/views/user/BookingForm';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
+import { useRouter } from 'next/router'
+import * as R from 'ramda'
+import { ReactNode, useEffect, useState } from 'react'
+import { SubmitHandler } from 'react-hook-form'
+import { LoadingComponent } from 'src/@core/components/loading'
+import { useApi } from 'src/@core/services'
+import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
+import { Media } from 'src/@core/types'
+import { BookingData, BookingStatus, PaymentType, SimplySeatData } from 'src/@core/types/booking'
+import { Profiler } from 'src/@core/types/profiler'
+import { Trip } from 'src/@core/types/trip'
+import { getSessionFromCookie } from 'src/@core/utils/session'
+import UserLayout from 'src/layouts/UserLayout'
+import BookingForm, { getPaymentPrice } from 'src/views/user/BookingForm'
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material'
 
 export default function Booking() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const tripID = router.query.id as string;
-  const transport_id = router.query.transport_id as string;
-  const seat_numbers = router.query.seat_number as string[] | string;
+  const tripID = router.query.id as string
+  const transport_id = router.query.transport_id as string
+  const seat_numbers = router.query.seat_number as string[] | string
 
-  const { tripAPI, profilerAPI, bookingAPI, userAPI, mediaAPI } = useApi();
-  const { uploadMedias } = mediaAPI;
-  const { user } = userAPI;
-  const { findTripByID } = tripAPI;
-  const { findProfilerByTripID } = profilerAPI;
-  const { createBooking } = bookingAPI;
+  const { tripAPI, profilerAPI, bookingAPI, userAPI, mediaAPI } = useApi()
+  const { uploadMedias } = mediaAPI
+  const { user } = userAPI
+  const { findTripByID } = tripAPI
+  const { findProfilerByTripID } = profilerAPI
+  const { createBooking } = bookingAPI
 
-  const { data: userData } = user;
-  const { data: findTripData } = findTripByID;
-  const { data: findProfilerData } = findProfilerByTripID;
-  const { isLoading: isUploadMediaLoading } = uploadMedias;
-  const { isSuccess, isLoading: isCreateBookingLoading } = createBooking;
-  const trip = R.pathOr<Trip | null>(null, [], findTripData);
-  const profiler = R.pathOr<Profiler | null>(null, [], findProfilerData);
+  const { data: userData } = user
+  const { data: findTripData } = findTripByID
+  const { data: findProfilerData } = findProfilerByTripID
+  const { isLoading: isUploadMediaLoading } = uploadMedias
+  const { isSuccess, isLoading: isCreateBookingLoading } = createBooking
+  const trip = R.pathOr<Trip | null>(null, [], findTripData)
+  const profiler = R.pathOr<Profiler | null>(null, [], findProfilerData)
 
-  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false)
 
   useEffect(() => {
-    user.mutate();
-    findTripByID.mutate(tripID);
-    findProfilerByTripID.mutate(tripID);
+    user.mutate()
+    findTripByID.mutate(tripID)
+    findProfilerByTripID.mutate(tripID)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   const simplySeats = (): SimplySeatData[] => {
     if (typeof seat_numbers === 'string') {
       return [
         {
           seat_number: Number(seat_numbers),
-          seat_name: '',
-        },
-      ];
+          seat_name: ''
+        }
+      ]
     } else {
-      return seat_numbers.map((v) => {
+      return seat_numbers.map(v => {
         return {
           seat_number: Number(v),
-          seat_name: '',
-        };
-      });
+          seat_name: ''
+        }
+      })
     }
-  };
+  }
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
+  const onSubmit: SubmitHandler<any> = async data => {
     if (!R.isNil(data?.slip_image) && !R.isNil(userData?._id) && !R.isNil(trip?.data?.payment)) {
-      const newMedias: Media[] = await uploadMedias.mutateAsync(data?.slip_image);
+      const newMedias: Media[] = await uploadMedias.mutateAsync(data?.slip_image)
 
       if (trip?.data?.payment.full_price && trip?.data?.payment.payment_date) {
         const bookingData: BookingData = {
@@ -78,31 +78,31 @@ export default function Booking() {
             data?.payment_type === PaymentType[PaymentType.DEPOSIT]
               ? BookingStatus[BookingStatus.DEPOSIT]
               : BookingStatus[BookingStatus.PENDING],
-          slips: [newMedias[0]],
-        };
+          slips: [newMedias[0]]
+        }
 
         try {
-          await createBooking.mutateAsync({ tripID, params: bookingData });
-        } catch (error) {
+          await createBooking.mutateAsync({ tripID, params: bookingData })
+        } catch (error: any) {
           // Handle 500 error and show the dialog
-          if (error.response?.status === 500) {
-            setErrorDialogOpen(true);
+          if (error?.response?.status === 500) {
+            setErrorDialogOpen(true)
           } else {
-            console.error('An error occurred while creating the booking:', error);
+            console.error('An error occurred while creating the booking:', error)
           }
         }
       }
     }
-  };
+  }
 
   useEffect(() => {
     if (isSuccess) {
-      router.push(`/trips/${tripID}/booking/success`);
+      router.push(`/trips/${tripID}/booking/success`)
     }
-  }, [isSuccess]);
+  }, [isSuccess])
 
-  const totalPrice = trip?.data?.payment?.full_price || 0.0;
-  const isLoading = R.isNil(trip) && R.isNil(profiler);
+  const totalPrice = trip?.data?.payment?.full_price || 0.0
+  const isLoading = R.isNil(trip) && R.isNil(profiler)
 
   return (
     <ApexChartWrapper>
@@ -135,17 +135,17 @@ export default function Booking() {
         )
       )}
     </ApexChartWrapper>
-  );
+  )
 }
 
-Booking.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>;
+Booking.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSessionFromCookie(ctx);
+  const session = await getSessionFromCookie(ctx)
 
   return {
     props: {
-      session,
-    },
-  };
+      session
+    }
+  }
 }

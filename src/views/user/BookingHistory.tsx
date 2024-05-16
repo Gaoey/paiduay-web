@@ -7,7 +7,7 @@ import Chip from '@mui/material/Chip'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material'
 
 // import { useRouter } from 'next/router'
-import { CardHeader, Grid } from '@mui/material'
+import { Grid } from '@mui/material'
 import { format } from 'date-fns'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
@@ -41,12 +41,12 @@ const BookingHistoryCards = (props: Props) => {
             <Grid item xs={12} key={booking._id}>
               <Card className={styles.bookingCard}>
                 <Grid container spacing={5} columns={12} sx={{ opacity }}>
-                  <Grid item xs={12} sm={6} md={3} sx={{ marginLeft: '0.2em'}}>
-                    <Typography variant='body1' color='text.primary' style={{fontWeight: 'bold' }}>
+                  <Grid item xs={12} sm={6} md={3} sx={{ marginLeft: '0.2em' }}>
+                    <Typography variant='body1' color='text.primary' style={{ fontWeight: 'bold' }}>
                       {booking.trip_data?.data?.title || 'Trip Title Unavailable'}
                     </Typography>
-                    <Typography variant='body2' color='text.subtitle' style={{  }}>
-                    {`สร้างทริป: ${format(new Date(booking.created_at || 0), 'dd MMM yyyy')}`}
+                    <Typography variant='body2' color='text.subtitle' style={{}}>
+                      {`สร้างทริป: ${format(new Date(booking.created_at || 0), 'dd MMM yyyy')}`}
                     </Typography>
                   </Grid>
                   <Grid item xs={7} sm={6} md={3}>
