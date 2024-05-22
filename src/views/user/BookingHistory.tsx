@@ -4,20 +4,21 @@ import Card from '@mui/material/Card'
 import Chip from '@mui/material/Chip'
 
 // ** Types Imports
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material'
 
 // import { useRouter } from 'next/router'
 import { Grid } from '@mui/material'
 import { format } from 'date-fns'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useApi } from 'src/@core/services'
 import { Booking, BookingStatus, PaymentType } from 'src/@core/types/booking'
-import { Transport } from 'src/@core/types/transport'
+import { Seat, Transport } from 'src/@core/types/transport'
 import { bookingStatusObj } from '../admin/BookingList'
 
 import styles from './BookingCard.module.css'
+import { ViewTransportationTab } from './TransportationForm'
 
 interface Props {
   bookings: Booking[]
@@ -114,6 +115,7 @@ function ViewSeatButton(props: ViewSeatButtonProps) {
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
+    findTransportByTripID.mutate(booking.trip_id)
     setOpen(true)
   }
 
@@ -121,23 +123,28 @@ function ViewSeatButton(props: ViewSeatButtonProps) {
     setOpen(false)
   }
 
-  useEffect(() => {
-    if (open && R.isNil(data)) {
-      findTransportByTripID.mutate(booking.trip_id)
-    }
-  }, [])
-
   const transports: Transport[] = R.pathOr<Transport[]>([], [], data)
-  const transport = transports.filter(v => v._id === booking.data.transport_id)[0] || null
+  const transport: Transport = transports.filter(v => v._id === booking.data.transport_id)[0]
+  const selectedSeats = booking.data.seats.map(v => v.seat_number)
+  const newSeats: Seat[] =
+    transport?.data?.seats.map(v => {
+      if (selectedSeats.includes(v.seat_number)) {
+        return {
+          ...v,
+          isSelect: true
+        }
+      }
 
-  const seat_numbers = booking.data.seats.reduce((prev, curr, index) => {
-    const format = `${curr.seat_name} (#${curr.seat_number})`
-    if (index === 0) {
-      return format
-    } else {
-      return prev + ', ' + format
+      return v
+    }) || []
+
+  const newTransport: Transport = {
+    ...transport,
+    data: {
+      ...transport?.data,
+      seats: newSeats
     }
-  }, '')
+  }
 
   return (
     <>
@@ -147,11 +154,7 @@ function ViewSeatButton(props: ViewSeatButtonProps) {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>รถคุณคือ</DialogTitle>
         <DialogContent style={{ width: 400 }}>
-          <DialogContentText>
-            <Typography variant='body2' color='text.secondary'>
-              {`รถชื่อ "${transport?.data.name}", ที่นั่ง ${seat_numbers}`}
-            </Typography>
-          </DialogContentText>
+          <ViewTransportationTab transports={[newTransport]} tripID={booking.trip_id} isViewOnly />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

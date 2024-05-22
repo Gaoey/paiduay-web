@@ -8,6 +8,7 @@ export interface Seat {
   email?: string
   line_id?: string
   phone?: string
+  isSelect?: boolean
 }
 
 export enum SeatStatus {

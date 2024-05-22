@@ -170,39 +170,29 @@ export default function TripDetailComponent({
 
   return (
     <Card style={{ margin: 0, maxWidth: '1200px', width: fullWidth ? '100vw' : 'auto' }}>
-      <Link
-        href={`/profiler/${trip?.profiler_id}`}
-        sx={{
-          '&:hover': {
-            color: '#000000',
-            textDecoration: 'underline #000000'
-          }
+      <Box
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '1.5em'
         }}
       >
-        <Box
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '1.5em'
+        <Typography gutterBottom variant='h5' component='div' style={{ fontWeight: 'bold' }}>
+          {trip?.data?.title}
+        </Typography>
+        <Chip
+          label={toCurrency(trip.data.payment?.full_price || 0.0)}
+          color='secondary'
+          sx={{
+            height: '2em',
+            fontSize: '1rem',
+            textTransform: 'capitalize',
+            '& .MuiChip-label': { fontWeight: 500 }
           }}
-        >
-          <Typography gutterBottom variant='h5' component='div' style={{ fontWeight: 'bold' }}>
-            {trip?.data?.title}
-          </Typography>
-          <Chip
-            label={toCurrency(trip.data.payment?.full_price || 0.0)}
-            color='secondary'
-            sx={{
-              height: '2em',
-              fontSize: '1rem',
-              textTransform: 'capitalize',
-              '& .MuiChip-label': { fontWeight: 500 }
-            }}
-          />
-        </Box>
-      </Link>
+        />
+      </Box>
 
       {imgSrc.length === 1 ? (
         <CardMedia component='img' image={imgSrc[0]} alt='image of trip' sx={{ maxHeight: 500 }} />
