@@ -33,4 +33,6 @@ COPY --from=builder /app/package.json ./package.json
 
 USER nextjs
 
+EXPOSE 9010
+
 CMD ["npm", "run", "prod"] 

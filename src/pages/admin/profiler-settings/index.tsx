@@ -1,13 +1,4 @@
-// ** React Imports
 import { ReactNode, useEffect } from 'react'
-
-// ** Next Import
-
-// ** MUI Components
-
-// ** Layout Import
-
-// ** Demo Imports
 import * as R from 'ramda'
 import { SubmitHandler } from 'react-hook-form'
 import { LoadingComponent } from 'src/@core/components/loading'

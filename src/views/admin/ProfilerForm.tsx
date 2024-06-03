@@ -100,9 +100,9 @@ function ProfilerForm(props: ProfilerFormProps) {
   }
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const pica = Pica()
 
   const handleLogoFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const pica = Pica()
     if (e.target.files && e.target.files.length > 0) {
       const file: File = e.target.files[0]
 
