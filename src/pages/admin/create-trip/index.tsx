@@ -100,4 +100,14 @@ const CreateTrip = () => {
 
 CreateTrip.getLayout = (page: ReactNode) => <AdminLayout>{page}</AdminLayout>
 
+export async function getServerSideProps(ctx: any) {
+  const session = await getSessionFromCookie(ctx)
+
+  return {
+    props: {
+      session
+    }
+  }
+}
+
 export default CreateTrip
