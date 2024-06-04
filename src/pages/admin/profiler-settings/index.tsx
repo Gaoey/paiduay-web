@@ -1,5 +1,5 @@
-import { ReactNode, useEffect } from 'react'
 import * as R from 'ramda'
+import { ReactNode, useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { LoadingComponent } from 'src/@core/components/loading'
 import { useApi } from 'src/@core/services'
@@ -7,7 +7,6 @@ import { Media } from 'src/@core/types'
 import { Profiler, ProfilerData } from 'src/@core/types/profiler'
 import AdminLayout from 'src/layouts/AdminLayout'
 import ProfilerForm from 'src/views/admin/ProfilerForm'
-import { getSessionFromCookie } from 'src/@core/utils/session'
 
 const UpdateProfiler = () => {
   // ** Hooks
@@ -35,6 +34,8 @@ const UpdateProfiler = () => {
       }
 
       const media: Media | undefined = R.pathOr<Media | undefined>(undefined, ['logo_image'], data)
+      profilerData.logo_image = media
+
       if (!R.isNil(media) && R.isEmpty(data?.logo_image.signed_url)) {
         const newMedias: Media[] = await uploadMedias.mutateAsync([media])
         profilerData.logo_image = newMedias[0]
@@ -59,15 +60,5 @@ const UpdateProfiler = () => {
 }
 
 UpdateProfiler.getLayout = (page: ReactNode) => <AdminLayout>{page}</AdminLayout>
-
-export async function getServerSideProps(ctx: any) {
-  const session = await getSessionFromCookie(ctx)
-
-  return {
-    props: {
-      session
-    }
-  }
-}
 
 export default UpdateProfiler

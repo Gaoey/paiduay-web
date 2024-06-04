@@ -26,15 +26,15 @@ import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
+import { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
+import type { AppProps } from 'next/app'
+import * as R from 'ramda'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ParallaxProvider } from 'react-scroll-parallax'
 import APIProvider from 'src/@core/context/apiContext'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import '../../styles/globals.css'
-import type { AppProps } from 'next/app'
-import * as R from 'ramda'
-import { Session } from 'next-auth'
-import { ParallaxProvider } from 'react-scroll-parallax'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -58,7 +58,7 @@ if (themeConfig.routingLoader) {
 }
 
 // ** Configure JSS & ClassName
-const App = (props: ExtendedAppProps) => {
+const MyApp = (props: ExtendedAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   // Variables
@@ -99,4 +99,4 @@ const App = (props: ExtendedAppProps) => {
   )
 }
 
-export default App
+export default MyApp

@@ -19,12 +19,16 @@ const Main = () => {
 Main.getLayout = (page: ReactNode) => <UserLayout isContentWrap={false}>{page}</UserLayout>
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSessionFromCookie(ctx)
+  try {
+    const session = await getSessionFromCookie(ctx)
 
-  return {
-    props: {
-      session
+    return {
+      props: {
+        session
+      }
     }
+  } catch (error) {
+    return { props: { error: 'Failed to get sessions' } }
   }
 }
 

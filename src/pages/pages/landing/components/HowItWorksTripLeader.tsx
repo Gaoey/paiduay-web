@@ -47,7 +47,7 @@ const HowItWorksTripLeader = () => {
         maxWidth: '100vw',
         width: '100vw',
         alignItems: 'center',
-        padding: '8em 0 4em 0'
+        padding: '8em 0 2em 0'
       }}
     >
       <Grid
@@ -58,7 +58,7 @@ const HowItWorksTripLeader = () => {
         style={{ height: '100%', maxWidth: '1500px', margin: '0 auto' }}
       >
         <Grid container ref={imageContainerRef} justifyContent='center' alignItems='center'>
-          <Grid item xs={12} md={12} style={{ height: '40vh' }}>
+          <Grid item xs={12} md={12} style={{ height: '15vh' }}>
             <Parallax opacity={[0.5, 1]}>
               <Typography variant='h5' align='center' color='#FDECEF'>
                 สำหรับ ทริปลีดเดอร์
@@ -68,7 +68,7 @@ const HowItWorksTripLeader = () => {
               </Typography>
             </Parallax>
           </Grid>
-          <Grid item xs={12} md={12} style={{ height: '100vh', display: 'flex', justifyContent: 'flex-start' }}>
+          <Grid item xs={12} md={12} style={{ height: '60vh', display: 'flex', justifyContent: 'flex-start' }}>
             <Parallax translateY={[0, -50]}>
               <div
                 style={{
@@ -81,7 +81,7 @@ const HowItWorksTripLeader = () => {
               >
                 <Image
                   className='image-container'
-                  src='/images/landing/how_it_works/how_it_works_leader_1.png' // Path relative to '/public' folder
+                  src='/how_it_works_leader_1.png' // Path relative to '/public' folder
                   alt='จัดการทริปให้เต็มที่'
                   width={imageDimensions.width}
                   height={imageDimensions.width}
@@ -95,7 +95,7 @@ const HowItWorksTripLeader = () => {
               </div>
             </Parallax>
           </Grid>
-          <Grid item xs={12} md={12} style={{ height: '80vh', display: 'flex', justifyContent: 'center' }}>
+          <Grid item xs={12} md={12} style={{ height: '60vh', display: 'flex', justifyContent: 'center' }}>
             <Parallax translateY={[0, -100]}>
               <div
                 style={{
@@ -108,7 +108,7 @@ const HowItWorksTripLeader = () => {
               >
                 <Image
                   className='image-container'
-                  src='/images/landing/how_it_works/how_it_works_leader_2.png' // Path relative to '/public' folder
+                  src='/how_it_works_leader_2.png' // Path relative to '/public' folder
                   alt='จัดการทริปให้เต็มที่'
                   width={imageDimensions.width}
                   height={imageDimensions.width}
@@ -123,7 +123,7 @@ const HowItWorksTripLeader = () => {
               </div>
             </Parallax>
           </Grid>
-          <Grid item xs={12} md={12} style={{ height: '80vh', display: 'flex', justifyContent: 'flex-end' }}>
+          <Grid item xs={12} md={12} style={{ height: '50vh', display: 'flex', justifyContent: 'flex-end' }}>
             <Parallax translateY={[0, -200]}>
               <div
                 style={{
@@ -136,7 +136,7 @@ const HowItWorksTripLeader = () => {
               >
                 <Image
                   className='image-container'
-                  src='/images/landing/how_it_works/how_it_works_leader_3.png' // Path relative to '/public' folder
+                  src='/how_it_works_leader_3.png' // Path relative to '/public' folder
                   alt='จัดการทริปให้เต็มที่'
                   width={imageDimensions.width}
                   height={imageDimensions.width}

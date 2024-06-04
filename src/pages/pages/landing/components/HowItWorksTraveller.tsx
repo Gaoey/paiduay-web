@@ -51,7 +51,7 @@ const HowItWorksTraveller = () => {
     >
       <Grid container spacing={4} justifyContent='center' alignItems='center' style={{ height: '100%' }}>
         <Grid container ref={imageContainerRef} justifyContent='center' alignItems='center'>
-          <Grid item xs={12} md={12} style={{ height: '40vh' }}>
+          <Grid item xs={12} md={12} style={{ height: '15vh' }}>
             <Parallax opacity={[0.5, 1]}>
               <Typography variant='h5' align='center' color='#FDECEF'>
                 สำหรับ ลูกทริป
@@ -61,7 +61,7 @@ const HowItWorksTraveller = () => {
               </Typography>
             </Parallax>
           </Grid>
-          <Grid item xs={12} md={12} style={{ height: '100vh', display: 'flex', justifyContent: 'flex-start' }}>
+          <Grid item xs={12} md={12} style={{ height: '60vh', display: 'flex', justifyContent: 'flex-start' }}>
             <Parallax translateY={[0, -50]}>
               <div
                 style={{
@@ -74,7 +74,7 @@ const HowItWorksTraveller = () => {
               >
                 <Image
                   className='image-container'
-                  src='/images/landing/how_it_works/how_it_works_traveller_1.png'
+                  src='/how_it_works_traveller_1.png'
                   alt='จัดการทริปให้เต็มที่'
                   width={imageDimensions.width}
                   height={imageDimensions.width}
@@ -89,8 +89,8 @@ const HowItWorksTraveller = () => {
               </div>
             </Parallax>
           </Grid>
-          <Grid item xs={12} md={12} style={{ height: '80vh', display: 'flex', justifyContent: 'center' }}>
-            <Parallax translateY={[0, -200]}>
+          <Grid item xs={12} md={12} style={{ height: '60vh', display: 'flex', justifyContent: 'center' }}>
+            <Parallax translateY={[0, -100]}>
               <div
                 style={{
                   alignItems: 'center',
@@ -102,7 +102,7 @@ const HowItWorksTraveller = () => {
               >
                 <Image
                   className='image-container'
-                  src='/images/landing/how_it_works/how_it_works_traveller_2.png'
+                  src='/how_it_works_traveller_2.png'
                   alt='จัดการทริปให้เต็มที่'
                   width={imageDimensions.width}
                   height={imageDimensions.width}
@@ -117,8 +117,8 @@ const HowItWorksTraveller = () => {
               </div>
             </Parallax>
           </Grid>
-          <Grid item xs={12} md={12} style={{ height: '80vh', display: 'flex', justifyContent: 'flex-end' }}>
-            <Parallax translateY={[0, -400]}>
+          <Grid item xs={12} md={12} style={{ height: '60vh', display: 'flex', justifyContent: 'flex-end' }}>
+            <Parallax translateY={[0, -100]}>
               <div
                 style={{
                   alignItems: 'center',
@@ -130,7 +130,7 @@ const HowItWorksTraveller = () => {
               >
                 <Image
                   className='image-container'
-                  src='/images/landing/how_it_works/how_it_works_traveller_3.png'
+                  src='/how_it_works_traveller_3.png'
                   alt='จัดการทริปให้เต็มที่'
                   width={imageDimensions.width}
                   height={imageDimensions.width}
