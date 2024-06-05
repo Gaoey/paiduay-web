@@ -26,11 +26,7 @@ interface TripDetailsProps {
   fullWidth?: boolean
 }
 
-export default function TripDetailComponent({
-  fullWidth = false,
-  tripID,
-  isShortDescription = false
-}: TripDetailsProps) {
+export default function TripDetailComponent({ tripID, isShortDescription = false }: TripDetailsProps) {
   const { tripAPI } = useApi()
   const theme: Theme = useTheme()
 
@@ -169,7 +165,7 @@ export default function TripDetailComponent({
   const goingAvatars = <GoingAvatars members={data?.data?.members ?? []} />
 
   return (
-    <Card style={{ margin: 0, maxWidth: '1200px', width: fullWidth ? '100vw' : 'auto' }}>
+    <Card style={{ margin: 0, maxWidth: '1200px' }}>
       <Box
         style={{
           display: 'flex',
@@ -350,7 +346,6 @@ const BookingButton = ({ tripID }: PropsWithChildren<BookingButtonProps>): JSX.E
         filter: 'drop-shadow(1px 1px 1px #444)',
         fontSize: '1em',
         alignSelf: 'center',
-        zIndex: 10000,
         width: {
           xs: '90%', // Full width on mobile
           sm: '50%', // Half width on small screens

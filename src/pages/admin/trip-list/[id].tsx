@@ -120,7 +120,7 @@ export default function TripDetail() {
                 <RemoveTripPopUp tripID={tripID} onRemove={(tripID: string) => removeTrip.mutate(tripID)} />
               </Box>
             </Grid>
-            <Grid item md={12}>
+            <Grid item md={12} xs={12}>
               <TripDetailComponent tripID={tripID} isShortDescription fullWidth={!screenIsWide} />
             </Grid>
           </Grid>
@@ -223,7 +223,7 @@ const CopyLinkButton = ({ tripID }: any) => {
   }
 
   return (
-    <div>
+    <>
       <Tooltip title='Copy link' arrow>
         <Button
           variant='contained'
@@ -248,6 +248,6 @@ const CopyLinkButton = ({ tripID }: any) => {
           Link copied to clipboard!
         </Typography>
       )}
-    </div>
+    </>
   )
 }
