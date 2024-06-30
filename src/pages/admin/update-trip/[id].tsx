@@ -4,6 +4,7 @@ import * as R from 'ramda'
 import { ReactNode, useEffect } from 'react'
 import 'react-datepicker/dist/react-datepicker.css'
 import { SubmitHandler } from 'react-hook-form'
+import { useMutation } from 'react-query'
 import { LoadingComponent } from 'src/@core/components/loading'
 import { useApi } from 'src/@core/services'
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
@@ -26,10 +27,16 @@ export default function UpdateTrip() {
   const trip: Trip | null = R.pathOr<Trip | null>(null, [], tripData)
   const transports: Transport[] = R.pathOr<Transport[]>([], [], transportData)
 
-  const { updateTrip } = tripAPI
+  const { api } = tripAPI
   const { uploadMedias } = mediaAPI
+  const updateTrip = useMutation(api.updateTrip, {
+    onSuccess: () => {
+      router.push(`/admin/trip-list/${tripID}`)
+    }
+  })
 
-  const { isSuccess, isLoading: isUpdateTripLoading } = updateTrip
+  const { isLoading: isUpdateTripLoading } = updateTrip
+
   const { isLoading } = uploadMedias
 
   const onSubmit: SubmitHandler<any> = async data => {
@@ -63,13 +70,7 @@ export default function UpdateTrip() {
     findTransportByTripID.mutate(tripID)
   }, [tripID])
 
-  useEffect(() => {
-    if (isSuccess) {
-      router.push(`/admin/trip-list/${tripID}`)
-    }
-  }, [isSuccess])
-
-  if (R.isNil(trip) || R.isEmpty(transports) || isLoading) {
+  if (R.isNil(trip) || isLoading) {
     return <LoadingComponent />
   }
 
