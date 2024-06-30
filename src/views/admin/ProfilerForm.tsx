@@ -14,7 +14,7 @@ import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
-import { Close } from '@mui/icons-material'
+import Close from '@mui/icons-material/Close'
 import CircularProgress from '@mui/material/CircularProgress'
 
 // ** Layout Import
@@ -24,7 +24,7 @@ import * as R from 'ramda'
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { BUCKET_NAME, Media } from 'src/@core/types'
 import { Profiler } from 'src/@core/types/profiler'
-import { LoadingButton } from '@mui/lab'
+import LoadingButton from '@mui/lab/LoadingButton'
 import { useRouter } from 'next/router'
 
 export const ImgStyled = styled('img')(({ theme }) => ({

@@ -31,16 +31,15 @@ function useTripAPI({ authInstance }: InstanceProps) {
   const api = tripAPI(authInstance)
 
   const findTrips = useMutation(api.findTrips)
-  const createTrip = useMutation(api.createTrip)
   const updateTrip = useMutation(api.updateTrip)
   const findTripByProfilerID = useMutation(api.findTripByProfilerID)
   const findTripByID = useMutation(api.findTripByID)
   const removeTrip = useMutation(api.removeTrip)
 
   return {
+    api,
     findTrips,
     updateTrip,
-    createTrip,
     findTripByProfilerID,
     findTripByID,
     removeTrip

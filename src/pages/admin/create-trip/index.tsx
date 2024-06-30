@@ -1,5 +1,5 @@
 // ** React Imports
-import { ReactNode, useEffect } from 'react'
+import { ReactNode } from 'react'
 
 // ** MUI Imports
 import { Grid } from '@mui/material'
@@ -9,29 +9,35 @@ import { Grid } from '@mui/material'
 // ** Demo Tabs Imports
 
 // ** Third Party Styles Imports
+import { useRouter } from 'next/router'
+import * as R from 'ramda'
 import 'react-datepicker/dist/react-datepicker.css'
 import { SubmitHandler } from 'react-hook-form'
+import { useMutation } from 'react-query'
 import { useApi } from 'src/@core/services'
-import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import { Media } from 'src/@core/types'
 import { Profiler } from 'src/@core/types/profiler'
+import { Seat, SeatStatus, TransportData } from 'src/@core/types/transport'
+import { Trip, TripData, TripPayload, TripStatus } from 'src/@core/types/trip'
+import { getSessionFromCookie } from 'src/@core/utils/session'
 import AdminLayout from 'src/layouts/AdminLayout'
 import TripForm from 'src/views/admin/TripForm'
-import * as R from 'ramda'
-import { TripData, TripPayload, TripStatus } from 'src/@core/types/trip'
-import { useRouter } from 'next/router'
-import { Seat, SeatStatus, TransportData } from 'src/@core/types/transport'
-import { Media } from 'src/@core/types'
-import { getSessionFromCookie } from 'src/@core/utils/session'
 
 const CreateTrip = () => {
   const router = useRouter()
   const { tripAPI, profilerAPI, mediaAPI } = useApi()
 
   const { getCurrentProfiler } = profilerAPI
-  const { createTrip } = tripAPI
+  const { api } = tripAPI
   const { uploadMedias } = mediaAPI
 
-  const { isSuccess, data, isLoading } = createTrip
+  const createTrip = useMutation(api.createTrip, {
+    onSuccess: (data: Trip) => {
+      router.push(`/admin/trip-list/${data?._id}`)
+    }
+  })
+
+  const { isLoading } = createTrip
   const { isLoading: isUploadMediaLoading } = uploadMedias
 
   const onSubmit: SubmitHandler<any> = async data => {
@@ -81,20 +87,12 @@ const CreateTrip = () => {
     }
   }
 
-  useEffect(() => {
-    if (isSuccess) {
-      router.push(`/admin/trip-list/${data?._id}`)
-    }
-  }, [isSuccess])
-
   return (
-    <DatePickerWrapper>
-      <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <TripForm onSubmit={onSubmit} isLoading={isUploadMediaLoading || isLoading} />
-        </Grid>
+    <Grid container spacing={6}>
+      <Grid item xs={12}>
+        <TripForm onSubmit={(data: any) => onSubmit(data)} isLoading={isUploadMediaLoading || isLoading} />
       </Grid>
-    </DatePickerWrapper>
+    </Grid>
   )
 }
 

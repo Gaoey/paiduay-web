@@ -19,18 +19,25 @@ import { Media } from 'src/@core/types'
 import { ProfilerData } from 'src/@core/types/profiler'
 import ProfilerForm from 'src/views/admin/ProfilerForm'
 import { getSessionFromCookie } from 'src/@core/utils/session'
+import { useMutation } from 'react-query'
 
 const CreateProfiler = () => {
   // ** Hooks
   const router = useRouter()
 
   const { mediaAPI, profilerAPI } = useApi()
-  const { createProfiler } = profilerAPI
+  const { api } = profilerAPI
   const { uploadMedias } = mediaAPI
 
   const { isSuccess, isAdmin } = useAdminAccount()
 
-  const { isSuccess: isCreateProfilerSuccess, isLoading: isCreateProfilerLoading } = createProfiler
+  const createProfiler = useMutation(api.createProfiler, {
+    onSuccess: () => {
+      router.push('/admin/dashboard')
+    }
+  })
+
+  const { isLoading: isCreateProfilerLoading } = createProfiler
   const { isLoading: isUploadMediasLoading } = uploadMedias
 
   // ** Effects
@@ -57,18 +64,11 @@ const CreateProfiler = () => {
     createProfiler.mutate(profilerData)
   }
 
-  // ** Effects
-  useEffect(() => {
-    if (isCreateProfilerSuccess) {
-      router.push('/admin/dashboard')
-    }
-  }, [isCreateProfilerSuccess, router])
-
   return (
     <Box className='content-center'>
       <Box sx={{ p: 5 }}>
         <ProfilerForm
-          onSubmit={onSubmit}
+          onSubmit={(data: any) => onSubmit(data)}
           title={'สร้างทริปของคุณ'}
           isLoading={isUploadMediasLoading || isCreateProfilerLoading}
         />

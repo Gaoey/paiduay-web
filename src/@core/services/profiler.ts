@@ -64,6 +64,7 @@ function useProfilerAPI({ authInstance }: InstanceProps) {
   const getCurrentProfilerMutation = useMutation(getCurrentProfiler)
 
   return {
+    api,
     createProfiler,
     findProfilerByProfilerID,
     findProfiler,

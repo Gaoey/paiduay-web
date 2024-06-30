@@ -1,9 +1,19 @@
-import { Close } from '@mui/icons-material'
-import { Box, Button, Card, CardContent, CardHeader, Grid, IconButton, TextField, Typography } from '@mui/material'
+import Close from '@mui/icons-material/Close'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import CardHeader from '@mui/material/CardHeader'
+import Grid from '@mui/material/Grid'
+import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 import * as R from 'ramda'
 import React, { useEffect, useState } from 'react'
+
 import DatePicker from 'react-datepicker'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
+
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import { BUCKET_NAME, Media } from 'src/@core/types'
 import { Seat, Transportation } from 'src/@core/types/transport'
@@ -13,8 +23,8 @@ import { TransportationNormalForm, VanForm, getDefaultTransport } from './Transp
 import Tiptap from '../editor/Tiptap'
 import 'react-datepicker/dist/react-datepicker.css'
 import Pica from 'pica'
-import { LoadingButton } from '@mui/lab'
-import DeleteIcon from '@mui/icons-material/Delete';
+import LoadingButton from '@mui/lab/LoadingButton'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 interface TripFormProps {
   trip_payload?: TripPayload
@@ -145,7 +155,7 @@ function TripForm(props: TripFormProps) {
     if (selectedImages.length >= 0) {
       setValue('cover_images', selectedImages)
     }
-  }, [selectedImages.length])
+  }, [selectedImages, selectedImages.length, setValue])
 
   // RICH TEXT HANDLING LOGIC
   const [tiptapContent, setTiptapContent] = useState('')
@@ -191,7 +201,7 @@ function TripForm(props: TripFormProps) {
     // Add rich text description content
     data.description = tiptapContent
 
-    // Validate 
+    // Validate
     if (data.cover_images.length === 0) {
       alert('ต้องอัพโหลดอย่างน้อยหนึ่งภาพ')
 
@@ -328,18 +338,19 @@ function TripForm(props: TripFormProps) {
 
             <Grid item xs={12}>
               <Box mt={2} display='flex'>
-                {selectedImages.map((image, index) => (
-                  <Box key={index} style={{ position: 'relative', display: 'inline-block', marginRight: 10 }}>
-                    <img src={image.signed_url} alt={`Image ${index}`} style={{ width: 100, height: 100 }} />
-                    <IconButton
-                      aria-label='remove-image'
-                      onClick={() => removeImageByIndex(index)}
-                      style={{ position: 'absolute', right: 0, top: 0, zIndex: 1, color: 'white' }}
-                    >
-                      <Close />
-                    </IconButton>
-                  </Box>
-                ))}
+                {selectedImages.length > 0 &&
+                  selectedImages.map((image, index) => (
+                    <Box key={index} style={{ position: 'relative', display: 'inline-block', marginRight: 10 }}>
+                      <img src={image.signed_url} alt={`Image ${index}`} style={{ width: 100, height: 100 }} />
+                      <IconButton
+                        aria-label='remove-image'
+                        onClick={() => removeImageByIndex(index)}
+                        style={{ position: 'absolute', right: 0, top: 0, zIndex: 1, color: 'white' }}
+                      >
+                        <Close />
+                      </IconButton>
+                    </Box>
+                  ))}
               </Box>
               <Button variant='contained' component='label'>
                 อัพโหลดภาพประกอบ
@@ -348,7 +359,7 @@ function TripForm(props: TripFormProps) {
                   type='file'
                   accept='image/*'
                   multiple
-                  onChange={handleImageChange}
+                  onChange={(e: any) => handleImageChange(e)}
                   style={{ display: 'none' }}
                 />
               </Button>
@@ -541,7 +552,7 @@ function TripForm(props: TripFormProps) {
                           />
                         )}
                       </Grid>
-                      
+
                       <Grid item xs={2}>
                         <Button type='button' variant='contained' color='error' onClick={() => removeTransport(index)}>
                           <DeleteIcon />

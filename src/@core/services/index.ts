@@ -1,12 +1,12 @@
 import axios from 'axios'
 import { useAPICtx } from '../hooks/useAPICtx'
-import useProfilerAPI from './profiler'
-import useMediaAPI from './media'
-import useUserAPI from './user'
-import useTripAPI from './trip'
-import useTransportAPI from './transport'
 import useBookingAPI from './booking'
+import useMediaAPI from './media'
 import useNotificationAPI from './notification'
+import useProfilerAPI from './profiler'
+import useTransportAPI from './transport'
+import useTripAPI from './trip'
+import useUserAPI from './user'
 
 const axiosInstance = (
   accessToken = '',
