@@ -1,6 +1,16 @@
-import { AlternateEmail, Groups, Schedule } from '@mui/icons-material'
-import { Avatar, Box, Card, CardContent, CardMedia, Chip, Grid, Link, Typography } from '@mui/material'
-import { format } from 'date-fns'
+import AlternateEmail from '@mui/icons-material/AlternateEmail'
+import Groups from '@mui/icons-material/Groups'
+import Schedule from '@mui/icons-material/Schedule'
+import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import Chip from '@mui/material/Chip'
+import Grid from '@mui/material/Grid'
+import Link from '@mui/material/Link'
+import Typography from '@mui/material/Typography'
+import format from 'date-fns/format'
 import parse from 'html-react-parser'
 import * as R from 'ramda'
 import { Trip, TripMember } from 'src/@core/types/trip'
@@ -77,10 +87,12 @@ export default function TripCard(props: TripCardProps) {
               flexShrink: 0
             }}
           >
-            <div>{profilerAvatar}</div>
-            <Typography variant='body1' color='text.primary' style={{ paddingLeft: '1em', fontWeight: 'bold' }}>
-              {profiler?.data?.name || 'Trip Leader'}
-            </Typography>
+            <Box>
+              <div>{profilerAvatar}</div>
+              <Typography variant='body1' color='text.primary' style={{ paddingLeft: '1em', fontWeight: 'bold' }}>
+                {profiler?.data?.name || 'Trip Leader'}
+              </Typography>
+            </Box>
           </Link>
           <div
             style={{
