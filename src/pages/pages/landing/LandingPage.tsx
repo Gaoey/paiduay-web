@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import HeroSection from './components/HeroSection'
 import HowItWorksTripLeader from './components/HowItWorksTripLeader' // Assuming that's your path
 import HowItWorksTraveller from './components/HowItWorksTraveller'
+import { Box } from '@mui/material'
 
 // interface LandingPageState {
 //   selectedDate: Date | null
@@ -65,7 +66,7 @@ function LandingPage() {
   return (
     <div
       style={{
-        backgroundColor: '#3B534A',
+        backgroundColor: '#020F12',
         overflow: 'hidden'
       }}
     >

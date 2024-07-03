@@ -69,7 +69,7 @@ const HowItWorksTripLeader = () => {
             </Parallax>
           </Grid>
           <Grid item xs={12} md={12} style={{ height: '60vh', display: 'flex', justifyContent: 'flex-start' }}>
-            <Parallax translateY={[0, -50]}>
+            <Parallax translateY={[0, 10]}>
               <div
                 style={{
                   alignItems: 'center',
@@ -96,7 +96,7 @@ const HowItWorksTripLeader = () => {
             </Parallax>
           </Grid>
           <Grid item xs={12} md={12} style={{ height: '60vh', display: 'flex', justifyContent: 'center' }}>
-            <Parallax translateY={[0, -100]}>
+            <Parallax translateY={[0, 10]}>
               <div
                 style={{
                   alignItems: 'center',
@@ -123,8 +123,8 @@ const HowItWorksTripLeader = () => {
               </div>
             </Parallax>
           </Grid>
-          <Grid item xs={12} md={12} style={{ height: '50vh', display: 'flex', justifyContent: 'flex-end' }}>
-            <Parallax translateY={[0, -200]}>
+          <Grid item xs={12} md={12} style={{ height: '60vh', display: 'flex', justifyContent: 'flex-end' }}>
+            <Parallax translateY={[0, 10]}>
               <div
                 style={{
                   alignItems: 'center',

@@ -154,6 +154,10 @@ function ViewSeatButton(props: ViewSeatButtonProps) {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>รถคุณคือ</DialogTitle>
         <DialogContent style={{ width: 400 }}>
+          <Typography variant='caption' gutterBottom>
+            * ตำแหน่งสีเขียวคือที่นั่งในรถของคุณ
+          </Typography>
+
           <ViewTransportationTab transports={[newTransport]} tripID={booking.trip_id} isViewOnly />
         </DialogContent>
         <DialogActions>

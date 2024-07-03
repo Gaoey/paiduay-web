@@ -11,7 +11,7 @@ import { Profiler } from 'src/@core/types/profiler'
 import { User } from 'src/@core/types/user'
 
 // Styled component for the triangle shaped background image
-const TriangleImg = styled('img')({
+export const TriangleImg = styled('img')({
   right: 0,
   bottom: 0,
   height: 170,
@@ -48,7 +48,7 @@ const Profile = (props: ProfileProps) => {
           <LoadingComponent />
         ) : (
           <>
-            <Typography variant='h6'>หวัดดีเพื่อน {currentUser?.name}!</Typography>
+            <Typography variant='h6'>Hi! {currentUser?.name}!</Typography>
             <Typography variant='body2' sx={{ letterSpacing: '0.25px', marginBottom: '2em' }}>
               {profiler?.data ? profiler.data.description.slice(0, 100) + '...' : 'คำแนะนำตัวของคุณ'}
             </Typography>

@@ -43,7 +43,7 @@ const UserLayout = ({ children, isContentWrap = true }: Props) => {
             <Toolbar disableGutters>
               <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
                 <Link href='/' passHref>
-                  <img src='/images/logo-horizontal.png' alt={themeConfig.templateName} style={{ height: '40px' }} />
+                  <img src='/images/logo-horizontal.png' alt={themeConfig.templateName} style={{ height: '50px' }} />
                 </Link>
               </Typography>
 
@@ -51,7 +51,7 @@ const UserLayout = ({ children, isContentWrap = true }: Props) => {
                 <UserDropdown />
               ) : (
                 <Button color='primary' sx={{ ml: 'auto' }} onClick={() => router.push('/pages/login')}>
-                  Login
+                  Sign In
                 </Button>
               )}
             </Toolbar>

@@ -37,7 +37,6 @@ export default function TripCard(props: TripCardProps) {
   // ** Hook
   const htmlString = trimHtml(trip?.data?.description || '', 80)
   const parsedHtml = parse(htmlString)
-
   const profiler = trip?.profiler
 
   // AVATAR
@@ -87,7 +86,7 @@ export default function TripCard(props: TripCardProps) {
               flexShrink: 0
             }}
           >
-            <Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
               <div>{profilerAvatar}</div>
               <Typography variant='body1' color='text.primary' style={{ paddingLeft: '1em', fontWeight: 'bold' }}>
                 {profiler?.data?.name || 'Trip Leader'}
@@ -116,7 +115,7 @@ export default function TripCard(props: TripCardProps) {
       )}
       <Link href={`/trips/${trip._id}`}>
         <>
-          <CardContent>
+          <CardContent sx={{ height: '100%' }}>
             <Grid container spacing={5}>
               <Grid item xs={12}>
                 <Box
@@ -179,7 +178,7 @@ export default function TripCard(props: TripCardProps) {
                     )
                   })}
 
-                <div style={{ marginTop: 10 }}>{parsedHtml}</div>
+                <div style={{ marginTop: 10 }}>{R.isEmpty(parsedHtml) ? '.....' : parsedHtml}</div>
               </Grid>
               <Grid item xs={4} sm={4}>
                 <CardMedia
@@ -193,7 +192,7 @@ export default function TripCard(props: TripCardProps) {
                     mt: 1,
                     objectFit: 'cover'
                   }}
-                />{' '}
+                />
               </Grid>
             </Grid>
           </CardContent>

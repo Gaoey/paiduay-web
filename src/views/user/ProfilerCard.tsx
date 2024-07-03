@@ -1,4 +1,4 @@
-import { AlternateEmail } from '@mui/icons-material'
+import AlternateEmail from '@mui/icons-material/AlternateEmail'
 import { Avatar, Card, CardContent, CardHeader, Grid, Typography } from '@mui/material'
 import * as R from 'ramda'
 import { Profiler } from 'src/@core/types/profiler'

@@ -1,10 +1,10 @@
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import { useRouter } from 'next/router'
 import * as R from 'ramda'
 import { ReactNode, useEffect, useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { LoadingComponent } from 'src/@core/components/loading'
 import { useApi } from 'src/@core/services'
-import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import { Media } from 'src/@core/types'
 import { BookingData, BookingStatus, PaymentType, SimplySeatData } from 'src/@core/types/booking'
 import { Profiler } from 'src/@core/types/profiler'
@@ -12,7 +12,6 @@ import { Trip } from 'src/@core/types/trip'
 import { getSessionFromCookie } from 'src/@core/utils/session'
 import UserLayout from 'src/layouts/UserLayout'
 import BookingForm, { getPaymentPrice } from 'src/views/user/BookingForm'
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material'
 
 export default function Booking() {
   const router = useRouter()
@@ -105,7 +104,7 @@ export default function Booking() {
   const isLoading = R.isNil(trip) && R.isNil(profiler)
 
   return (
-    <ApexChartWrapper>
+    <>
       {isLoading ? (
         <LoadingComponent />
       ) : (
@@ -134,7 +133,7 @@ export default function Booking() {
           </>
         )
       )}
-    </ApexChartWrapper>
+    </>
   )
 }
 

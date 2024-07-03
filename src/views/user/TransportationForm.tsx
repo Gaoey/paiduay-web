@@ -154,6 +154,23 @@ function SeatButton(props: SeatButtonProps) {
   const isSelectSeat = seat.isSelect
   const bgColor = seat.is_lock ? 'error' : isSelectSeat ? 'success' : 'primary'
   const disabled = seat.is_lock || seat.status != SeatStatus[SeatStatus.EMPTY]
+  if (isViewOnly && isSelectSeat) {
+    return (
+      <Box
+        color='success'
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignContent: 'center',
+          bgcolor: 'green',
+          height: '100%'
+        }}
+      >
+        <Typography sx={{ color: 'white' }}>{'#' + seat.seat_number}</Typography>
+      </Box>
+    )
+  }
 
   return (
     <Button

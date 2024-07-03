@@ -5,10 +5,13 @@ import {
   Button,
   Card,
   CardContent,
+  Divider,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Grid,
+  List,
+  ListItem,
+  ListItemText,
   Radio,
   RadioGroup,
   TextField,
@@ -96,17 +99,28 @@ export default function BookingForm(props: BookingFormProps) {
   }
 
   return (
-    <Grid container spacing={7}>
-      <Grid item xs={12}>
-        <Typography variant='h4' gutterBottom sx={{ textAlign: 'center' }}>
-          ชำระเงิน
-        </Typography>
-      </Grid>
-      <Grid item xs={12} md={6}>
+    <Grid container spacing={2}>
+      <Grid
+        item
+        xs={12}
+        md={6}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
         {!R.isNil(totalPrice) && (
-          <Card sx={{ marginBottom: '1em' }}>
+          <Card sx={{ marginBottom: '1em', padding: 10, height: '100%' }}>
             <CardContent>
               <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant='h4' gutterBottom>
+                    การชำระเงิน
+                  </Typography>
+                  <Typography gutterBottom variant='caption'>
+                    * การชำระเงินสามารถเลือกได้สองรูปแบบ คุณสามารถเลือกประเภทการจ่ายเงินได้
+                  </Typography>
+                </Grid>
                 <Grid item xs={12}>
                   {!R.isNil(trip) && (
                     <PaymentTypeRadioGroup
@@ -116,84 +130,123 @@ export default function BookingForm(props: BookingFormProps) {
                     />
                   )}
                 </Grid>
-                <Grid item xs={12}>
-                  {!R.isNil(trip?.data?.payment) && (
-                    <Typography variant='h6'>
-                      จำนวนเงิน:
+              </Grid>
+              <Grid item xs={12} sx={{ padding: 5 }}>
+                {!R.isNil(trip?.data?.payment) && (
+                  <>
+                    <Typography gutterBottom>Total</Typography>
+                    <Typography gutterBottom variant='h4' sx={{ color: 'grey' }}>
                       {isDeposit
                         ? toCurrency(trip?.data?.payment.full_price - (booking?.data.payment_price || 0.0))
                         : toCurrency(getPaymentPrice(trip?.data?.payment, seats.length, watch('payment_type')))}
                     </Typography>
-                  )}
-                </Grid>
+                  </>
+                )}
+              </Grid>
+              <Grid item xs={12} sx={{ padding: 5 }}>
+                <Typography variant='h6'>Bank Account</Typography>
+                <Typography gutterBottom variant='caption'>
+                  * เลือกบัญชีธนาคารพร้อมอัพโหลดสลิปเพื่อยืนยัน
+                </Typography>
+                <Divider />
+                {!R.isNil(profiler) &&
+                  profiler?.data?.bank_accounts.map(v => {
+                    return (
+                      <Box key={v.bank_title}>
+                        <>
+                          <List disablePadding>
+                            <ListItem sx={{ py: 1, px: 0 }}>
+                              <ListItemText sx={{ mr: 2 }} primary={'บัญชีธนาคาร'} secondary={''} />
+                              <Typography variant='body1' fontWeight='medium' color='grey'>
+                                {v.bank_title}
+                              </Typography>
+                            </ListItem>
+                            <ListItem sx={{ py: 1, px: 0 }}>
+                              <ListItemText sx={{ mr: 2 }} primary={'เลขบัญชี'} secondary={''} />
+                              <Typography variant='body1' fontWeight='medium' color='grey'>
+                                {v.account_number}
+                              </Typography>
+                            </ListItem>
+                            <ListItem sx={{ py: 1, px: 0 }}>
+                              <ListItemText sx={{ mr: 2 }} primary={'ชื่อบัญชี'} secondary={''} />
+                              <Typography variant='body1' fontWeight='medium' color='grey'>
+                                {v.account_name}
+                              </Typography>
+                            </ListItem>
+                          </List>
+                        </>
+                        <Divider />
+                      </Box>
+                    )
+                  })}
               </Grid>
             </CardContent>
           </Card>
         )}
-        {!R.isNil(profiler) &&
-          profiler?.data?.bank_accounts.map(v => {
-            return (
-              <Card key={v?.account_number}>
-                <CardContent>
-                  <Typography variant='h6'>บัญชีปลายทาง:</Typography>
-                  <Typography variant='body1'>ธนาคาร: {v.bank_title}</Typography>
-                  <Typography variant='body1'>เลขบัญชี: {v.account_number}</Typography>
-                  <Typography variant='body1'>ชื่อ: {v.account_name}</Typography>
-                </CardContent>
-              </Card>
-            )
-          })}
       </Grid>
-      <Grid item xs={12} md={6}>
-        <Card>
+      <Grid
+        item
+        xs={12}
+        md={6}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
+        <Card sx={{ marginBottom: '1em', padding: 10, height: '100%', textAlign: 'center' }}>
+          <Typography variant='h6'>กรอกข้อมูลที่นั่ง</Typography>
+          <Typography gutterBottom variant='caption'>
+            * โปรดใส่ชื่อที่นั่งของคุณก่อนอัพโหลดสลิป
+          </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid item xs={12}>
-              <CardContent>
-                <Grid container spacing={4}>
-                  <Grid item xs={12}>
-                    {seatFields.map((item, index) => {
-                      return (
-                        <Box key={item.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
-                          <TextField
-                            {...register(`seats.${index}.seat_name`, { required: 'ต้องมีชื่อที่นั่ง' })}
-                            label={`ใส่ชื่อจองที่นั่ง #${item.seat_number} ของคุณ`}
-                            defaultValue={item.seat_name}
-                            disabled={isDeposit}
-                          />
-                        </Box>
-                      )
-                    })}
+            <CardContent>
+              <Grid container spacing={4}>
+                <Grid item xs={12}>
+                  {seatFields.map((item, index) => {
+                    return (
+                      <Box key={item.id} sx={{ margin: 5 }}>
+                        <TextField
+                          {...register(`seats.${index}.seat_name`, { required: 'ต้องมีชื่อที่นั่ง' })}
+                          label={`ใส่ชื่อจองที่นั่ง #${item.seat_number} ของคุณ`}
+                          defaultValue={item.seat_name}
+                          disabled={isDeposit}
+                        />
+                      </Box>
+                    )
+                  })}
+                </Grid>
+                <Grid item xs={12}>
+                  <Grid item xs={12} sx={{ paddingBottom: '0.5em', paddingTop: '2em' }}>
+                    <Typography variant='h6'>หลักฐานการโอนเงิน</Typography>
+                    <Typography gutterBottom variant='caption'>
+                      * สลิปของคุณจะถูกส่งให้กับเจ้าของทริป โปรดใส่ข้อมูลให้ถูกต้องก่อนอัพโหลด
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} sx={{ paddingBottom: '0.5em' }}>
+                    {!R.isNil(slipImage?.file) && (
+                      <SlipImgStyled src={URL.createObjectURL(slipImage?.file as File)} alt='Profile Pic' />
+                    )}
                   </Grid>
                   <Grid item xs={12}>
-                    <Grid item xs={12} sx={{ paddingBottom: '0.5em' }}>
-                      <Typography variant='h6'>หลักฐานการโอนเงิน:</Typography>
-                    </Grid>
-                    <Grid item xs={12} sx={{ paddingBottom: '0.5em' }}>
-                      {!R.isNil(slipImage?.file) && (
-                        <SlipImgStyled src={URL.createObjectURL(slipImage?.file as File)} alt='Profile Pic' />
-                      )}
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Button
-                        component='label'
-                        role={undefined}
-                        variant='outlined'
-                        tabIndex={-1}
-                        startIcon={<CloudUploadIcon />}
-                      >
-                        อัพโหลด bank slip
-                        <VisuallyHiddenInput type='file' onChange={handleImageChange} />
-                      </Button>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <LoadingButton type='submit' variant='contained' color='primary' loading={isLoading}>
-                      ดำเนินการจ่ายเงิน
-                    </LoadingButton>
+                    <Button
+                      component='label'
+                      role={undefined}
+                      variant='outlined'
+                      tabIndex={-1}
+                      startIcon={<CloudUploadIcon />}
+                    >
+                      อัพโหลดสลิปธนาคาร
+                      <VisuallyHiddenInput type='file' onChange={handleImageChange} />
+                    </Button>
                   </Grid>
                 </Grid>
-              </CardContent>
-            </Grid>
+                <Grid item xs={12} sx={{ marginTop: 30 }}>
+                  <LoadingButton type='submit' variant='contained' color='primary' loading={isLoading}>
+                    ดำเนินการจ่ายเงิน
+                  </LoadingButton>
+                </Grid>
+              </Grid>
+            </CardContent>
           </form>
         </Card>
       </Grid>
@@ -220,7 +273,7 @@ export function PaymentTypeRadioGroup(props: PaymentTypeRadioGroup) {
 
   return (
     <FormControl>
-      <FormLabel id='payment-type-label'>ประเภทการจ่าย</FormLabel>
+      {/* <FormLabel id='payment-type-label'>ประเภทการจ่าย</FormLabel> */}
       <RadioGroup
         row
         aria-labelledby='row-radio-buttons-group-label'

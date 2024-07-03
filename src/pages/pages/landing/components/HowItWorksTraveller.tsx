@@ -51,7 +51,7 @@ const HowItWorksTraveller = () => {
     >
       <Grid container spacing={4} justifyContent='center' alignItems='center' style={{ height: '100%' }}>
         <Grid container ref={imageContainerRef} justifyContent='center' alignItems='center'>
-          <Grid item xs={12} md={12} style={{ height: '15vh' }}>
+          <Grid item xs={12} md={12} style={{ height: '10vh' }}>
             <Parallax opacity={[0.5, 1]}>
               <Typography variant='h5' align='center' color='#FDECEF'>
                 สำหรับ ลูกทริป
@@ -62,7 +62,7 @@ const HowItWorksTraveller = () => {
             </Parallax>
           </Grid>
           <Grid item xs={12} md={12} style={{ height: '60vh', display: 'flex', justifyContent: 'flex-start' }}>
-            <Parallax translateY={[0, -50]}>
+            <Parallax translateY={[0, 10]}>
               <div
                 style={{
                   alignItems: 'center',
@@ -90,7 +90,7 @@ const HowItWorksTraveller = () => {
             </Parallax>
           </Grid>
           <Grid item xs={12} md={12} style={{ height: '60vh', display: 'flex', justifyContent: 'center' }}>
-            <Parallax translateY={[0, -100]}>
+            <Parallax translateY={[0, 10]}>
               <div
                 style={{
                   alignItems: 'center',
@@ -118,7 +118,7 @@ const HowItWorksTraveller = () => {
             </Parallax>
           </Grid>
           <Grid item xs={12} md={12} style={{ height: '60vh', display: 'flex', justifyContent: 'flex-end' }}>
-            <Parallax translateY={[0, -100]}>
+            <Parallax translateY={[0, 10]}>
               <div
                 style={{
                   alignItems: 'center',
