@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import HeroSection from './components/HeroSection'
-import HowItWorksTripLeader from './components/HowItWorksTripLeader' // Assuming that's your path
 import HowItWorksTraveller from './components/HowItWorksTraveller'
-import { Box } from '@mui/material'
+import HowItWorksTripLeader from './components/HowItWorksTripLeader' // Assuming that's your path
 
 // interface LandingPageState {
 //   selectedDate: Date | null
